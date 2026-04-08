@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
-import 'package:nayza_vocab/features/vocabulary/data/models/vocab_set_model.dart';
+import 'package:nayza_vocab/features/vocabulary/data/models/word_model.dart';
 import 'package:nayza_vocab/features/vocabulary/presentation/provider/vocab_set_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 
 class CreateSetScreen extends StatefulWidget {
   const CreateSetScreen({super.key});
@@ -12,58 +13,53 @@ class CreateSetScreen extends StatefulWidget {
 }
 
 class _CreateSetScreenState extends State<CreateSetScreen> {
-  final _formKey = GlobalKey<FormState>();
   final _titleController = TextEditingController();
   final List<WordModel> _words = [];
-  final List<Map<String, TextEditingController>> _wordControllers = [];
+  final List<FocusNode> _focusNodes = [];
+  final _formKey = GlobalKey<FormState>();
+  final _uuid = const Uuid();
 
   @override
   void initState() {
     super.initState();
-    _addWordField(); // Start with one word field
+    // Start with one empty word field
+    _addWordField();
   }
 
   void _addWordField() {
     setState(() {
-      final originalController = TextEditingController();
-      final translationController = TextEditingController();
-      _wordControllers.add({
-        'original': originalController,
-        'translation': translationController,
-      });
-      // Add a placeholder WordModel
-      _words.add(WordModel(original: '', translation: '')); 
+      _words.add(WordModel(id: _uuid.v4(), original: '', translation: ''));
+      _focusNodes.add(FocusNode());
+      _focusNodes.add(FocusNode()); // One for original, one for translation
     });
-  }
-
-  void _removeWordField(int index) {
-    setState(() {
-      _wordControllers[index]['original']!.dispose();
-      _wordControllers[index]['translation']!.dispose();
-      _wordControllers.removeAt(index);
-      _words.removeAt(index);
-    });
-  }
-
-  void _saveSet() {
-    if (_formKey.currentState!.validate()) {
-      _formKey.currentState!.save();
-      final provider = Provider.of<VocabSetProvider>(context, listen: false);
-      // Filter out empty words before saving
-      final validWords = _words.where((word) => word.original.trim().isNotEmpty && word.translation.trim().isNotEmpty).toList();
-      provider.createVocabSet(_titleController.text.trim(), validWords);
-      Navigator.pop(context);
-    }
   }
 
   @override
   void dispose() {
     _titleController.dispose();
-    for (var controllers in _wordControllers) {
-      controllers['original']!.dispose();
-      controllers['translation']!.dispose();
+    for (var node in _focusNodes) {
+      node.dispose();
     }
     super.dispose();
+  }
+
+  void _saveSet() {
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+
+      final validWords = _words.where((word) => word.original.trim().isNotEmpty && word.translation.trim().isNotEmpty).toList();
+
+      if (validWords.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Please add at least one valid word.')),
+        );
+        return;
+      }
+
+      Provider.of<VocabSetProvider>(context, listen: false).createVocabSet(_titleController.text, validWords);
+
+      Navigator.pop(context);
+    }
   }
 
   @override
@@ -71,13 +67,20 @@ class _CreateSetScreenState extends State<CreateSetScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Create New Set'),
+        actions: [
+          IconButton(
+            icon: const Icon(LucideIcons.save, size: 24),
+            onPressed: _saveSet,
+            tooltip: 'Save Set',
+          ),
+        ],
       ),
       body: Form(
         key: _formKey,
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
               child: TextFormField(
                 controller: _titleController,
                 decoration: const InputDecoration(
@@ -86,7 +89,7 @@ class _CreateSetScreenState extends State<CreateSetScreen> {
                 ),
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {
-                    return 'Please enter a title for your set.';
+                    return 'Please enter a title for the set.';
                   }
                   return null;
                 },
@@ -94,75 +97,55 @@ class _CreateSetScreenState extends State<CreateSetScreen> {
             ),
             Expanded(
               child: ListView.builder(
-                itemCount: _wordControllers.length,
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                itemCount: _words.length,
                 itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: TextFormField(
-                            controller: _wordControllers[index]['original'],
-                            decoration: const InputDecoration(labelText: 'Original'),
-                            validator: (value) {
-                              if (value == null || value.trim().isEmpty) {
-                                return 'Required';
-                              }
-                              return null;
-                            },
-                            onSaved: (value) {
-                               _words[index] = _words[index].copyWith(original: value);
-                            },
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        Expanded(
-                          child: TextFormField(
-                            controller: _wordControllers[index]['translation'],
-                            decoration: const InputDecoration(labelText: 'Translation'),
-                            validator: (value) {
-                              if (value == null || value.trim().isEmpty) {
-                                return 'Required';
-                              }
-                              return null;
-                            },
-                            onSaved: (value) {
-                               _words[index] = _words[index].copyWith(translation: value);
-                            },
-                          ),
-                        ),
-                        IconButton(
-                          icon: const Icon(LucideIcons.x, color: Colors.redAccent),
-                          onPressed: () => _removeWordField(index),
-                        ),
-                      ],
-                    ),
-                  );
+                  return _buildWordCard(index);
                 },
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: OutlinedButton.icon(
-                      icon: const Icon(LucideIcons.plusCircle),
-                      label: const Text('Add Word'),
-                      onPressed: _addWordField,
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: ElevatedButton.icon(
-                      icon: const Icon(LucideIcons.save),
-                      label: const Text('Save Set'),
-                      onPressed: _saveSet,
-                    ),
-                  ),
-                ],
-              ),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: _addWordField,
+        label: const Text('Add Word'),
+        icon: const Icon(LucideIcons.plusCircle),
+      ),
+    );
+  }
+
+  Widget _buildWordCard(int index) {
+    return Card(
+      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+      child: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: Column(
+          children: [
+            TextFormField(
+              initialValue: _words[index].original,
+              focusNode: _focusNodes[index * 2],
+              decoration: InputDecoration(labelText: 'Original Word (e.g., English)', hintText: 'Enter word'),
+              onChanged: (value) {
+                _words[index] = _words[index].copyWith(original: value);
+              },
+               onFieldSubmitted: (_) => FocusScope.of(context).requestFocus(_focusNodes[index * 2 + 1]),
+              textInputAction: TextInputAction.next,
+            ),
+            const SizedBox(height: 10),
+            TextFormField(
+              initialValue: _words[index].translation,
+               focusNode: _focusNodes[index * 2 + 1],
+              decoration: InputDecoration(labelText: 'Translation', hintText: 'Enter translation'),
+              onChanged: (value) {
+                _words[index] = _words[index].copyWith(translation: value);
+              },
+              onFieldSubmitted: (value) {
+                if(index == _words.length -1){
+                  _addWordField();
+                  FocusScope.of(context).requestFocus(_focusNodes[(index+1) * 2]);
+                }
+              },
             ),
           ],
         ),

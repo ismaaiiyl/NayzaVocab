@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+import 'package:nayza_vocab/features/vocabulary/data/models/word_model.dart';
 
 part 'vocab_set_model.g.dart';
 
@@ -22,35 +23,4 @@ class VocabSetModel extends HiveObject {
     required this.words,
     required this.createdAt,
   });
-}
-
-@HiveType(typeId: 1)
-class WordModel extends HiveObject {
-  @HiveField(0)
-  final String original;
-
-  @HiveField(1)
-  final String translation;
-
-  @HiveField(2)
-  final String? langCode; // Made optional
-
-  WordModel({
-    required this.original,
-    required this.translation,
-    this.langCode = 'en', // Provide a default value
-  });
-
-  // copyWith Method for easy updates
-  WordModel copyWith({
-    String? original,
-    String? translation,
-    String? langCode,
-  }) {
-    return WordModel(
-      original: original ?? this.original,
-      translation: translation ?? this.translation,
-      langCode: langCode ?? this.langCode,
-    );
-  }
 }

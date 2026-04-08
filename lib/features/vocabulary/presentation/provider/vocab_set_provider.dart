@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:nayza_vocab/features/vocabulary/data/models/vocab_set_model.dart';
+import 'package:nayza_vocab/features/vocabulary/data/models/word_model.dart'; // <<< IMPORT ADDED
 import 'package:uuid/uuid.dart';
 
 class VocabSetProvider with ChangeNotifier {
@@ -10,16 +11,21 @@ class VocabSetProvider with ChangeNotifier {
 
   List<VocabSetModel> get vocabSets => _vocabSets;
 
+  // For the Quiz/Training
+  List<WordModel> _trainingList = [];
+  List<WordModel> get trainingList => _trainingList;
+
   VocabSetProvider(this._vocabSetBox) {
     _loadVocabSets();
   }
 
   void _loadVocabSets() {
     _vocabSets = _vocabSetBox.values.toList();
-    // Optional: Sort sets by date, newest first
     _vocabSets.sort((a, b) => b.createdAt.compareTo(a.createdAt));
     notifyListeners();
   }
+
+  // --- CRUD Operations ---
 
   Future<void> createVocabSet(String title, List<WordModel> words) async {
     final newSet = VocabSetModel(
@@ -29,7 +35,7 @@ class VocabSetProvider with ChangeNotifier {
       createdAt: DateTime.now(),
     );
     await _vocabSetBox.put(newSet.id, newSet);
-    _loadVocabSets(); // Reload and notify
+    _loadVocabSets();
   }
 
   VocabSetModel? getSetById(String id) {
@@ -45,7 +51,7 @@ class VocabSetProvider with ChangeNotifier {
     if (set != null && wordIndex >= 0 && wordIndex < set.words.length) {
       set.words.removeAt(wordIndex);
       await _vocabSetBox.put(setId, set);
-      _loadVocabSets(); // Reload and notify
+      _loadVocabSets();
     }
   }
 
@@ -54,7 +60,7 @@ class VocabSetProvider with ChangeNotifier {
     if (set != null) {
       set.words.add(newWord);
       await _vocabSetBox.put(setId, set);
-      _loadVocabSets(); // Reload and notify
+      _loadVocabSets();
     }
   }
 
@@ -64,7 +70,21 @@ class VocabSetProvider with ChangeNotifier {
     if (set != null && wordIndex >= 0 && wordIndex < set.words.length) {
       set.words[wordIndex] = updatedWord;
       await _vocabSetBox.put(setId, set);
-      _loadVocabSets(); // Reload and notify
+      _loadVocabSets();
     }
+  }
+
+  // --- Quiz/Training Logic ---
+
+  void prepareTrainingSession(Set<String> setIds) {
+    _trainingList.clear();
+    for (var setId in setIds) {
+      final set = getSetById(setId);
+      if (set != null) {
+        _trainingList.addAll(set.words);
+      }
+    }
+    _trainingList.shuffle();
+    notifyListeners();
   }
 }

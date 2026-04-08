@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:nayza_vocab/features/vocabulary/presentation/pages/create_set_screen.dart';
+import 'package:nayza_vocab/features/vocabulary/presentation/pages/quiz_screen.dart';
 import 'package:nayza_vocab/features/vocabulary/presentation/pages/set_details_screen.dart';
 import 'package:nayza_vocab/features/vocabulary/presentation/provider/vocab_set_provider.dart';
 import 'package:provider/provider.dart';
@@ -11,12 +12,13 @@ class HistoryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final vocabSets = Provider.of<VocabSetProvider>(context).vocabSets;
+    final vocabSetProvider = Provider.of<VocabSetProvider>(context);
+    final vocabSets = vocabSetProvider.vocabSets;
     final theme = Theme.of(context);
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Nayza Vocab'),
+        title: const Text('Vocabulary Sets'),
       ),
       body: vocabSets.isEmpty
           ? Center(
@@ -54,7 +56,24 @@ class HistoryScreen extends StatelessWidget {
                         style: theme.textTheme.bodyMedium,
                       ),
                     ),
-                    trailing: const Icon(LucideIcons.chevronRight, size: 20),
+                    trailing: IconButton(
+                      icon: const Icon(LucideIcons.playCircle, size: 28),
+                      onPressed: () {
+                        if (set.words.isNotEmpty) {
+                          vocabSetProvider.prepareTrainingSession({set.id});
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const QuizScreen(),
+                            ),
+                          );
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('This set is empty. Add some words first.')),
+                          );
+                        }
+                      },
+                    ),
                     onTap: () {
                       Navigator.push(
                         context,

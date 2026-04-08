@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:nayza_vocab/features/vocabulary/data/models/vocab_set_model.dart';
-import 'package:nayza_vocab/features/vocabulary/presentation/pages/history_screen.dart';
+import 'package:nayza_vocab/features/vocabulary/data/models/word_model.dart'; // <<< IMPORT ADDED
+import 'package:nayza_vocab/features/vocabulary/presentation/pages/home_screen.dart';
 import 'package:nayza_vocab/features/vocabulary/presentation/provider/vocab_set_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -84,7 +85,7 @@ class MyApp extends StatelessWidget {
         title: 'Nayza Vocab',
         debugShowCheckedModeBanner: false, // Hides the debug banner
         theme: theme,
-        home: const HistoryScreen(),
+        home: const HomeScreen(),
       ),
     );
   }
