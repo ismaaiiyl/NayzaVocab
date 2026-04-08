@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nayza_vocab/features/vocabulary/presentation/pages/create_set_screen.dart';
+import 'package:nayza_vocab/features/vocabulary/presentation/pages/set_details_screen.dart';
 import 'package:nayza_vocab/features/vocabulary/presentation/provider/vocab_set_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -31,7 +32,12 @@ class HistoryScreen extends StatelessWidget {
                   subtitle: Text('${set.words.length} words'),
                   trailing: Text(set.createdAt.toString().substring(0, 10)),
                   onTap: () {
-                    // Navigate to SetDetailsScreen
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SetDetailsScreen(setId: set.id),
+                      ),
+                    );
                   },
                 ),
               );
@@ -47,6 +53,7 @@ class HistoryScreen extends StatelessWidget {
           );
         },
         child: const Icon(Icons.add),
+        backgroundColor: const Color(0xFFFFD700), // Electric Gold
       ),
     );
   }

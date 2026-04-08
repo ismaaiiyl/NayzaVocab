@@ -74,4 +74,14 @@ class VocabSetProvider extends ChangeNotifier {
       fetchVocabSets();
     }
   }
+
+  // Delete a word from a set
+  Future<void> deleteWordFromSet(String setId, int wordIndex) async {
+    final set = _vocabSetBox.get(setId);
+    if (set != null && wordIndex < set.words.length) {
+      set.words.removeAt(wordIndex);
+      await set.save();
+      fetchVocabSets();
+    }
+  }
 }
