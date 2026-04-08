@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import 'package:nayza_vocab/features/vocabulary/presentation/pages/create_set_screen.dart';
 import 'package:nayza_vocab/features/vocabulary/presentation/pages/set_details_screen.dart';
 import 'package:nayza_vocab/features/vocabulary/presentation/provider/vocab_set_provider.dart';
@@ -9,42 +11,62 @@ class HistoryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final vocabSets = Provider.of<VocabSetProvider>(context).vocabSets;
+    final theme = Theme.of(context);
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Vocabulary Sets'),
-        centerTitle: true,
+        title: const Text('Nayza Vocab'),
       ),
-      body: Consumer<VocabSetProvider>(
-        builder: (context, provider, child) {
-          if (provider.vocabSets.isEmpty) {
-            return const Center(
-              child: Text('No vocabulary sets found. Create one!'),
-            );
-          }
-          return ListView.builder(
-            itemCount: provider.vocabSets.length,
-            itemBuilder: (context, index) {
-              final set = provider.vocabSets[index];
-              return Card(
-                margin: const EdgeInsets.all(8.0),
-                child: ListTile(
-                  title: Text(set.title),
-                  subtitle: Text('${set.words.length} words'),
-                  trailing: Text(set.createdAt.toString().substring(0, 10)),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => SetDetailsScreen(setId: set.id),
+      body: vocabSets.isEmpty
+          ? Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(LucideIcons.school, size: 80, color: Colors.grey.shade400),
+                  const SizedBox(height: 20),
+                  Text(
+                    'No Vocabulary Sets Yet',
+                    style: theme.textTheme.headlineLarge?.copyWith(color: Colors.grey.shade600),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Tap the + button to create your first set.',
+                    style: theme.textTheme.bodyMedium?.copyWith(color: Colors.grey.shade500),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+            )
+          : ListView.builder(
+              padding: const EdgeInsets.all(8.0),
+              itemCount: vocabSets.length,
+              itemBuilder: (context, index) {
+                final set = vocabSets[index];
+                return Card(
+                  child: ListTile(
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                    title: Text(set.title, style: theme.textTheme.displaySmall?.copyWith(fontSize: 28)),
+                    subtitle: Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: Text(
+                        '${set.words.length} words | ${DateFormat.yMMMd().format(set.createdAt)}',
+                        style: theme.textTheme.bodyMedium,
                       ),
-                    );
-                  },
-                ),
-              );
-            },
-          );
-        },
-      ),
+                    ),
+                    trailing: const Icon(LucideIcons.chevronRight, size: 20),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SetDetailsScreen(setId: set.id),
+                        ),
+                      );
+                    },
+                  ),
+                );
+              },
+            ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(
@@ -52,8 +74,8 @@ class HistoryScreen extends StatelessWidget {
             MaterialPageRoute(builder: (context) => const CreateSetScreen()),
           );
         },
-        child: const Icon(Icons.add),
-        backgroundColor: const Color(0xFFFFD700), // Electric Gold
+        child: const Icon(LucideIcons.plus, size: 28),
+        tooltip: 'Create a new set',
       ),
     );
   }
