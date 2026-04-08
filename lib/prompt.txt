@@ -1,48 +1,41 @@
-# Role: Flutter Expert & System Architect
-# Task: Implementation of "NayzaVocab" application logic and UI.
+# Role: Senior Flutter & UX Architect
+# Task: Refactor NayzaVocab to support "Vocab Sets" with Bulk Input and Enhanced History.
 
-The folder structure is already created. Now, please provide the detailed implementation for each file following the "NayzaVocab" requirements.
+The goal is to transition from individual word storage to a "Collection-based" system (like Quizlet or Anki).
 
-## 1. DATA LAYER (Models & Storage)
-- File: `lib/features/vocabulary/data/models/word_model.dart`
-  - Create a Hive-compatible `WordModel` with fields: `id` (String), `original` (String), `translation` (String), `createdAt` (DateTime), `isLearned` (bool), and `wrongAttempts` (int).
-  - Include `toJson` and `fromJson` methods.
+## 1. Data Structure Update (Models)
+- **VocabSetModel**: 
+  - `id` (String), `title` (String - e.g., "Family", "Work"), `createdAt` (DateTime).
+  - `List<WordModel> words`: A nested list of words belonging to this set.
+- **WordModel**: 
+  - `original`, `translation`, `langCode`, `isLearned`, `wrongAttempts`.
 
-## 2. DOMAIN LAYER (Business Logic)
-- File: `lib/features/vocabulary/domain/entities/word_entity.dart`
-  - Simple entity class that the UI will interact with.
+## 2. Bulk Input UI (The "Environment Variable" Style)
+- Create a `CreateSetScreen`.
+- **Top Part**: An `InputTextField` for the "Set Title".
+- **Dynamic List**: Use `ListView.builder` with a dynamic list of controllers.
+  - Each row contains: `Word Input`, `Translation Input`, `Language Selector`, and a `Delete Icon`.
+- **Add Row Button**: A "+" button at the bottom to inject a new empty row (Word/Translation pair) dynamically.
+- **Save Logic**: Validate that all inputs are filled, then wrap them into a `VocabSetModel` and save to Hive.
 
-## 3. PRESENTATION LAYER (State Management - Provider)
-- File: `lib/features/vocabulary/presentation/provider/vocabulary_provider.dart`
-  - Function `addWord(String original, String translation)`: Save to Hive.
-  - Function `fetchHistory()`: Retrieve words grouped by `DateTime`.
-  - Function `getTrainingList(int count)`: Use `List.shuffle()` to get a random set of words for the game.
-  - Function `updateProgress(String id, bool isCorrect)`: Increment `wrongAttempts` if false.
+## 3. History & Navigation Refactor
+- **HistoryScreen**: Instead of a flat list, display "Collection Cards".
+  - Card shows: `Title`, `Date`, `Word Count` (e.g., "15 words").
+  - On Tap: Navigate to `SetDetailsScreen`.
+- **SetDetailsScreen**:
+  - Display all word pairs in the set.
+  - **Edit Mode**: Add a "Pen/Edit" icon on each row and the Title. 
+  - Ability to add more words to an existing set.
+  - **Stats**: Show "Missed/Learned" ratio for this specific set.
 
-## 4. TRAINING LOGIC (The "Shuffle" Game)
-- File: `lib/features/vocabulary/presentation/pages/training_screen.dart`
-  - Logic: 
-    - Create a `PageController` to slide between words.
-    - `checkAnswer(String input)`: Compare `input.trim().toLowerCase()` with `word.translation.toLowerCase()`.
-    - If correct: Play "Ding" sound and move to next.
-    - If wrong: Add word to `missedWords` list.
-    - End of Session: Show a summary and give a "Re-try missed words" button.
+## 4. Multi-Language TTS Engine
+- Support: `en-US` (English), `ru-RU` (Russian), `ar-SA` (Arabic), `de-DE` (German).
+- **Logic**: Only trigger `flutter_tts` for the `original` word. Skip audio for Uzbek translations.
+- **RTL Support**: If `langCode == 'ar-SA'`, the word input/display must use `TextDirection.rtl`.
 
-## 5. UI COMPONENTS (Nayza Style)
-- File: `lib/core/theme/app_theme.dart`:
-    - Define `ThemeData` with Primary: `#0A192F`, Accent: `#FFD700`.
-    - Set custom `CardTheme` with 12.0 border radius and elevation.
+## 5. UI/UX Refinements
+- **Icons**: Use `LucideIcons` or `FontAwesome` for a modern look.
+- **Transitions**: Use a "Hero" animation when transitioning from the History Card to the Set Details.
+- **Buttons**: Use the defined "Electric Gold" (#FFD700) for "Add Variable" and "Save" buttons to match the Nayza brand.
 
-- File: `lib/features/vocabulary/presentation/pages/home_screen.dart`:
-    - Floating Action Button to trigger a BottomSheet for adding words.
-    - A "Start Training" Hero button in the center.
-
-- File: `lib/features/vocabulary/presentation/pages/history_screen.dart`:
-    - Use `GroupedListView` or a custom `ListView.builder` to show dates as headers (e.g., "April 8, 2026") and words as list tiles below them.
-
-## 6. UTILITIES
-- File: `lib/core/utils/audio_helper.dart`: 
-    - Use `flutter_tts` for English pronunciation.
-    - Simple functions for "Success" and "Fail" sound effects.
-
-Please generate the code for `vocabulary_provider.dart` and `training_screen.dart` first, as they contain the core logic of the app.
+Please provide the implementation for `vocab_set_model.dart`, the dynamic `CreateSetScreen` logic, and the grouped `HistoryScreen`.
