@@ -8,7 +8,7 @@ part of 'vocab_set_model.dart';
 
 class VocabSetModelAdapter extends TypeAdapter<VocabSetModel> {
   @override
-  final int typeId = 1;
+  final int typeId = 0;
 
   @override
   VocabSetModel read(BinaryReader reader) {
@@ -19,8 +19,8 @@ class VocabSetModelAdapter extends TypeAdapter<VocabSetModel> {
     return VocabSetModel(
       id: fields[0] as String,
       title: fields[1] as String,
-      createdAt: fields[2] as DateTime,
-      words: (fields[3] as List).cast<WordModel>(),
+      words: (fields[2] as List).cast<WordModel>(),
+      createdAt: fields[3] as DateTime,
     );
   }
 
@@ -33,9 +33,9 @@ class VocabSetModelAdapter extends TypeAdapter<VocabSetModel> {
       ..writeByte(1)
       ..write(obj.title)
       ..writeByte(2)
-      ..write(obj.createdAt)
+      ..write(obj.words)
       ..writeByte(3)
-      ..write(obj.words);
+      ..write(obj.createdAt);
   }
 
   @override
@@ -51,7 +51,7 @@ class VocabSetModelAdapter extends TypeAdapter<VocabSetModel> {
 
 class WordModelAdapter extends TypeAdapter<WordModel> {
   @override
-  final int typeId = 2;
+  final int typeId = 1;
 
   @override
   WordModel read(BinaryReader reader) {
@@ -62,26 +62,20 @@ class WordModelAdapter extends TypeAdapter<WordModel> {
     return WordModel(
       original: fields[0] as String,
       translation: fields[1] as String,
-      langCode: fields[2] as String,
-      isLearned: fields[3] as bool,
-      wrongAttempts: fields[4] as int,
+      langCode: fields[2] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, WordModel obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(3)
       ..writeByte(0)
       ..write(obj.original)
       ..writeByte(1)
       ..write(obj.translation)
       ..writeByte(2)
-      ..write(obj.langCode)
-      ..writeByte(3)
-      ..write(obj.isLearned)
-      ..writeByte(4)
-      ..write(obj.wrongAttempts);
+      ..write(obj.langCode);
   }
 
   @override

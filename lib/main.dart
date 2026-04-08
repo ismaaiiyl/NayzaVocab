@@ -52,7 +52,7 @@ class MyApp extends StatelessWidget {
         backgroundColor: Color(0xFFFFD700), // Electric Gold
         foregroundColor: Colors.black,
       ),
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData( // Changed from CardTheme
         elevation: 2,
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         shape: RoundedRectangleBorder(
@@ -61,7 +61,7 @@ class MyApp extends StatelessWidget {
         ),
         shadowColor: Colors.black26,
       ),
-       dialogTheme: DialogTheme(
+       dialogTheme: DialogThemeData( // Changed from DialogTheme
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         backgroundColor: Colors.white,
         titleTextStyle: GoogleFonts.roboto(fontSize: 20, fontWeight: FontWeight.bold),

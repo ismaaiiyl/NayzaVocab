@@ -31,6 +31,8 @@ class _CreateSetScreenState extends State<CreateSetScreen> {
         'original': originalController,
         'translation': translationController,
       });
+      // Add a placeholder WordModel
+      _words.add(WordModel(original: '', translation: '')); 
     });
   }
 
@@ -39,6 +41,7 @@ class _CreateSetScreenState extends State<CreateSetScreen> {
       _wordControllers[index]['original']!.dispose();
       _wordControllers[index]['translation']!.dispose();
       _wordControllers.removeAt(index);
+      _words.removeAt(index);
     });
   }
 
@@ -46,7 +49,9 @@ class _CreateSetScreenState extends State<CreateSetScreen> {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       final provider = Provider.of<VocabSetProvider>(context, listen: false);
-      provider.createVocabSet(_titleController.text.trim(), _words);
+      // Filter out empty words before saving
+      final validWords = _words.where((word) => word.original.trim().isNotEmpty && word.translation.trim().isNotEmpty).toList();
+      provider.createVocabSet(_titleController.text.trim(), validWords);
       Navigator.pop(context);
     }
   }
@@ -107,11 +112,7 @@ class _CreateSetScreenState extends State<CreateSetScreen> {
                               return null;
                             },
                             onSaved: (value) {
-                              if (_words.length <= index) {
-                                _words.add(WordModel(original: value!, translation: ''));
-                              } else {
-                                _words[index] = _words[index].copyWith(original: value);
-                              }
+                               _words[index] = _words[index].copyWith(original: value);
                             },
                           ),
                         ),

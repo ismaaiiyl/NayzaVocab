@@ -2,50 +2,55 @@ import 'package:hive/hive.dart';
 
 part 'vocab_set_model.g.dart';
 
-@HiveType(typeId: 1)
+@HiveType(typeId: 0)
 class VocabSetModel extends HiveObject {
   @HiveField(0)
-  late String id;
+  final String id;
 
   @HiveField(1)
-  late String title;
+  String title;
 
   @HiveField(2)
-  late DateTime createdAt;
+  final List<WordModel> words;
 
   @HiveField(3)
-  late List<WordModel> words;
+  final DateTime createdAt;
 
   VocabSetModel({
     required this.id,
     required this.title,
-    required this.createdAt,
     required this.words,
+    required this.createdAt,
   });
 }
 
-@HiveType(typeId: 2)
+@HiveType(typeId: 1)
 class WordModel extends HiveObject {
   @HiveField(0)
-  late String original;
+  final String original;
 
   @HiveField(1)
-  late String translation;
+  final String translation;
 
   @HiveField(2)
-  late String langCode;
-
-  @HiveField(3)
-  bool isLearned;
-
-  @HiveField(4)
-  int wrongAttempts;
+  final String? langCode; // Made optional
 
   WordModel({
     required this.original,
     required this.translation,
-    required this.langCode,
-    this.isLearned = false,
-    this.wrongAttempts = 0,
+    this.langCode = 'en', // Provide a default value
   });
+
+  // copyWith Method for easy updates
+  WordModel copyWith({
+    String? original,
+    String? translation,
+    String? langCode,
+  }) {
+    return WordModel(
+      original: original ?? this.original,
+      translation: translation ?? this.translation,
+      langCode: langCode ?? this.langCode,
+    );
+  }
 }
