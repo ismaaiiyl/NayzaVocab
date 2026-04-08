@@ -11,9 +11,16 @@ class VocabSetProvider with ChangeNotifier {
 
   List<VocabSetModel> get vocabSets => _vocabSets;
 
-  // For the Quiz/Training
-  List<WordModel> _trainingList = [];
+  // Training Session Data
+  final List<WordModel> _trainingList = [];
+  final List<WordModel> _failedQueue = [];
+  int _correctCount = 0;
+  int _incorrectCount = 0;
+
   List<WordModel> get trainingList => _trainingList;
+  List<WordModel> get failedQueue => _failedQueue;
+  int get correctCount => _correctCount;
+  int get incorrectCount => _incorrectCount;
 
   VocabSetProvider(this._vocabSetBox) {
     _loadVocabSets();
@@ -46,38 +53,24 @@ class VocabSetProvider with ChangeNotifier {
     }
   }
 
-  Future<void> deleteWordFromSet(String setId, int wordIndex) async {
-    final set = _vocabSetBox.get(setId);
-    if (set != null && wordIndex >= 0 && wordIndex < set.words.length) {
-      set.words.removeAt(wordIndex);
-      await _vocabSetBox.put(setId, set);
-      _loadVocabSets();
-    }
+  Future<void> deleteVocabSet(String setId) async {
+    await _vocabSetBox.delete(setId);
+    _loadVocabSets();
   }
 
-  Future<void> addWordToSet(String setId, WordModel newWord) async {
-    final set = _vocabSetBox.get(setId);
-    if (set != null) {
-      set.words.add(newWord);
-      await _vocabSetBox.put(setId, set);
-      _loadVocabSets();
-    }
+  Future<void> updateVocabSet(VocabSetModel updatedSet) async {
+    await _vocabSetBox.put(updatedSet.id, updatedSet);
+    _loadVocabSets();
   }
 
-  Future<void> updateWordInSet(
-      String setId, int wordIndex, WordModel updatedWord) async {
-    final set = _vocabSetBox.get(setId);
-    if (set != null && wordIndex >= 0 && wordIndex < set.words.length) {
-      set.words[wordIndex] = updatedWord;
-      await _vocabSetBox.put(setId, set);
-      _loadVocabSets();
-    }
-  }
-
-  // --- Quiz/Training Logic ---
+  // --- Training Logic ---
 
   void prepareTrainingSession(Set<String> setIds) {
     _trainingList.clear();
+    _failedQueue.clear();
+    _correctCount = 0;
+    _incorrectCount = 0;
+
     for (var setId in setIds) {
       final set = getSetById(setId);
       if (set != null) {
@@ -85,6 +78,27 @@ class VocabSetProvider with ChangeNotifier {
       }
     }
     _trainingList.shuffle();
+    notifyListeners();
+  }
+
+  void markCorrect(WordModel word) {
+    _correctCount++;
+    notifyListeners();
+  }
+
+  void markIncorrect(WordModel word) {
+    _incorrectCount++;
+    if (!_failedQueue.contains(word)) {
+      _failedQueue.add(word);
+    }
+    notifyListeners();
+  }
+
+  void retryFailedWords() {
+    _trainingList.clear();
+    _trainingList.addAll(_failedQueue);
+    _trainingList.shuffle();
+    _failedQueue.clear();
     notifyListeners();
   }
 }

@@ -17,11 +17,19 @@ class WordModel extends HiveObject {
   @HiveField(3)
   final String? langCode;
 
+  @HiveField(4)
+  final bool isLearned;
+
+  @HiveField(5)
+  final int wrongAttempts;
+
   WordModel({
     required this.id,
     required this.original,
     required this.translation,
     this.langCode = 'en',
+    this.isLearned = false,
+    this.wrongAttempts = 0,
   });
 
   WordModel copyWith({
@@ -29,12 +37,16 @@ class WordModel extends HiveObject {
     String? original,
     String? translation,
     String? langCode,
+    bool? isLearned,
+    int? wrongAttempts,
   }) {
     return WordModel(
       id: id ?? this.id,
       original: original ?? this.original,
       translation: translation ?? this.translation,
       langCode: langCode ?? this.langCode,
+      isLearned: isLearned ?? this.isLearned,
+      wrongAttempts: wrongAttempts ?? this.wrongAttempts,
     );
   }
 }

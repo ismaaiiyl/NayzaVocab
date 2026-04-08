@@ -1,70 +1,101 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
-  AppTheme._();
+  // Colors
+  static const Color darkNavy = Color(0xFF0A192F);
+  static const Color electricGold = Color(0xFFFFD700);
+  static const Color surfaceNavy = Color(0xFF112240);
+  static const Color textMain = Colors.white;
+  static const Color textDim = Color(0xFF8892B0);
 
-  static final ThemeData themeData = ThemeData(
-    brightness: Brightness.dark,
-    primaryColor: const Color(0xFF1A1A2E),
-    scaffoldBackgroundColor: const Color(0xFF16213E),
-    colorScheme: const ColorScheme.dark(
-      primary: Color(0xFF0F3460),
-      secondary: Color(0xFFE94560),
-      surface: Color(0xFF1A1A2E),
-      onPrimary: Colors.white,
-      onSecondary: Colors.white,
-      onSurface: Colors.white,
-    ),
-    fontFamily: 'Poppins', // Assuming Poppins is added to the project
-
-    cardTheme: const CardThemeData(
-      color: Color(0xFF1A1A2E),
-      elevation: 5,
-      margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(15)),
+  static ThemeData get darkTheme {
+    return ThemeData(
+      useMaterial3: true,
+      brightness: Brightness.dark,
+      scaffoldBackgroundColor: darkNavy,
+      primaryColor: electricGold,
+      colorScheme: ColorScheme.fromSeed(
+        seedColor: electricGold,
+        brightness: Brightness.dark,
+        surface: surfaceNavy,
+        onSurface: textMain,
+        primary: electricGold,
       ),
-    ),
-
-    textTheme: const TextTheme(
-      displayLarge: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.white),
-      titleLarge: TextStyle(fontSize: 22, fontWeight: FontWeight.w600, color: Colors.white70),
-      bodyLarge: TextStyle(fontSize: 16, color: Colors.white),
-      bodyMedium: TextStyle(fontSize: 14, color: Colors.white60),
-    ),
-
-    inputDecorationTheme: const InputDecorationTheme(
-      filled: true,
-      fillColor: Color(0xFF0F3460),
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.all(Radius.circular(15)),
-        borderSide: BorderSide.none,
-      ),
-      hintStyle: TextStyle(color: Colors.white38),
-    ),
-
-    elevatedButtonTheme: ElevatedButtonThemeData(
-      style: ElevatedButton.styleFrom(
-        foregroundColor: Colors.white,
-        backgroundColor: const Color(0xFFE94560),
-        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(15)),
+      textTheme: TextTheme(
+        displayLarge: GoogleFonts.bebasNeue(
+          fontSize: 48,
+          fontWeight: FontWeight.bold,
+          color: electricGold,
+          letterSpacing: 2,
         ),
-        textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        displayMedium: GoogleFonts.bebasNeue(
+          fontSize: 32,
+          fontWeight: FontWeight.bold,
+          color: electricGold,
+        ),
+        titleLarge: GoogleFonts.inter(
+          fontSize: 20,
+          fontWeight: FontWeight.w600,
+          color: textMain,
+        ),
+        bodyLarge: GoogleFonts.inter(
+          fontSize: 16,
+          color: textMain,
+        ),
+        bodyMedium: GoogleFonts.inter(
+          fontSize: 14,
+          color: textDim,
+        ),
       ),
-    ),
-
-    floatingActionButtonTheme: const FloatingActionButtonThemeData(
-      backgroundColor: Color(0xFFE94560),
-      foregroundColor: Colors.white,
-    ),
-
-    appBarTheme: const AppBarTheme(
-      backgroundColor: Colors.transparent,
-      elevation: 0,
-      centerTitle: true,
-      titleTextStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
-    ),
-  );
+      appBarTheme: AppBarTheme(
+        backgroundColor: darkNavy,
+        foregroundColor: electricGold,
+        elevation: 0,
+        centerTitle: true,
+        titleTextStyle: GoogleFonts.bebasNeue(
+          fontSize: 24,
+          fontWeight: FontWeight.bold,
+          color: electricGold,
+          letterSpacing: 1.5,
+        ),
+      ),
+      cardTheme: CardThemeData(
+        color: surfaceNavy,
+        elevation: 4,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(16)),
+          side: BorderSide(color: Color(0xFF233554), width: 1),
+        ),
+      ),
+      floatingActionButtonTheme: const FloatingActionButtonThemeData(
+        backgroundColor: electricGold,
+        foregroundColor: darkNavy,
+        elevation: 6,
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: electricGold,
+          foregroundColor: darkNavy,
+          textStyle: GoogleFonts.inter(fontWeight: FontWeight.bold),
+          shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(12))),
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+        ),
+      ),
+      inputDecorationTheme: InputDecorationTheme(
+        filled: true,
+        fillColor: surfaceNavy,
+        border: const OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(12)),
+          borderSide: BorderSide.none,
+        ),
+        focusedBorder: const OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(12)),
+          borderSide: BorderSide(color: electricGold, width: 2),
+        ),
+        hintStyle: const TextStyle(color: textDim),
+        labelStyle: const TextStyle(color: electricGold),
+      ),
+    );
+  }
 }

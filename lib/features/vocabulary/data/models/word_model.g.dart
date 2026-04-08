@@ -21,13 +21,15 @@ class WordModelAdapter extends TypeAdapter<WordModel> {
       original: fields[1] as String,
       translation: fields[2] as String,
       langCode: fields[3] as String?,
+      isLearned: fields[4] as bool,
+      wrongAttempts: fields[5] as int,
     );
   }
 
   @override
   void write(BinaryWriter writer, WordModel obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(6)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -35,7 +37,11 @@ class WordModelAdapter extends TypeAdapter<WordModel> {
       ..writeByte(2)
       ..write(obj.translation)
       ..writeByte(3)
-      ..write(obj.langCode);
+      ..write(obj.langCode)
+      ..writeByte(4)
+      ..write(obj.isLearned)
+      ..writeByte(5)
+      ..write(obj.wrongAttempts);
   }
 
   @override

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:lucide_icons/lucide_icons.dart';
+import 'package:nayza_vocab/core/widgets/nayza_widgets.dart';
 import 'package:nayza_vocab/features/vocabulary/data/models/word_model.dart';
 import 'package:nayza_vocab/features/vocabulary/presentation/provider/vocab_set_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 
 class CreateSetScreen extends StatefulWidget {
   const CreateSetScreen({super.key});
@@ -13,65 +14,82 @@ class CreateSetScreen extends StatefulWidget {
 }
 
 class _CreateSetScreenState extends State<CreateSetScreen> {
-  final _titleController = TextEditingController();
-  final List<WordModel> _words = [];
-  final List<FocusNode> _focusNodes = [];
   final _formKey = GlobalKey<FormState>();
-  final _uuid = const Uuid();
+  final TextEditingController _titleController = TextEditingController();
+  final List<WordRowControllers> _rowControllers = [];
+  String _selectedLangCode = 'en-US';
 
   @override
   void initState() {
     super.initState();
-    // Start with one empty word field
-    _addWordField();
+    // Start with 3 empty rows
+    for (int i = 0; i < 3; i++) {
+      _addRow();
+    }
   }
 
-  void _addWordField() {
+  void _addRow() {
     setState(() {
-      _words.add(WordModel(id: _uuid.v4(), original: '', translation: ''));
-      _focusNodes.add(FocusNode());
-      _focusNodes.add(FocusNode()); // One for original, one for translation
+      _rowControllers.add(WordRowControllers());
     });
+  }
+
+  void _removeRow(int index) {
+    if (_rowControllers.length > 1) {
+      setState(() {
+        _rowControllers[index].dispose();
+        _rowControllers.removeAt(index);
+      });
+    }
+  }
+
+  Future<void> _saveSet() async {
+    if (_formKey.currentState!.validate()) {
+      final List<WordModel> words = _rowControllers.where((rc) => rc.original.text.isNotEmpty).map((rc) {
+        return WordModel(
+          id: const Uuid().v4(),
+          original: rc.original.text,
+          translation: rc.translation.text,
+          langCode: _selectedLangCode,
+        );
+      }).toList();
+
+      if (words.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Kamida bitta so\'z kiriting')),
+        );
+        return;
+      }
+
+      await context.read<VocabSetProvider>().createVocabSet(
+            _titleController.text,
+            words,
+          );
+
+      if (mounted) {
+        Navigator.pop(context);
+      }
+    }
   }
 
   @override
   void dispose() {
     _titleController.dispose();
-    for (var node in _focusNodes) {
-      node.dispose();
+    for (var rc in _rowControllers) {
+      rc.dispose();
     }
     super.dispose();
-  }
-
-  void _saveSet() {
-    if (_formKey.currentState!.validate()) {
-      _formKey.currentState!.save();
-
-      final validWords = _words.where((word) => word.original.trim().isNotEmpty && word.translation.trim().isNotEmpty).toList();
-
-      if (validWords.isEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Please add at least one valid word.')),
-        );
-        return;
-      }
-
-      Provider.of<VocabSetProvider>(context, listen: false).createVocabSet(_titleController.text, validWords);
-
-      Navigator.pop(context);
-    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Create New Set'),
+        title: const Text('YANGI TO\'PLAM'),
         actions: [
           IconButton(
-            icon: const Icon(LucideIcons.save, size: 24),
             onPressed: _saveSet,
-            tooltip: 'Save Set',
+            icon: const Icon(LucideIcons.check),
           ),
         ],
       ),
@@ -80,76 +98,89 @@ class _CreateSetScreenState extends State<CreateSetScreen> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-              child: TextFormField(
+              padding: const EdgeInsets.all(16.0),
+              child: NayzaTextField(
                 controller: _titleController,
+                label: 'To\'plam nomi',
+                hint: 'Masalan: Oila, Sayohat...',
+                validator: (v) => v!.isEmpty ? 'Nom kiriting' : null,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: DropdownButtonFormField<String>(
+                value: _selectedLangCode,
                 decoration: const InputDecoration(
-                  labelText: 'Set Title',
-                  border: OutlineInputBorder(),
+                  labelText: 'O\'rganilayotgan til',
+                  prefixIcon: Icon(LucideIcons.languages, size: 20, color: Color(0xFFFFD700)),
                 ),
-                validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
-                    return 'Please enter a title for the set.';
-                  }
-                  return null;
+                dropdownColor: const Color(0xFF112240),
+                items: const [
+                  DropdownMenuItem(value: 'en-US', child: Text('Ingliz tili')),
+                  DropdownMenuItem(value: 'ar-SA', child: Text('Arab tili')),
+                  DropdownMenuItem(value: 'ru-RU', child: Text('Rus tili')),
+                  DropdownMenuItem(value: 'uz-UZ', child: Text('O\'zbek tili (TTS o\'chiq)')),
+                ],
+                onChanged: (v) => setState(() => _selectedLangCode = v!),
+              ),
+            ),
+            const SizedBox(height: 16),
+            Expanded(
+              child: ListView.builder(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                itemCount: _rowControllers.length,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 12.0),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: NayzaTextField(
+                            controller: _rowControllers[index].original,
+                            label: 'So\'z',
+                            hint: 'Word',
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: NayzaTextField(
+                            controller: _rowControllers[index].translation,
+                            label: 'Tarjima',
+                            hint: 'Translation',
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: () => _removeRow(index),
+                          icon: const Icon(LucideIcons.trash2, color: Colors.redAccent, size: 20),
+                        ),
+                      ],
+                    ),
+                  );
                 },
               ),
             ),
-            Expanded(
-              child: ListView.builder(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                itemCount: _words.length,
-                itemBuilder: (context, index) {
-                  return _buildWordCard(index);
-                },
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: NayzaButton(
+                text: 'QATOR QO\'SHISH',
+                icon: LucideIcons.plus,
+                onPressed: _addRow,
+                isFullWidth: false,
               ),
             ),
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: _addWordField,
-        label: const Text('Add Word'),
-        icon: const Icon(LucideIcons.plusCircle),
       ),
     );
   }
+}
 
-  Widget _buildWordCard(int index) {
-    return Card(
-      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-      child: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Column(
-          children: [
-            TextFormField(
-              initialValue: _words[index].original,
-              focusNode: _focusNodes[index * 2],
-              decoration: InputDecoration(labelText: 'Original Word (e.g., English)', hintText: 'Enter word'),
-              onChanged: (value) {
-                _words[index] = _words[index].copyWith(original: value);
-              },
-               onFieldSubmitted: (_) => FocusScope.of(context).requestFocus(_focusNodes[index * 2 + 1]),
-              textInputAction: TextInputAction.next,
-            ),
-            const SizedBox(height: 10),
-            TextFormField(
-              initialValue: _words[index].translation,
-               focusNode: _focusNodes[index * 2 + 1],
-              decoration: InputDecoration(labelText: 'Translation', hintText: 'Enter translation'),
-              onChanged: (value) {
-                _words[index] = _words[index].copyWith(translation: value);
-              },
-              onFieldSubmitted: (value) {
-                if(index == _words.length -1){
-                  _addWordField();
-                  FocusScope.of(context).requestFocus(_focusNodes[(index+1) * 2]);
-                }
-              },
-            ),
-          ],
-        ),
-      ),
-    );
+class WordRowControllers {
+  final TextEditingController original = TextEditingController();
+  final TextEditingController translation = TextEditingController();
+
+  void dispose() {
+    original.dispose();
+    translation.dispose();
   }
 }

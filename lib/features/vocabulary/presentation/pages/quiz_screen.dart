@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:nayza_vocab/core/utils/audio_helper.dart';
-import 'package:nayza_vocab/features/vocabulary/data/models/word_model.dart';
+import 'package:nayza_vocab/core/theme/app_theme.dart';
+import 'package:nayza_vocab/core/widgets/nayza_widgets.dart';
 import 'package:nayza_vocab/features/vocabulary/presentation/provider/vocab_set_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:lucide_icons/lucide_icons.dart';
+import 'package:nayza_vocab/core/utils/audio_helper.dart';
+import 'dart:math';
 
 class QuizScreen extends StatefulWidget {
   const QuizScreen({super.key});
@@ -12,136 +15,267 @@ class QuizScreen extends StatefulWidget {
 }
 
 class _QuizScreenState extends State<QuizScreen> {
-  late final PageController _pageController;
-  late final VocabSetProvider _provider;
-  final _answerController = TextEditingController();
+  final PageController _pageController = PageController();
+  final TextEditingController _answerController = TextEditingController();
   final AudioHelper _audioHelper = AudioHelper();
-
-  // To keep track of missed words within this session
-  final Set<WordModel> _missedWords = {};
+  
+  int _currentIndex = 0;
+  bool _isAnswered = false;
+  bool _isCorrect = false;
+  List<String> _options = [];
 
   @override
   void initState() {
     super.initState();
-    _pageController = PageController();
-    _provider = Provider.of<VocabSetProvider>(context, listen: false);
-    _audioHelper.preloadSounds();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+       _prepareQuestion();
+    });
   }
 
-  void _checkAnswer(WordModel currentWord, String answer) {
-    final isCorrect = answer.trim().toLowerCase() == currentWord.translation.toLowerCase();
+  void _prepareQuestion() {
+    final provider = context.read<VocabSetProvider>();
+    if (provider.trainingList.isEmpty) return;
     
-    _audioHelper.playSound(isCorrect);
-
-    if (isCorrect) {
-      _goToNextPage();
-    } else {
-      _missedWords.add(currentWord);
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Wrong! Try again.'), duration: Duration(seconds: 1), backgroundColor: Colors.redAccent),
-      );
-    }
-    _answerController.clear();
+    final currentWord = provider.trainingList[_currentIndex];
+    
+    // Generate multiple choice options for Choice Mode
+    _generateOptions(currentWord);
+    setState(() {});
   }
-  
-  void _goToNextPage(){
-       if (_pageController.page!.toInt() < _provider.trainingList.length - 1) {
-        _pageController.nextPage(duration: const Duration(milliseconds: 300), curve: Curves.easeIn);
-      } else {
-        _showSummary();
+
+  void _generateOptions(currentWord) {
+    final provider = context.read<VocabSetProvider>();
+    final allWords = provider.vocabSets.expand((s) => s.words).toList();
+    
+    _options = [currentWord.translation];
+    final random = Random();
+    
+    // If we don't have enough words in the database, we use placeholders or just fewer options
+    while (_options.length < 4 && allWords.length >= 4) {
+      final randomWord = allWords[random.nextInt(allWords.length)].translation;
+      if (!_options.contains(randomWord)) {
+        _options.add(randomWord);
       }
+    }
+    _options.shuffle();
+  }
+
+  void _handleAnswer(String answer) {
+    if (_isAnswered) return;
+    
+    final provider = context.read<VocabSetProvider>();
+    final currentWord = provider.trainingList[_currentIndex];
+    
+    final correct = answer.trim().toLowerCase() == currentWord.translation.toLowerCase();
+    
+    setState(() {
+      _isAnswered = true;
+      _isCorrect = correct;
+    });
+
+    if (correct) {
+      provider.markCorrect(currentWord);
+      _audioHelper.playSuccess();
+    } else {
+      provider.markIncorrect(currentWord);
+      _audioHelper.playError();
+    }
+
+    // Auto-advance after delay
+    Future.delayed(const Duration(milliseconds: 1500), () {
+      if (mounted) {
+        _nextQuestion();
+      }
+    });
+  }
+
+  void _nextQuestion() {
+    final provider = context.read<VocabSetProvider>();
+    if (_currentIndex < provider.trainingList.length - 1) {
+      setState(() {
+        _currentIndex++;
+        _isAnswered = false;
+        _answerController.clear();
+        _prepareQuestion();
+      });
+      _pageController.nextPage(duration: const Duration(milliseconds: 400), curve: Curves.easeInOut);
+    } else {
+      _showSummary();
+    }
   }
 
   void _showSummary() {
-    showDialog(
+    final provider = context.read<VocabSetProvider>();
+    showModalBottomSheet(
       context: context,
-      barrierDismissible: false,
-      builder: (ctx) => AlertDialog(
-        title: const Text('Session Complete!'),
-        content: _missedWords.isEmpty
-            ? const Text('Congratulations! You got everything right!')
-            : Text('You missed ${_missedWords.length} out of ${_provider.trainingList.length} words.'),
-        actions: [
-          if (_missedWords.isNotEmpty)
-            TextButton(
-              onPressed: () {
-                // Logic to retry missed words
-                final missed = List<WordModel>.from(_missedWords);
-                _missedWords.clear();
-                setState(() {
-                  _provider.trainingList.clear();
-                  _provider.trainingList.addAll(missed);
-                  _provider.trainingList.shuffle();
-                });
-                Navigator.pop(context);
-                _pageController.jumpToPage(0);
-              },
-              child: const Text('Retry Missed Words'),
+      isDismissible: false,
+      backgroundColor: AppTheme.surfaceNavy,
+      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(24))),
+      builder: (context) => Padding(
+        padding: const EdgeInsets.all(32.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(LucideIcons.trophy, size: 64, color: AppTheme.electricGold),
+            const SizedBox(height: 16),
+            Text('TEST YAKUNLANDI!', style: Theme.of(context).textTheme.displayMedium),
+            const SizedBox(height: 24),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                _buildStatItem('TO\'G\'RI', provider.correctCount.toString(), Colors.greenAccent),
+                _buildStatItem('XATO', provider.incorrectCount.toString(), Colors.redAccent),
+              ],
             ),
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-              Navigator.pop(context); // Go back to selection/history
-            },
-            child: const Text('Finish'),
-          ),
-        ],
+            const SizedBox(height: 32),
+            if (provider.failedQueue.isNotEmpty)
+              NayzaButton(
+                text: 'XATOLARNI TAKRORLASH',
+                icon: LucideIcons.refreshCcw,
+                onPressed: () {
+                  provider.retryFailedWords();
+                  Navigator.pop(context);
+                  setState(() {
+                    _currentIndex = 0;
+                    _isAnswered = false;
+                    _prepareQuestion();
+                  });
+                  _pageController.jumpToPage(0);
+                },
+              ),
+            const SizedBox(height: 12),
+            NayzaButton(
+              text: 'YAKUNLASH',
+              icon: LucideIcons.check,
+              onPressed: () {
+                Navigator.pop(context);
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        ),
       ),
+    );
+  }
+
+  Widget _buildStatItem(String label, String value, Color color) {
+    return Column(
+      children: [
+        Text(value, style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: color)),
+        Text(label, style: const TextStyle(color: AppTheme.textDim, fontSize: 12)),
+      ],
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    final provider = context.watch<VocabSetProvider>();
+    final trainingList = provider.trainingList;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Quiz'),
+        title: Text('${_currentIndex + 1} / ${trainingList.length}'),
+        leading: IconButton(
+          icon: const Icon(LucideIcons.x),
+          onPressed: () => Navigator.pop(context),
+        ),
       ),
-      body: Consumer<VocabSetProvider>(
-        builder: (context, provider, child) {
-          if (provider.trainingList.isEmpty) {
-            return const Center(child: Text('Something went wrong. No words for the quiz.'));
-          }
-          return PageView.builder(
-            controller: _pageController,
-            physics: const NeverScrollableScrollPhysics(), // Disable swiping
-            itemCount: provider.trainingList.length,
-            itemBuilder: (context, index) {
-              final word = provider.trainingList[index];
-              return _buildQuizCard(word);
-            },
-          );
-        },
-      ),
+      body: trainingList.isEmpty
+          ? const Center(child: Text('Ma\'lumot yo\'q'))
+          : PageView.builder(
+              controller: _pageController,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: trainingList.length,
+              itemBuilder: (context, index) {
+                final word = trainingList[index];
+                return Padding(
+                  padding: const EdgeInsets.all(24.0),
+                  child: Column(
+                    children: [
+                      LinearProgressIndicator(
+                        value: trainingList.isEmpty ? 0 : (_currentIndex + 1) / trainingList.length,
+                        backgroundColor: const Color(0xFF1E2D4A),
+                        color: AppTheme.electricGold,
+                        minHeight: 8,
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      const Spacer(),
+                      Text(
+                        word.original,
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.displayLarge,
+                      ),
+                      IconButton(
+                        onPressed: () => _audioHelper.speak(word.original, langCode: word.langCode ?? 'en-US'),
+                        icon: const Icon(LucideIcons.volume2, color: AppTheme.electricGold, size: 32),
+                      ),
+                      const SizedBox(height: 48),
+                      // Dual Mode Switcher
+                      _buildResponseArea(word, index),
+                      const Spacer(),
+                    ],
+                  ),
+                );
+              },
+            ),
     );
   }
 
-  Widget _buildQuizCard(WordModel word) {
-    return Padding(
-      padding: const EdgeInsets.all(24.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            word.original, // Show the original word
-            style: Theme.of(context).textTheme.headlineLarge,
-            textAlign: TextAlign.center,
-          ),
-           IconButton(
-            icon: const Icon(Icons.volume_up, size: 30),
-            onPressed: () => _audioHelper.pronounce(word.original),
-          ),
-          const SizedBox(height: 40),
-          TextField(
-            controller: _answerController,
-            decoration: const InputDecoration(hintText: 'Enter the translation...'), // Ask for translation
-            textAlign: TextAlign.center,
-            onSubmitted: (value) => _checkAnswer(word, value),
-          ),
-          const SizedBox(height: 20),
-          ElevatedButton(onPressed: () => _checkAnswer(word, _answerController.text), child: const Text('Check'))
-        ],
-      ),
-    );
+  Widget _buildResponseArea(word, index) {
+     if (index % 2 == 0 && _options.length >= 2) {
+        // Choice Mode
+        return GridView.count(
+          shrinkWrap: true,
+          crossAxisCount: 2,
+          crossAxisSpacing: 16,
+          mainAxisSpacing: 16,
+          childAspectRatio: 1.5,
+          children: _options.map((opt) {
+            Color cardColor = AppTheme.surfaceNavy;
+            if (_isAnswered) {
+              if (opt == word.translation) cardColor = Colors.green.withOpacity(0.3);
+              else if (opt != word.translation && _isAnswered) cardColor = Colors.red.withOpacity(0.1);
+            }
+            return InkWell(
+              onTap: () => _handleAnswer(opt),
+              child: Card(
+                color: cardColor,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                  side: BorderSide(
+                    color: _isAnswered && opt == word.translation ? Colors.greenAccent : const Color(0xFF233554),
+                    width: 2,
+                  ),
+                ),
+                child: Center(
+                  child: Text(
+                    opt,
+                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+            );
+          }).toList(),
+        );
+      } else {
+        // Input Mode
+        return Column(
+          children: [
+            NayzaTextField(
+              controller: _answerController,
+              label: 'Tarjimani kiriting',
+              hint: 'Javobingiz...',
+              onSubmitted: (v) => _handleAnswer(v),
+            ),
+            const SizedBox(height: 24),
+            NayzaButton(
+              text: 'TEKSHIRISH',
+              onPressed: () => _handleAnswer(_answerController.text),
+            ),
+          ],
+        );
+      }
   }
 
   @override
