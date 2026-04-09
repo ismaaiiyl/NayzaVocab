@@ -16,21 +16,43 @@ class CreateSetScreen extends StatefulWidget {
 class _CreateSetScreenState extends State<CreateSetScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _titleController = TextEditingController();
+  final FocusNode _titleFocusNode = FocusNode();
   final List<WordRowControllers> _rowControllers = [];
   String _selectedLangCode = 'en-US';
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
-    // Start with 3 empty rows
+    // Start with 3 empty rows without auto-focus
     for (int i = 0; i < 3; i++) {
-      _addRow();
+      _addRow(shouldFocus: false);
     }
+    
+    // Focus the title field on start
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _titleFocusNode.requestFocus();
+    });
   }
 
-  void _addRow() {
+  void _addRow({bool shouldFocus = true}) {
     setState(() {
-      _rowControllers.add(WordRowControllers());
+      final newController = WordRowControllers();
+      _rowControllers.add(newController);
+      
+      if (shouldFocus) {
+        // Focus and scroll after build
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          newController.focusNode.requestFocus();
+          if (_scrollController.hasClients) {
+            _scrollController.animateTo(
+              _scrollController.position.maxScrollExtent,
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeOut,
+            );
+          }
+        });
+      }
     });
   }
 
@@ -75,6 +97,8 @@ class _CreateSetScreenState extends State<CreateSetScreen> {
   @override
   void dispose() {
     _titleController.dispose();
+    _titleFocusNode.dispose();
+    _scrollController.dispose();
     for (var rc in _rowControllers) {
       rc.dispose();
     }
@@ -101,6 +125,7 @@ class _CreateSetScreenState extends State<CreateSetScreen> {
               padding: const EdgeInsets.all(16.0),
               child: NayzaTextField(
                 controller: _titleController,
+                focusNode: _titleFocusNode,
                 label: 'To\'plam nomi',
                 hint: 'Masalan: Oila, Sayohat...',
                 validator: (v) => v!.isEmpty ? 'Nom kiriting' : null,
@@ -109,7 +134,7 @@ class _CreateSetScreenState extends State<CreateSetScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: DropdownButtonFormField<String>(
-                value: _selectedLangCode,
+                initialValue: _selectedLangCode,
                 decoration: const InputDecoration(
                   labelText: 'O\'rganilayotgan til',
                   prefixIcon: Icon(LucideIcons.languages, size: 20, color: Color(0xFFFFD700)),
@@ -127,6 +152,7 @@ class _CreateSetScreenState extends State<CreateSetScreen> {
             const SizedBox(height: 16),
             Expanded(
               child: ListView.builder(
+                controller: _scrollController,
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 itemCount: _rowControllers.length,
                 itemBuilder: (context, index) {
@@ -137,6 +163,7 @@ class _CreateSetScreenState extends State<CreateSetScreen> {
                         Expanded(
                           child: NayzaTextField(
                             controller: _rowControllers[index].original,
+                            focusNode: _rowControllers[index].focusNode,
                             label: 'So\'z',
                             hint: 'Word',
                           ),
@@ -178,9 +205,11 @@ class _CreateSetScreenState extends State<CreateSetScreen> {
 class WordRowControllers {
   final TextEditingController original = TextEditingController();
   final TextEditingController translation = TextEditingController();
+  final FocusNode focusNode = FocusNode();
 
   void dispose() {
     original.dispose();
     translation.dispose();
+    focusNode.dispose();
   }
 }

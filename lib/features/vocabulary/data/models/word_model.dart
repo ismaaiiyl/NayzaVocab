@@ -1,5 +1,4 @@
 import 'package:hive/hive.dart';
-import 'package:uuid/uuid.dart';
 
 part 'word_model.g.dart';
 
@@ -47,6 +46,28 @@ class WordModel extends HiveObject {
       langCode: langCode ?? this.langCode,
       isLearned: isLearned ?? this.isLearned,
       wrongAttempts: wrongAttempts ?? this.wrongAttempts,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'original': original,
+      'translation': translation,
+      'langCode': langCode,
+      'isLearned': isLearned,
+      'wrongAttempts': wrongAttempts,
+    };
+  }
+
+  factory WordModel.fromMap(Map<String, dynamic> map) {
+    return WordModel(
+      id: map['id'] ?? '',
+      original: map['original'] ?? '',
+      translation: map['translation'] ?? '',
+      langCode: map['langCode'] ?? 'en',
+      isLearned: map['isLearned'] ?? false,
+      wrongAttempts: map['wrongAttempts'] ?? 0,
     );
   }
 }

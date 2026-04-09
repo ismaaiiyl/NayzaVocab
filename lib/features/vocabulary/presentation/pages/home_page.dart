@@ -5,20 +5,39 @@ import 'package:nayza_vocab/features/vocabulary/presentation/pages/select_collec
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:nayza_vocab/core/theme/app_theme.dart';
 import 'package:nayza_vocab/core/utils/audio_helper.dart';
+import 'package:provider/provider.dart';
+import 'package:nayza_vocab/features/vocabulary/presentation/provider/vocab_set_provider.dart';
+import 'package:nayza_vocab/features/settings/presentation/pages/settings_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final vocabSetProvider = Provider.of<VocabSetProvider>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: Text('NAYZA VOCAB'.toUpperCase()),
+        leading: IconButton(
+          icon: const Icon(LucideIcons.settings),
+          onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => const SettingsPage()),
+          ),
+        ),
         actions: [
           IconButton(
-            icon: const Icon(LucideIcons.volume2, color: AppTheme.electricGold, size: 20),
-            tooltip: 'Ovozni tekshirish',
-            onPressed: () => AudioHelper().speak("Ingliz tili testi muvaffaqiyatli!"),
+            icon: Icon(
+              vocabSetProvider.isMuted ? LucideIcons.volumeX : LucideIcons.volume2,
+              color: AppTheme.electricGold,
+            ),
+            tooltip: vocabSetProvider.isMuted ? 'Ovozni yoqish' : 'Ovozni o\'chirish',
+            onPressed: () {
+              vocabSetProvider.toggleMute();
+              AudioHelper().isMuted = vocabSetProvider.isMuted;
+              AudioHelper().playToggle(vocabSetProvider.isMuted);
+            },
           ),
           IconButton(
             icon: const Icon(LucideIcons.history),

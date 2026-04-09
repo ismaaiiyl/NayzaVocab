@@ -21,6 +21,14 @@ class VocabSetProvider with ChangeNotifier {
   List<WordModel> get failedQueue => _failedQueue;
   int get correctCount => _correctCount;
   int get incorrectCount => _incorrectCount;
+  
+  bool _isMuted = false;
+  bool get isMuted => _isMuted;
+
+  void toggleMute() {
+    _isMuted = !_isMuted;
+    notifyListeners();
+  }
 
   VocabSetProvider(this._vocabSetBox) {
     _loadVocabSets();
@@ -42,6 +50,11 @@ class VocabSetProvider with ChangeNotifier {
       createdAt: DateTime.now(),
     );
     await _vocabSetBox.put(newSet.id, newSet);
+    _loadVocabSets();
+  }
+
+  Future<void> addSet(VocabSetModel set) async {
+    await _vocabSetBox.put(set.id, set);
     _loadVocabSets();
   }
 
@@ -100,5 +113,17 @@ class VocabSetProvider with ChangeNotifier {
     _trainingList.shuffle();
     _failedQueue.clear();
     notifyListeners();
+  }
+
+  /// Returns a list of all unique translations across ALL vocab sets.
+  /// Used for generating distractors even if the current training set is small.
+  List<String> getAllTranslations() {
+    final Set<String> allTranslations = {};
+    for (var set in _vocabSets) {
+      for (var word in set.words) {
+        allTranslations.add(word.translation.trim());
+      }
+    }
+    return allTranslations.toList();
   }
 }

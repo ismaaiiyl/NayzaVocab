@@ -5,10 +5,13 @@ import 'package:nayza_vocab/features/vocabulary/presentation/provider/vocab_set_
 import 'package:provider/provider.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:nayza_vocab/core/utils/audio_helper.dart';
-import 'dart:math';
+import 'package:flutter/services.dart';
+
+enum QuizMode { choice, input }
 
 class QuizScreen extends StatefulWidget {
-  const QuizScreen({super.key});
+  final QuizMode quizMode;
+  const QuizScreen({super.key, required this.quizMode});
 
   @override
   State<QuizScreen> createState() => _QuizScreenState();
@@ -21,12 +24,19 @@ class _QuizScreenState extends State<QuizScreen> {
   
   int _currentIndex = 0;
   bool _isAnswered = false;
-  bool _isCorrect = false;
+  late QuizMode _quizMode;
   List<String> _options = [];
+  String? _selectedAnswer;
 
   @override
   void initState() {
     super.initState();
+    _quizMode = widget.quizMode;
+    
+    // Sync audio state with provider on start
+    final provider = context.read<VocabSetProvider>();
+    _audioHelper.isMuted = provider.isMuted;
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
        _prepareQuestion();
     });
@@ -36,6 +46,7 @@ class _QuizScreenState extends State<QuizScreen> {
     final provider = context.read<VocabSetProvider>();
     if (provider.trainingList.isEmpty) return;
     
+    _selectedAnswer = null; // Reset
     final currentWord = provider.trainingList[_currentIndex];
     
     // Generate multiple choice options for Choice Mode
@@ -45,19 +56,43 @@ class _QuizScreenState extends State<QuizScreen> {
 
   void _generateOptions(currentWord) {
     final provider = context.read<VocabSetProvider>();
-    final allWords = provider.vocabSets.expand((s) => s.words).toList();
+    final trainingWords = provider.trainingList;
     
-    _options = [currentWord.translation];
-    final random = Random();
-    
-    // If we don't have enough words in the database, we use placeholders or just fewer options
-    while (_options.length < 4 && allWords.length >= 4) {
-      final randomWord = allWords[random.nextInt(allWords.length)].translation;
-      if (!_options.contains(randomWord)) {
-        _options.add(randomWord);
+    // Normalize correct answer
+    final String correctTranslation = currentWord.translation.trim();
+    final String correctLower = correctTranslation.toLowerCase();
+
+    // 1. Collect unique translations from current training session
+    final Set<String> uniqueTranslations = {correctTranslation};
+    final Set<String> normalizedSet = {correctLower};
+
+    // Helper to add unique translations safely
+    void addUnique(String t) {
+      final trimmed = t.trim();
+      final lowered = trimmed.toLowerCase();
+      if (!normalizedSet.contains(lowered)) {
+        uniqueTranslations.add(trimmed);
+        normalizedSet.add(lowered);
       }
     }
-    _options.shuffle();
+
+    // Attempt to fill from local training pool first
+    final localPool = trainingWords.map((w) => w.translation).toList()..shuffle();
+    for (var t in localPool) {
+      if (uniqueTranslations.length >= 4) break;
+      addUnique(t);
+    }
+
+    // 2. If still less than 4, pull from Global Pool across all sets
+    if (uniqueTranslations.length < 4) {
+      final globalPool = provider.getAllTranslations()..shuffle();
+      for (var t in globalPool) {
+        if (uniqueTranslations.length >= 4) break;
+        addUnique(t);
+      }
+    }
+
+    _options = uniqueTranslations.toList()..shuffle();
   }
 
   void _handleAnswer(String answer) {
@@ -70,7 +105,7 @@ class _QuizScreenState extends State<QuizScreen> {
     
     setState(() {
       _isAnswered = true;
-      _isCorrect = correct;
+      _selectedAnswer = answer;
     });
 
     if (correct) {
@@ -79,6 +114,7 @@ class _QuizScreenState extends State<QuizScreen> {
     } else {
       provider.markIncorrect(currentWord);
       _audioHelper.playError();
+      HapticFeedback.heavyImpact(); // Vibrate on error
     }
 
     // Auto-advance after delay
@@ -179,6 +215,19 @@ class _QuizScreenState extends State<QuizScreen> {
           icon: const Icon(LucideIcons.x),
           onPressed: () => Navigator.pop(context),
         ),
+        actions: [
+          IconButton(
+            icon: Icon(
+              provider.isMuted ? LucideIcons.volumeX : LucideIcons.volume2,
+              color: AppTheme.electricGold,
+            ),
+            onPressed: () {
+              provider.toggleMute();
+              AudioHelper().isMuted = provider.isMuted;
+              AudioHelper().playToggle(provider.isMuted);
+            },
+          ),
+        ],
       ),
       body: trainingList.isEmpty
           ? const Center(child: Text('Ma\'lumot yo\'q'))
@@ -222,7 +271,7 @@ class _QuizScreenState extends State<QuizScreen> {
   }
 
   Widget _buildResponseArea(word, index) {
-     if (index % 2 == 0 && _options.length >= 2) {
+     if (_quizMode == QuizMode.choice && _options.length >= 2) {
         // Choice Mode
         return GridView.count(
           shrinkWrap: true,
@@ -232,10 +281,18 @@ class _QuizScreenState extends State<QuizScreen> {
           childAspectRatio: 1.5,
           children: _options.map((opt) {
             Color cardColor = AppTheme.surfaceNavy;
+            Color borderColor = const Color(0xFF233554);
+            
             if (_isAnswered) {
-              if (opt == word.translation) cardColor = Colors.green.withOpacity(0.3);
-              else if (opt != word.translation && _isAnswered) cardColor = Colors.red.withOpacity(0.1);
+              if (opt == word.translation) {
+                cardColor = Colors.greenAccent.withValues(alpha: 0.4);
+                borderColor = Colors.greenAccent;
+              } else if (opt == _selectedAnswer) {
+                cardColor = Colors.redAccent.withValues(alpha: 0.3);
+                borderColor = Colors.redAccent;
+              }
             }
+            
             return InkWell(
               onTap: () => _handleAnswer(opt),
               child: Card(
@@ -243,7 +300,7 @@ class _QuizScreenState extends State<QuizScreen> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16),
                   side: BorderSide(
-                    color: _isAnswered && opt == word.translation ? Colors.greenAccent : const Color(0xFF233554),
+                    color: borderColor,
                     width: 2,
                   ),
                 ),

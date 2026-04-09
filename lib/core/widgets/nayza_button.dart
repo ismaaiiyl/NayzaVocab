@@ -12,7 +12,7 @@ class NayzaButton extends StatelessWidget {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         backgroundColor: AppTheme.electricGold,
-        foregroundColor: AppTheme.deepNavy,
+        foregroundColor: AppTheme.darkNavy,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),

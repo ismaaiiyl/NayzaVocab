@@ -26,6 +26,105 @@ class _SelectCollectionsScreenState extends State<SelectCollectionsScreen> {
     });
   }
 
+  void _showModeSelectionSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: const Color(0xFF112240),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      builder: (context) => Padding(
+        padding: const EdgeInsets.all(32.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'TEST TURINI TANLANG',
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+                color: AppTheme.electricGold,
+                letterSpacing: 1.5,
+              ),
+            ),
+            const SizedBox(height: 8),
+            const Text('O\'zingizga qulay usulni tanlang', style: TextStyle(color: AppTheme.textDim)),
+            const SizedBox(height: 24),
+            _buildModeCard(
+              context,
+              icon: LucideIcons.layoutGrid,
+              title: 'Variantli Test',
+              subtitle: 'To\'g\'ri javobni 2-4 ta variant ichidan tanlang',
+              mode: QuizMode.choice,
+            ),
+            const SizedBox(height: 12),
+            _buildModeCard(
+              context,
+              icon: LucideIcons.pencil,
+              title: 'Yozma Javob',
+              subtitle: 'Tarjimani o\'zingiz yozib kiriting',
+              mode: QuizMode.input,
+            ),
+            const SizedBox(height: 16),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildModeCard(BuildContext context, {
+    required IconData icon,
+    required String title,
+    required String subtitle,
+    required QuizMode mode,
+  }) {
+    return InkWell(
+      borderRadius: BorderRadius.circular(16),
+      onTap: () {
+        Navigator.pop(context); // Close bottom sheet
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => QuizScreen(quizMode: mode),
+          ),
+        );
+      },
+      child: Container(
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: const Color(0xFF1E2D4A),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: const Color(0xFF233554), width: 1.5),
+        ),
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: AppTheme.electricGold.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Icon(icon, color: AppTheme.electricGold, size: 28),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(title, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppTheme.textMain)),
+                  const SizedBox(height: 4),
+                  Text(subtitle, style: const TextStyle(fontSize: 13, color: AppTheme.textDim)),
+                ],
+              ),
+            ),
+            const Icon(LucideIcons.chevronRight, color: AppTheme.textDim),
+          ],
+        ),
+      ),
+    );
+  }
+
   void _toggleSelectAll(bool selectAll, List<String> allSetIds) {
     setState(() {
       if (selectAll) {
@@ -116,18 +215,14 @@ class _SelectCollectionsScreenState extends State<SelectCollectionsScreen> {
                           final provider = Provider.of<VocabSetProvider>(context, listen: false);
                           provider.prepareTrainingSession(_selectedSetIds);
 
-                          if (provider.trainingList.isNotEmpty) {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const QuizScreen(),
-                              ),
-                            );
-                          } else {
+                          if (provider.trainingList.isEmpty) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(content: Text('Tanlangan to\'plamlar bo\'sh.')),
                             );
+                            return;
                           }
+                          
+                          _showModeSelectionSheet(context);
                         },
                       ),
                     ),

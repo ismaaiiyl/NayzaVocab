@@ -23,4 +23,26 @@ class VocabSetModel extends HiveObject {
     required this.words,
     required this.createdAt,
   });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'title': title,
+      'createdAt': createdAt.toIso8601String(),
+      'words': words.map((w) => w.toMap()).toList(),
+    };
+  }
+
+  factory VocabSetModel.fromMap(Map<String, dynamic> map) {
+    return VocabSetModel(
+      id: map['id'] ?? '',
+      title: map['title'] ?? 'Untitled Set',
+      createdAt: map['createdAt'] != null 
+          ? DateTime.parse(map['createdAt']) 
+          : DateTime.now(),
+      words: (map['words'] as List? ?? [])
+          .map((w) => WordModel.fromMap(w as Map<String, dynamic>))
+          .toList(),
+    );
+  }
 }
