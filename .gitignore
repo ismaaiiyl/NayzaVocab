@@ -43,3 +43,7 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Android signing files (SENSITIVE - DO NOT REMOVE)
+android/key.properties
+android/app/key.jks

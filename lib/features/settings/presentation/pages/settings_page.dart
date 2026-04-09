@@ -139,6 +139,7 @@ class SettingsPage extends StatelessWidget {
   }
 
   Future<void> _handleImport(BuildContext context) async {
+    final messenger = ScaffoldMessenger.of(context);
     try {
       final importedSets = await DataService.importSets();
       if (importedSets.isEmpty) return;
@@ -149,12 +150,12 @@ class SettingsPage extends StatelessWidget {
         await provider.addSet(set);
       }
       
-      ScaffoldMessenger.of(context).showSnackBar(
+      messenger.showSnackBar(
         SnackBar(content: Text('${importedSets.length} ta to\'plam muvaffaqiyatli import qilindi')),
       );
     } catch (e) {
       if (!context.mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
+      messenger.showSnackBar(
         SnackBar(content: Text('Import xatoligi: $e')),
       );
     }

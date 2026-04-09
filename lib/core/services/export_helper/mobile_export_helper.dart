@@ -12,6 +12,7 @@ class MobileExportHelper implements ExportHelper {
     await file.writeAsString(jsonString);
 
     try {
+      // Use the instance method to avoid deprecation warnings in newer share_plus versions
       await Share.shareXFiles(
         [XFile(file.path)],
         subject: 'Nayza Vocab Backup',
