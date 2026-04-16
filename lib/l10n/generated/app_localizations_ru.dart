@@ -1,0 +1,429 @@
+// ignore: unused_import
+import 'package:intl/intl.dart' as intl;
+import 'app_localizations.dart';
+
+// ignore_for_file: type=lint
+
+/// The translations for Russian (`ru`).
+class AppLocalizationsRu extends AppLocalizations {
+  AppLocalizationsRu([String locale = 'ru']) : super(locale);
+
+  @override
+  String get appTitle => 'Nayza Vocab';
+
+  @override
+  String get homeTitle => 'ПРОВЕРЬ СВОИ ЗНАНИЯ!';
+
+  @override
+  String get homeSubtitle => 'Выберите свои коллекции и начните тест.';
+
+  @override
+  String get startTest => 'НАЧАТЬ ТЕСТ';
+
+  @override
+  String get matchingGame => 'ИГРА В ПАРЫ';
+
+  @override
+  String get manageCollections => 'УПРАВЛЕНИЕ КОЛЛЕКЦИЯМИ';
+
+  @override
+  String get settings => 'Настройки';
+
+  @override
+  String get history => 'История';
+
+  @override
+  String get collections => 'Коллекции';
+
+  @override
+  String get difficultWordsTitle => 'СЛОЖНЫЕ СЛОВА';
+
+  @override
+  String difficultWordsSubtitle(int count) {
+    return 'У вас $count слов с ошибками';
+  }
+
+  @override
+  String difficultSetTitle(int number) {
+    return 'Сложные слова #$number';
+  }
+
+  @override
+  String get removeFromDifficult => 'Удалить из списка сложных слов';
+
+  @override
+  String get noDifficultWords =>
+      'Пока нет сложных слов. Продолжайте тренироваться!';
+
+  @override
+  String get myCollectionsHeader => 'МОИ КОЛЛЕКЦИИ';
+
+  @override
+  String get difficultCollectionsHeader => 'СЛОЖНЫЕ ПОДБОРКИ';
+
+  @override
+  String get muteOn => 'Включить звук';
+
+  @override
+  String get muteOff => 'Выключить звук';
+
+  @override
+  String get dataManagement => 'УПРАВЛЕНИЕ ДАННЫМИ';
+
+  @override
+  String get export => 'Экспорт (Бэкап)';
+
+  @override
+  String get exportSubtitle => 'Выбрать и сохранить коллекции';
+
+  @override
+  String get import => 'Импорт (Восстановление)';
+
+  @override
+  String get importSubtitle => 'Загрузить коллекции из JSON';
+
+  @override
+  String get notifications => 'УВЕДОМЛЕНИЯ';
+
+  @override
+  String get dailyReminder => 'Ежедневное напоминание';
+
+  @override
+  String reminderSubtitle(String time) {
+    return 'Напоминать ежедневно в $time';
+  }
+
+  @override
+  String get reminderDefault => 'Напоминать сложные слова ежедневно';
+
+  @override
+  String reminderSetSuccess(Object time) {
+    return 'Напоминание установлено на $time';
+  }
+
+  @override
+  String get appInfo => 'О ПРИЛОЖЕНИИ';
+
+  @override
+  String get appVersion => 'Nayza Vocab v1.0.0\nCreated for Nayzadorlar 🔱';
+
+  @override
+  String get language => 'Язык';
+
+  @override
+  String get uzbek => 'Узбекский';
+
+  @override
+  String get russian => 'Русский';
+
+  @override
+  String get english => 'Английский';
+
+  @override
+  String importSuccess(Object count) {
+    return 'Успешно импортировано $count коллекций';
+  }
+
+  @override
+  String importError(Object error) {
+    return 'Ошибка импорта: $error';
+  }
+
+  @override
+  String get historyTitle => 'МОИ КОЛЛЕКЦИИ';
+
+  @override
+  String get searchHint => 'Поиск коллекции или слова...';
+
+  @override
+  String get noResults => 'Ничего не найдено';
+
+  @override
+  String get noCollections => 'Нет коллекций';
+
+  @override
+  String get collectionsLabel => 'КОЛЛЕКЦИИ';
+
+  @override
+  String get foundWordsLabel => 'НАЙДЕННЫЕ СЛОВА';
+
+  @override
+  String get editWord => 'ИЗМЕНИТЬ СЛОВО';
+
+  @override
+  String get originalWord => 'Оригинал';
+
+  @override
+  String get translationWord => 'Перевод';
+
+  @override
+  String get cancel => 'ОТМЕНА';
+
+  @override
+  String get save => 'СОХРАНИТЬ';
+
+  @override
+  String get wordUpdated => 'Слово обновлено';
+
+  @override
+  String wordCountLabel(int count) {
+    return 'слов: $count';
+  }
+
+  @override
+  String get selectCollectionsTitle => 'ВЫБОР КОЛЛЕКЦИЙ';
+
+  @override
+  String get emptyCollectionsWarning =>
+      'Сначала создайте хотя бы одну коллекцию.';
+
+  @override
+  String get selectAll => 'Выбрать все';
+
+  @override
+  String get deselectAll => 'Снять выделение';
+
+  @override
+  String get selectToStart => 'Выберите для начала';
+
+  @override
+  String get emptySelectionWarning => 'Выбранные коллекции пусты!';
+
+  @override
+  String get quizSetupTitle => 'НАСТРОЙКИ ТЕСТА';
+
+  @override
+  String get selectQuizMode => 'ВЫБЕРИТЕ ТИП ТЕСТА';
+
+  @override
+  String get selectDirection => 'НАПРАВЛЕНИЕ ТЕСТА';
+
+  @override
+  String get start => 'НАЧАТЬ';
+
+  @override
+  String get choiceMode => 'Выбор варианта';
+
+  @override
+  String get choiceSubtitle => 'Выбор из 4 вариантов';
+
+  @override
+  String get inputMode => 'Письменно';
+
+  @override
+  String get inputSubtitle => 'Вводите ответ сами';
+
+  @override
+  String get flashcardMode => 'Флэш-карты';
+
+  @override
+  String get flashcardSubtitle => 'Классическое повторение';
+
+  @override
+  String get matchingMode => 'Сопоставление';
+
+  @override
+  String get matchingSubtitle => 'Найдите пары слов';
+
+  @override
+  String get originalToTranslation => 'Оригинал -> Перевод';
+
+  @override
+  String get translationToOriginal => 'Перевод -> Оригинал';
+
+  @override
+  String get randomDirection => 'Смешанный (Рандом)';
+
+  @override
+  String get originalToTranslationSubtitle =>
+      'Например: Английский -> Узбекский';
+
+  @override
+  String get translationToOriginalSubtitle =>
+      'Например: Узбекский -> Английский';
+
+  @override
+  String get randomDirectionSubtitle => 'В случайном порядке';
+
+  @override
+  String correctAnswerLabel(String answer) {
+    return 'Правильный ответ: $answer';
+  }
+
+  @override
+  String get typeTranslationHint => 'Введите перевод...';
+
+  @override
+  String get summaryTitle => 'РЕЗУЛЬТАТЫ';
+
+  @override
+  String scoreLabel(int score) {
+    return 'ВАШ СЧЕТ: $score';
+  }
+
+  @override
+  String correctCountLabel(Object count) {
+    return 'Верно: $count';
+  }
+
+  @override
+  String incorrectCountLabel(Object count) {
+    return 'Неверно: $count';
+  }
+
+  @override
+  String get finish => 'ЗАВЕРШИТЬ';
+
+  @override
+  String get tryAgain => 'ПОВТОРИТЬ';
+
+  @override
+  String learnedWordsCount(Object count) {
+    return 'Вы выучили $count слов в этой сессии!';
+  }
+
+  @override
+  String get flashcardLabel => 'ФЛЭШ-КАРТА';
+
+  @override
+  String get knowWord => 'ЗНАЮ';
+
+  @override
+  String get dontKnowWord => 'НЕ ЗНАЮ';
+
+  @override
+  String get matchingGameTitle => 'ИГРА В ПАРЫ';
+
+  @override
+  String get findPairsLabel => 'НАЙДИТЕ ПАРЫ';
+
+  @override
+  String stageLabel(int count) {
+    return 'Этап $count';
+  }
+
+  @override
+  String get gameOverTitle => 'ИГРА ЗАКОНЧЕНА!';
+
+  @override
+  String get createSetTitle => 'НОВАЯ КОЛЛЕКЦИЯ';
+
+  @override
+  String get collectionNameLabel => 'Название коллекции';
+
+  @override
+  String get collectionNameHint => 'Напр: Путешествия, Семья...';
+
+  @override
+  String get nameRequiredError => 'Введите название';
+
+  @override
+  String get languageLabel => 'Изучаемый язык';
+
+  @override
+  String get englishLang => 'Английский';
+
+  @override
+  String get arabicLang => 'Арабский';
+
+  @override
+  String get russianLang => 'Русский';
+
+  @override
+  String get uzbekLang => 'Узбекский (без озвучки)';
+
+  @override
+  String get wordPlaceholder => 'Слово';
+
+  @override
+  String get translationPlaceholder => 'Перевод';
+
+  @override
+  String get addRowButton => 'ДОБАВИТЬ СТРОКУ';
+
+  @override
+  String get atLeastOneWordWarning => 'Введите хотя бы одно слово';
+
+  @override
+  String get setNotFound => 'Коллекция не найдена.';
+
+  @override
+  String get deleteSetTitle => 'УДАЛИТЬ КОЛЛЕКЦИЮ';
+
+  @override
+  String deleteSetConfirmation(String title) {
+    return 'Вы уверены, что хотите удалить \"$title\"?';
+  }
+
+  @override
+  String get delete => 'УДАЛИТЬ';
+
+  @override
+  String get addWord => 'ДОБАВИТЬ СЛОВО';
+
+  @override
+  String get emptySetWarning => 'Эта коллекция пуста.';
+
+  @override
+  String wordsFoundCount(int count) {
+    return 'Доступно слов: $count';
+  }
+
+  @override
+  String get masteryExplanation =>
+      'Слово считается выученным после 1 правильного ответа';
+
+  @override
+  String get progressLabel => 'ПРОГРЕСС';
+
+  @override
+  String get selectSetsTitle => 'ВЫБОР КОЛЛЕКЦИЙ';
+
+  @override
+  String get selectAtLeastOneSet => 'Выберите хотя бы одну коллекцию.';
+
+  @override
+  String get exportSuccess => 'Экспорт успешно завершен!';
+
+  @override
+  String exportError(String error) {
+    return 'Ошибка экспорта: $error';
+  }
+
+  @override
+  String wordsCountLabel(int count) {
+    return 'Слов: $count';
+  }
+
+  @override
+  String exportAction(Object count) {
+    return 'ЭКСПОРТИРОВАТЬ ($count)';
+  }
+
+  @override
+  String get onboardingWelcome => 'ДОБРО ПОЖАЛОВАТЬ В NAYZA VOCAB';
+
+  @override
+  String get onboardingPage1Title => 'Совершенствуйте Свой Словарный Запас';
+
+  @override
+  String get onboardingPage1Subtitle =>
+      'Самый мощный способ изучения и запоминания новых слов с использованием научно обоснованных методов.';
+
+  @override
+  String get onboardingPage2Title => 'Флэш-карты и Игры';
+
+  @override
+  String get onboardingPage2Subtitle =>
+      'Интерактивные тесты и игры в пары, разработанные для того, чтобы сделать обучение увлекательным.';
+
+  @override
+  String get onboardingPage3Title => 'Отслеживайте Свой Прогресс';
+
+  @override
+  String get onboardingPage3Subtitle =>
+      'Следите за своим ростом с течением времени и сосредоточьтесь на трудных словах.';
+
+  @override
+  String get onboardingGetStarted => 'НАЧАТЬ';
+}

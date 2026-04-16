@@ -33,16 +33,40 @@ class VocabSetModel extends HiveObject {
     };
   }
 
+  VocabSetModel copyWith({
+    String? id,
+    String? title,
+    List<WordModel>? words,
+    DateTime? createdAt,
+  }) {
+    return VocabSetModel(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      words: words ?? this.words,
+      createdAt: createdAt ?? this.createdAt,
+    );
+  }
+
   factory VocabSetModel.fromMap(Map<String, dynamic> map) {
     return VocabSetModel(
-      id: map['id'] ?? '',
-      title: map['title'] ?? 'Untitled Set',
+      id: map['id'] as String? ?? '',
+      title: map['title'] as String? ?? 'Untitled Set',
       createdAt: map['createdAt'] != null 
-          ? DateTime.parse(map['createdAt']) 
+          ? DateTime.parse(map['createdAt'] as String) 
           : DateTime.now(),
       words: (map['words'] as List? ?? [])
-          .map((w) => WordModel.fromMap(w as Map<String, dynamic>))
+          .map((dynamic w) => WordModel.fromMap(w as Map<String, dynamic>))
           .toList(),
     );
+  }
+
+  /// Senior-level logic: Number of words considered "Mastered" (Learned)
+  int get learnedWordsCount => words.where((w) => w.isLearned).length;
+
+  /// Progress: 100% when all words have been answered correctly at least once.
+  double get progressPercentage {
+    if (words.isEmpty) return 0.0;
+    final learnedCount = words.where((w) => w.isLearned).length;
+    return (learnedCount / words.length) * 100;
   }
 }

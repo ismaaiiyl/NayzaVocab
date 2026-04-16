@@ -5,6 +5,9 @@ import 'package:nayza_vocab/features/vocabulary/presentation/provider/vocab_set_
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+import 'package:nayza_vocab/core/theme/app_theme.dart';
+import 'package:go_router/go_router.dart';
+import 'package:nayza_vocab/l10n/generated/app_localizations.dart';
 
 class CreateSetScreen extends StatefulWidget {
   const CreateSetScreen({super.key});
@@ -77,8 +80,9 @@ class _CreateSetScreenState extends State<CreateSetScreen> {
       }).toList();
 
       if (words.isEmpty) {
+        final l10n = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Kamida bitta so\'z kiriting')),
+          SnackBar(content: Text(l10n.atLeastOneWordWarning)),
         );
         return;
       }
@@ -89,7 +93,7 @@ class _CreateSetScreenState extends State<CreateSetScreen> {
           );
 
       if (mounted) {
-        Navigator.pop(context);
+        context.pop();
       }
     }
   }
@@ -107,9 +111,11 @@ class _CreateSetScreenState extends State<CreateSetScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('YANGI TO\'PLAM'),
+        title: Text(l10n.createSetTitle),
         actions: [
           IconButton(
             onPressed: _saveSet,
@@ -126,25 +132,25 @@ class _CreateSetScreenState extends State<CreateSetScreen> {
               child: NayzaTextField(
                 controller: _titleController,
                 focusNode: _titleFocusNode,
-                label: 'To\'plam nomi',
-                hint: 'Masalan: Oila, Sayohat...',
-                validator: (v) => v!.isEmpty ? 'Nom kiriting' : null,
+                label: l10n.collectionNameLabel,
+                hint: l10n.collectionNameHint,
+                validator: (v) => v!.isEmpty ? l10n.nameRequiredError : null,
               ),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: DropdownButtonFormField<String>(
                 initialValue: _selectedLangCode,
-                decoration: const InputDecoration(
-                  labelText: 'O\'rganilayotgan til',
-                  prefixIcon: Icon(LucideIcons.languages, size: 20, color: Color(0xFFFFD700)),
+                decoration: InputDecoration(
+                  labelText: l10n.languageLabel,
+                  prefixIcon: const Icon(LucideIcons.languages, size: 20, color: Color(0xFFFFD700)),
                 ),
-                dropdownColor: const Color(0xFF112240),
-                items: const [
-                  DropdownMenuItem(value: 'en-US', child: Text('Ingliz tili')),
-                  DropdownMenuItem(value: 'ar-SA', child: Text('Arab tili')),
-                  DropdownMenuItem(value: 'ru-RU', child: Text('Rus tili')),
-                  DropdownMenuItem(value: 'uz-UZ', child: Text('O\'zbek tili (TTS o\'chiq)')),
+                dropdownColor: AppTheme.surfaceNavy,
+                items: [
+                  DropdownMenuItem(value: 'en-US', child: Text(l10n.englishLang)),
+                  DropdownMenuItem(value: 'ar-SA', child: Text(l10n.arabicLang)),
+                  DropdownMenuItem(value: 'ru-RU', child: Text(l10n.russianLang)),
+                  DropdownMenuItem(value: 'uz-UZ', child: Text(l10n.uzbekLang)),
                 ],
                 onChanged: (v) => setState(() => _selectedLangCode = v!),
               ),
@@ -164,7 +170,7 @@ class _CreateSetScreenState extends State<CreateSetScreen> {
                           child: NayzaTextField(
                             controller: _rowControllers[index].original,
                             focusNode: _rowControllers[index].focusNode,
-                            label: 'So\'z',
+                            label: l10n.wordPlaceholder,
                             hint: 'Word',
                           ),
                         ),
@@ -172,7 +178,7 @@ class _CreateSetScreenState extends State<CreateSetScreen> {
                         Expanded(
                           child: NayzaTextField(
                             controller: _rowControllers[index].translation,
-                            label: 'Tarjima',
+                            label: l10n.translationPlaceholder,
                             hint: 'Translation',
                           ),
                         ),
@@ -189,7 +195,7 @@ class _CreateSetScreenState extends State<CreateSetScreen> {
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: NayzaButton(
-                text: 'QATOR QO\'SHISH',
+                text: l10n.addRowButton,
                 icon: LucideIcons.plus,
                 onPressed: _addRow,
                 isFullWidth: false,

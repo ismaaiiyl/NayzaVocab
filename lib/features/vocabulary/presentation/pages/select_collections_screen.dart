@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:nayza_vocab/features/vocabulary/presentation/pages/quiz_screen.dart';
-import 'package:nayza_vocab/features/vocabulary/presentation/provider/vocab_set_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:go_router/go_router.dart';
+import 'package:nayza_vocab/l10n/generated/app_localizations.dart';
+
+import 'package:nayza_vocab/features/vocabulary/presentation/provider/vocab_set_provider.dart';
+import 'package:nayza_vocab/features/vocabulary/presentation/provider/quiz_provider.dart';
+import 'package:nayza_vocab/features/vocabulary/presentation/pages/quiz_screen.dart';
 import 'package:nayza_vocab/core/theme/app_theme.dart';
 import 'package:nayza_vocab/core/widgets/nayza_widgets.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
 class SelectCollectionsScreen extends StatefulWidget {
-  const SelectCollectionsScreen({super.key});
+  final QuizMode? initialMode;
+  const SelectCollectionsScreen({super.key, this.initialMode});
 
   @override
   State<SelectCollectionsScreen> createState() => _SelectCollectionsScreenState();
@@ -26,104 +31,6 @@ class _SelectCollectionsScreenState extends State<SelectCollectionsScreen> {
     });
   }
 
-  void _showModeSelectionSheet(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: const Color(0xFF112240),
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-      ),
-      builder: (context) => Padding(
-        padding: const EdgeInsets.all(32.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'TEST TURINI TANLANG',
-              style: TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-                color: AppTheme.electricGold,
-                letterSpacing: 1.5,
-              ),
-            ),
-            const SizedBox(height: 8),
-            const Text('O\'zingizga qulay usulni tanlang', style: TextStyle(color: AppTheme.textDim)),
-            const SizedBox(height: 24),
-            _buildModeCard(
-              context,
-              icon: LucideIcons.layoutGrid,
-              title: 'Variantli Test',
-              subtitle: 'To\'g\'ri javobni 2-4 ta variant ichidan tanlang',
-              mode: QuizMode.choice,
-            ),
-            const SizedBox(height: 12),
-            _buildModeCard(
-              context,
-              icon: LucideIcons.pencil,
-              title: 'Yozma Javob',
-              subtitle: 'Tarjimani o\'zingiz yozib kiriting',
-              mode: QuizMode.input,
-            ),
-            const SizedBox(height: 16),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildModeCard(BuildContext context, {
-    required IconData icon,
-    required String title,
-    required String subtitle,
-    required QuizMode mode,
-  }) {
-    return InkWell(
-      borderRadius: BorderRadius.circular(16),
-      onTap: () {
-        Navigator.pop(context); // Close bottom sheet
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => QuizScreen(quizMode: mode),
-          ),
-        );
-      },
-      child: Container(
-        padding: const EdgeInsets.all(20),
-        decoration: BoxDecoration(
-          color: const Color(0xFF1E2D4A),
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: const Color(0xFF233554), width: 1.5),
-        ),
-        child: Row(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: AppTheme.electricGold.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Icon(icon, color: AppTheme.electricGold, size: 28),
-            ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(title, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppTheme.textMain)),
-                  const SizedBox(height: 4),
-                  Text(subtitle, style: const TextStyle(fontSize: 13, color: AppTheme.textDim)),
-                ],
-              ),
-            ),
-            const Icon(LucideIcons.chevronRight, color: AppTheme.textDim),
-          ],
-        ),
-      ),
-    );
-  }
 
   void _toggleSelectAll(bool selectAll, List<String> allSetIds) {
     setState(() {
@@ -137,21 +44,22 @@ class _SelectCollectionsScreenState extends State<SelectCollectionsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final vocabSetProvider = Provider.of<VocabSetProvider>(context);
+    final vocabSetProvider = context.watch<VocabSetProvider>();
+    final l10n = AppLocalizations.of(context)!;
     final allSets = vocabSetProvider.vocabSets;
     final allSetIds = allSets.map((set) => set.id).toList();
     final allSelected = _selectedSetIds.length == allSets.length && allSets.isNotEmpty;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('TO\'PLAMLARNI TANLASH'),
+        title: Text(l10n.selectCollectionsTitle),
       ),
       body: allSets.isEmpty
-          ? const Center(
+          ? Center(
               child: Text(
-                'Avval kamida bitta to\'plam yaratishingiz kerak.',
+                l10n.emptyCollectionsWarning,
                 textAlign: TextAlign.center,
-                style: TextStyle(color: AppTheme.textDim),
+                style: const TextStyle(color: AppTheme.textDim),
               ),
             )
           : Column(
@@ -161,7 +69,7 @@ class _SelectCollectionsScreenState extends State<SelectCollectionsScreen> {
                   child: Row(
                     children: [
                       Text(
-                        allSelected ? 'Barchasini bekor qilish' : 'Barchasini tanlash',
+                        allSelected ? l10n.deselectAll : l10n.selectAll,
                         style: const TextStyle(color: AppTheme.textDim, fontWeight: FontWeight.bold),
                       ),
                       const Spacer(),
@@ -174,7 +82,7 @@ class _SelectCollectionsScreenState extends State<SelectCollectionsScreen> {
                     ],
                   ),
                 ),
-                const Divider(color: Color(0xFF233554)),
+                const Divider(color: AppTheme.borderNavy),
                 Expanded(
                   child: ListView.builder(
                     padding: const EdgeInsets.all(16),
@@ -186,11 +94,11 @@ class _SelectCollectionsScreenState extends State<SelectCollectionsScreen> {
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 8.0),
                         child: Card(
-                          color: isSelected ? const Color(0xFF1E2D4A) : AppTheme.surfaceNavy,
+                          color: isSelected ? AppTheme.cardDark : AppTheme.surfaceNavy,
                           child: ListTile(
                             onTap: () => _toggleSetSelection(set.id),
                             title: Text(set.title, style: TextStyle(color: isSelected ? AppTheme.electricGold : AppTheme.textMain, fontWeight: FontWeight.bold)),
-                            subtitle: Text('${set.words.length} so\'z', style: const TextStyle(color: AppTheme.textDim)),
+                            subtitle: Text(l10n.wordCountLabel(set.words.length), style: const TextStyle(color: AppTheme.textDim)),
                             trailing: Checkbox(
                               value: isSelected,
                               onChanged: (value) => _toggleSetSelection(set.id),
@@ -209,20 +117,29 @@ class _SelectCollectionsScreenState extends State<SelectCollectionsScreen> {
                     child: Hero(
                       tag: 'start-training-btn',
                       child: NayzaButton(
-                        text: 'TESTNI BOSHLASH',
+                        text: l10n.startTest,
                         icon: LucideIcons.play,
                         onPressed: () {
-                          final provider = Provider.of<VocabSetProvider>(context, listen: false);
-                          provider.prepareTrainingSession(_selectedSetIds);
+                          final vocabSets = vocabSetProvider.vocabSets
+                              .where((s) => _selectedSetIds.contains(s.id))
+                              .toList();
+                          
+                          final allWords = vocabSets.expand((s) => s.words).toList();
 
-                          if (provider.trainingList.isEmpty) {
+                          if (allWords.isEmpty) {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Tanlangan to\'plamlar bo\'sh.')),
+                              SnackBar(content: Text(l10n.emptySelectionWarning)),
                             );
                             return;
                           }
                           
-                          _showModeSelectionSheet(context);
+                          context.read<QuizProvider>().prepareSession(allWords);
+
+                          if (widget.initialMode == QuizMode.matching) {
+                            context.pushReplacementNamed('matching-game');
+                          } else {
+                            context.pushNamed('quiz-setup');
+                          }
                         },
                       ),
                     ),

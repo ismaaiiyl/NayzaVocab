@@ -12,14 +12,14 @@ class MobileExportHelper implements ExportHelper {
     await file.writeAsString(jsonString);
 
     try {
-      // Use the instance method to avoid deprecation warnings in newer share_plus versions
+      // ignore: deprecated_member_use
       await Share.shareXFiles(
         [XFile(file.path)],
         subject: 'Nayza Vocab Backup',
         text: 'Mening Nayza Vocab to\'plamlarim zaxira nusxasi.',
       );
     } catch (e) {
-      debugPrint("🔊 [MobileExport] Share Error: $e");
+      debugPrint('🔊 [MobileExport] Share Error: $e');
     }
   }
 }

@@ -1,4 +1,4 @@
-package com.example.nayza_vocab
+package uz.nayza.vocab
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -1,50 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:nayza_vocab/core/widgets/nayza_widgets.dart';
-import 'package:nayza_vocab/features/vocabulary/presentation/pages/history_screen.dart';
-import 'package:nayza_vocab/features/vocabulary/presentation/pages/select_collections_screen.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:nayza_vocab/core/theme/app_theme.dart';
 import 'package:nayza_vocab/core/utils/audio_helper.dart';
 import 'package:provider/provider.dart';
+import 'package:go_router/go_router.dart';
+import 'package:nayza_vocab/l10n/generated/app_localizations.dart';
 import 'package:nayza_vocab/features/vocabulary/presentation/provider/vocab_set_provider.dart';
-import 'package:nayza_vocab/features/settings/presentation/pages/settings_page.dart';
+import 'package:nayza_vocab/features/settings/presentation/provider/settings_provider.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final vocabSetProvider = Provider.of<VocabSetProvider>(context);
+    final vocabSetProvider = context.watch<VocabSetProvider>();
+    final settings = context.watch<SettingsProvider>();
+    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('NAYZA VOCAB'.toUpperCase()),
+        title: Text(l10n.appTitle.toUpperCase()),
         leading: IconButton(
           icon: const Icon(LucideIcons.settings),
-          onPressed: () => Navigator.push(
-            context,
-            MaterialPageRoute(builder: (_) => const SettingsPage()),
-          ),
+          onPressed: () => context.pushNamed('settings'),
         ),
         actions: [
           IconButton(
             icon: Icon(
-              vocabSetProvider.isMuted ? LucideIcons.volumeX : LucideIcons.volume2,
+              settings.isMuted ? LucideIcons.volumeX : LucideIcons.volume2,
               color: AppTheme.electricGold,
             ),
-            tooltip: vocabSetProvider.isMuted ? 'Ovozni yoqish' : 'Ovozni o\'chirish',
+            tooltip: settings.isMuted ? l10n.muteOn : l10n.muteOff,
             onPressed: () {
-              vocabSetProvider.toggleMute();
-              AudioHelper().isMuted = vocabSetProvider.isMuted;
-              AudioHelper().playToggle(vocabSetProvider.isMuted);
+              settings.toggleMute();
+              AudioHelper().isMuted = settings.isMuted;
             },
           ),
           IconButton(
             icon: const Icon(LucideIcons.history),
-            onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => const HistoryScreen()),
-            ),
+            onPressed: () => context.pushNamed('history'),
           ),
         ],
       ),
@@ -54,42 +49,127 @@ class HomePage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(LucideIcons.sword, size: 100, color: AppTheme.electricGold),
+            const Icon(
+              LucideIcons.sword,
+              size: 100,
+              color: AppTheme.electricGold,
+            ),
             const SizedBox(height: 32),
             Text(
-              'O\'Z BILIMINGNI SINAB KO\'R!',
+              l10n.homeTitle,
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.displayMedium,
             ),
             const SizedBox(height: 16),
-            const Text(
-              'To\'plamlaringizni tanlang va testni boshlang.',
+            Text(
+              l10n.homeSubtitle,
               textAlign: TextAlign.center,
-              style: TextStyle(color: AppTheme.textDim, fontSize: 16),
+              style: const TextStyle(color: AppTheme.textDim, fontSize: 16),
             ),
+            const SizedBox(height: 24),
+            _buildDifficultWordsCard(context, vocabSetProvider),
             const SizedBox(height: 48),
             Hero(
               tag: 'start-training-btn',
               child: NayzaButton(
-                text: 'TESTNI BOSHLASH',
+                text: l10n.startTest,
                 icon: LucideIcons.play,
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (_) => const SelectCollectionsScreen()),
-                  );
-                },
+                onPressed: () => context.pushNamed('select-collections'),
+              ),
+            ),
+            const SizedBox(height: 12),
+            NayzaButton(
+              text: l10n.matchingGame,
+              icon: LucideIcons.layoutGrid,
+              onPressed: () => context.pushNamed(
+                'select-collections',
+                queryParameters: {'mode': 'matching'},
               ),
             ),
             const SizedBox(height: 16),
             TextButton.icon(
-              onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => const HistoryScreen()),
-              ),
+              onPressed: () => context.pushNamed('history'),
               icon: const Icon(LucideIcons.list, color: AppTheme.electricGold),
-              label: const Text('TO\'PLAMLARNI BOSHQARISH', style: TextStyle(color: AppTheme.electricGold)),
+              label: Text(
+                l10n.manageCollections,
+                style: const TextStyle(color: AppTheme.electricGold),
+              ),
             ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDifficultWordsCard(
+    BuildContext context,
+    VocabSetProvider provider,
+  ) {
+    final difficultWords = provider.getDifficultWords();
+    if (difficultWords.isEmpty) return const SizedBox.shrink();
+
+    final l10n = AppLocalizations.of(context)!;
+
+    return GestureDetector(
+      onTap: () => context.pushNamed('difficult-words'),
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.all(24),
+        decoration: BoxDecoration(
+          gradient: const LinearGradient(
+            colors: [Color(0xFFFF5F6D), Color(0xFFFFC371)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(24),
+          boxShadow: [
+            BoxShadow(
+              color: const Color(0xFFFF5F6D).withValues(alpha: 0.3),
+              blurRadius: 20,
+              offset: const Offset(0, 10),
+            ),
+          ],
+        ),
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Colors.white.withValues(alpha: 0.2),
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(
+                LucideIcons.flame,
+                color: Colors.white,
+                size: 28,
+              ),
+            ),
+            const SizedBox(width: 20),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    l10n.difficultWordsTitle,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 1.1,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    l10n.difficultWordsSubtitle(difficultWords.length),
+                    style: TextStyle(
+                      color: Colors.white.withValues(alpha: 0.9),
+                      fontSize: 13,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const Icon(LucideIcons.chevronRight, color: Colors.white, size: 24),
           ],
         ),
       ),

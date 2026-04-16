@@ -1,0 +1,206 @@
+{
+  "appTitle": "Nayza Vocab",
+  "homeTitle": "CHECK YOUR KNOWLEDGE!",
+  "homeSubtitle": "Choose your collections and start the test.",
+  "startTest": "START TEST",
+  "matchingGame": "MATCHING GAME",
+  "manageCollections": "MANAGE COLLECTIONS",
+  "settings": "Settings",
+  "history": "History",
+  "collections": "Collections",
+  "difficultWordsTitle": "DIFFICULT WORDS",
+  "difficultWordsSubtitle": "You have {count} failed words",
+  "difficultSetTitle": "Difficult Words #{number}",
+  "@difficultSetTitle": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "removeFromDifficult": "Remove from difficult words list",
+  "noDifficultWords": "No difficult words yet. Keep practicing!",
+  "myCollectionsHeader": "MY COLLECTIONS",
+  "difficultCollectionsHeader": "DIFFICULT SETS",
+  "@difficultWordsSubtitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "muteOn": "Unmute",
+  "muteOff": "Mute",
+  "dataManagement": "DATA MANAGEMENT",
+  "export": "Export (Backup)",
+  "exportSubtitle": "Select and backup collections",
+  "import": "Import (Restore)",
+  "importSubtitle": "Load collections from JSON file",
+  "notifications": "NOTIFICATIONS",
+  "dailyReminder": "Daily Reminder",
+  "reminderSubtitle": "Remind daily at {time}",
+  "@reminderSubtitle": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "reminderDefault": "Remind difficult words daily",
+  "reminderSetSuccess": "Daily reminder set for {time}",
+  "appInfo": "APP INFO",
+  "appVersion": "Nayza Vocab v1.0.0\nCreated for Nayzadorlar 🔱",
+  "language": "Language",
+  "uzbek": "Uzbek",
+  "russian": "Russian",
+  "english": "English",
+  "importSuccess": "Successfully imported {count} collections",
+  "importError": "Import error: {error}",
+  "historyTitle": "MY COLLECTIONS",
+  "searchHint": "Search collection or word...",
+  "noResults": "No results found",
+  "noCollections": "No collections yet",
+  "collectionsLabel": "COLLECTIONS",
+  "foundWordsLabel": "FOUND WORDS",
+  "editWord": "EDIT WORD",
+  "originalWord": "Original word",
+  "translationWord": "Translation",
+  "cancel": "CANCEL",
+  "save": "SAVE",
+  "wordUpdated": "Word updated",
+  "wordCountLabel": "{count} words",
+  "@wordCountLabel": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "selectCollectionsTitle": "SELECT COLLECTIONS",
+  "emptyCollectionsWarning": "You must create at least one collection first.",
+  "selectAll": "Select All",
+  "deselectAll": "Deselect All",
+  "selectToStart": "Select to start",
+  "emptySelectionWarning": "Selected collections are empty!",
+  "quizSetupTitle": "QUIZ SETUP",
+  "selectQuizMode": "SELECT QUIZ MODE",
+  "selectDirection": "QUIZ DIRECTION",
+  "start": "START",
+  "choiceMode": "Multiple Choice",
+  "choiceSubtitle": "Select from 4 options",
+  "inputMode": "Writing",
+  "inputSubtitle": "Type the answer yourself",
+  "flashcardMode": "Flashcard",
+  "flashcardSubtitle": "Classic repetition",
+  "matchingMode": "Matching",
+  "matchingSubtitle": "Find the pairs",
+  "originalToTranslation": "Original -> Translation",
+  "translationToOriginal": "Translation -> Original",
+  "randomDirection": "Mixed (Random)",
+  "originalToTranslationSubtitle": "Example: English -> Uzbek",
+  "translationToOriginalSubtitle": "Example: Uzbek -> English",
+  "randomDirectionSubtitle": "Randomly alternate",
+  "correctAnswerLabel": "Correct answer: {answer}",
+  "@correctAnswerLabel": {
+    "placeholders": {
+      "answer": {
+        "type": "String"
+      }
+    }
+  },
+  "typeTranslationHint": "Type translation...",
+  "summaryTitle": "QUIZ SUMMARY",
+  "scoreLabel": "YOUR SCORE: {score}",
+  "@scoreLabel": {
+    "placeholders": {
+      "score": {
+        "type": "int"
+      }
+    }
+  },
+  "correctCountLabel": "Correct: {count}",
+  "incorrectCountLabel": "Incorrect: {count}",
+  "finish": "FINISH",
+  "tryAgain": "TRY AGAIN",
+  "learnedWordsCount": "You've mastered {count} words in this session!",
+  "flashcardLabel": "FLASHCARD",
+  "knowWord": "I KNOW",
+  "dontKnowWord": "I DON'T KNOW",
+  "matchingGameTitle": "MATCHING GAME",
+  "findPairsLabel": "FIND THE PAIRS",
+  "stageLabel": "Stage {count}",
+  "@stageLabel": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "gameOverTitle": "GAME OVER!",
+  "createSetTitle": "NEW COLLECTION",
+  "collectionNameLabel": "Collection Name",
+  "collectionNameHint": "e.g. Travel, Family...",
+  "nameRequiredError": "Please enter a name",
+  "languageLabel": "Learning Language",
+  "englishLang": "English",
+  "arabicLang": "Arabic",
+  "russianLang": "Russian",
+  "uzbekLang": "Uzbek (TTS off)",
+  "wordPlaceholder": "Word",
+  "translationPlaceholder": "Translation",
+  "addRowButton": "ADD ROW",
+  "atLeastOneWordWarning": "Enter at least one word",
+  "setNotFound": "Collection not found.",
+  "deleteSetTitle": "DELETE COLLECTION",
+  "deleteSetConfirmation": "Are you sure you want to delete \"{title}\"?",
+  "@deleteSetConfirmation": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "cancel": "CANCEL",
+  "delete": "DELETE",
+  "addWord": "ADD WORD",
+  "editWord": "EDIT WORD",
+  "emptySetWarning": "This collection is empty.",
+  "wordsFoundCount": "{count} words available",
+  "@wordsFoundCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "masteryExplanation": "A word is considered mastered after 1 correct answer",
+  "progressLabel": "PROGRESS",
+  "selectSetsTitle": "SELECT COLLECTIONS",
+  "selectAtLeastOneSet": "Please select at least one collection.",
+  "exportSuccess": "Export completed successfully!",
+  "exportError": "Export error: {error}",
+  "@exportError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "wordsCountLabel": "{count} words",
+  "@wordsCountLabel": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "exportAction": "EXPORT ({count})",
+  "onboardingWelcome": "WELCOME TO NAYZA VOCAB",
+  "onboardingPage1Title": "Master Your Vocabulary",
+  "onboardingPage1Subtitle": "The most powerful way to learn and remember new words with science-backed methods.",
+  "onboardingPage2Title": "Flashcards & Games",
+  "onboardingPage2Subtitle": "Interactive quizzes and matching games designed to make learning addictive.",
+  "onboardingPage3Title": "Track Your Progress",
+  "onboardingPage3Subtitle": "See your improvements over time and focus on difficult words.",
+  "onboardingGetStarted": "GET STARTED"
+}

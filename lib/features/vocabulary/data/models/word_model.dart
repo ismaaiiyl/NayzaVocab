@@ -17,35 +17,59 @@ class WordModel extends HiveObject {
   final String? langCode;
 
   @HiveField(4)
-  final bool isLearned;
+  final bool isDifficult;
 
   @HiveField(5)
   final int wrongAttempts;
+
+  @HiveField(6)
+  final int correctAnswersCount;
+
+  @HiveField(7)
+  final DateTime? lastTestedAt;
+
+  /// [HiveField 8] — Parent set ID for O(1) lookup.
+  /// Enables markCorrect/markIncorrect to find the parent set directly
+  /// without scanning all sets (eliminates O(N×M) loop).
+  @HiveField(8)
+  final String setId;
 
   WordModel({
     required this.id,
     required this.original,
     required this.translation,
     this.langCode = 'en',
-    this.isLearned = false,
+    this.isDifficult = false,
     this.wrongAttempts = 0,
+    this.correctAnswersCount = 0,
+    this.lastTestedAt,
+    this.setId = '',
   });
+
+  /// A word is considered learned once correctly answered at least once.
+  bool get isLearned => correctAnswersCount >= 1;
 
   WordModel copyWith({
     String? id,
     String? original,
     String? translation,
     String? langCode,
-    bool? isLearned,
+    bool? isDifficult,
     int? wrongAttempts,
+    int? correctAnswersCount,
+    DateTime? lastTestedAt,
+    String? setId,
   }) {
     return WordModel(
       id: id ?? this.id,
       original: original ?? this.original,
       translation: translation ?? this.translation,
       langCode: langCode ?? this.langCode,
-      isLearned: isLearned ?? this.isLearned,
+      isDifficult: isDifficult ?? this.isDifficult,
       wrongAttempts: wrongAttempts ?? this.wrongAttempts,
+      correctAnswersCount: correctAnswersCount ?? this.correctAnswersCount,
+      lastTestedAt: lastTestedAt ?? this.lastTestedAt,
+      setId: setId ?? this.setId,
     );
   }
 
@@ -55,19 +79,25 @@ class WordModel extends HiveObject {
       'original': original,
       'translation': translation,
       'langCode': langCode,
-      'isLearned': isLearned,
+      'isDifficult': isDifficult,
       'wrongAttempts': wrongAttempts,
+      'correctAnswersCount': correctAnswersCount,
+      'lastTestedAt': lastTestedAt?.toIso8601String(),
+      'setId': setId,
     };
   }
 
   factory WordModel.fromMap(Map<String, dynamic> map) {
     return WordModel(
-      id: map['id'] ?? '',
-      original: map['original'] ?? '',
-      translation: map['translation'] ?? '',
-      langCode: map['langCode'] ?? 'en',
-      isLearned: map['isLearned'] ?? false,
-      wrongAttempts: map['wrongAttempts'] ?? 0,
+      id: map['id'] as String? ?? '',
+      original: map['original'] as String? ?? '',
+      translation: map['translation'] as String? ?? '',
+      langCode: map['langCode'] as String? ?? 'en',
+      isDifficult: map['isDifficult'] as bool? ?? false,
+      wrongAttempts: map['wrongAttempts'] as int? ?? 0,
+      correctAnswersCount: map['correctAnswersCount'] as int? ?? 0,
+      lastTestedAt: map['lastTestedAt'] != null ? DateTime.parse(map['lastTestedAt'] as String) : null,
+      setId: map['setId'] as String? ?? '',
     );
   }
 }

@@ -6,6 +6,9 @@ import 'package:nayza_vocab/features/vocabulary/data/models/word_model.dart';
 import 'package:nayza_vocab/features/vocabulary/presentation/provider/vocab_set_provider.dart';
 import 'package:nayza_vocab/features/vocabulary/presentation/widgets/add_edit_word_dialog.dart';
 import 'package:provider/provider.dart';
+import 'package:nayza_vocab/core/widgets/nayza_widgets.dart';
+import 'package:go_router/go_router.dart';
+import 'package:nayza_vocab/l10n/generated/app_localizations.dart';
 
 class SetDetailsScreen extends StatefulWidget {
   final String setId;
@@ -27,22 +30,25 @@ class _SetDetailsScreenState extends State<SetDetailsScreen> {
     );
 
     if (newWord != null) {
+      // Senior fix: NEVER mutate Hive list directly — create new immutable list
+      final updatedWords = List<WordModel>.from(set.words);
       if (wordIndex != null) {
-        set.words[wordIndex] = newWord;
+        updatedWords[wordIndex] = newWord;
       } else {
-        set.words.add(newWord);
+        updatedWords.add(newWord);
       }
-      await vocabSetProvider.updateVocabSet(set);
+      await vocabSetProvider.updateVocabSet(set.copyWith(words: updatedWords));
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Consumer<VocabSetProvider>(
       builder: (context, provider, child) {
         final set = provider.getSetById(widget.setId);
         if (set == null) {
-          return const Scaffold(body: Center(child: Text('To\'plam topilmadi.')));
+          return Scaffold(body: Center(child: Text(l10n.setNotFound)));
         }
 
         return Scaffold(
@@ -55,14 +61,14 @@ class _SetDetailsScreenState extends State<SetDetailsScreen> {
               ),
               IconButton(
                 icon: const Icon(LucideIcons.trash2, color: Colors.redAccent, size: 20),
-                onPressed: () => _showDeleteSetDialog(context, provider, set),
+                onPressed: () => _showDeleteSetDialog(context, provider, set, l10n),
               ),
             ],
           ),
           body: Column(
             children: [
-              _buildStatsHeader(set),
-              const Divider(color: Color(0xFF233554), height: 1),
+              _buildStatsHeader(set, l10n),
+              const Divider(color: AppTheme.borderNavy, height: 1),
               Expanded(
                 child: set.words.isEmpty
                     ? Center(
@@ -71,10 +77,10 @@ class _SetDetailsScreenState extends State<SetDetailsScreen> {
                           children: [
                             const Icon(LucideIcons.plusCircle, size: 48, color: AppTheme.textDim),
                             const SizedBox(height: 16),
-                            const Text('Bu to\'plam hali bo\'sh.', style: TextStyle(color: AppTheme.textDim)),
+                            Text(l10n.emptySetWarning, style: const TextStyle(color: AppTheme.textDim)),
                             TextButton(
                               onPressed: () => _showAddEditWordDialog(),
-                              child: const Text('SO\'Z QO\'SHISH', style: TextStyle(color: AppTheme.electricGold)),
+                              child: Text(l10n.addWord.toUpperCase(), style: const TextStyle(color: AppTheme.electricGold)),
                             ),
                           ],
                         ),
@@ -89,13 +95,19 @@ class _SetDetailsScreenState extends State<SetDetailsScreen> {
                             child: Card(
                               child: ListTile(
                                 onTap: () => _showAddEditWordDialog(existingWord: word, wordIndex: index),
+                                leading: _buildWordStatusIndicator(word),
                                 title: Text(word.original, style: const TextStyle(fontWeight: FontWeight.bold)),
-                                subtitle: Text(word.translation, style: const TextStyle(color: AppTheme.textDim)),
+                                subtitle: Text(
+                                  word.translation,
+                                  style: const TextStyle(color: AppTheme.textDim, fontSize: 13),
+                                ),
                                 trailing: IconButton(
                                   icon: const Icon(LucideIcons.trash2, size: 18, color: Colors.redAccent),
                                   onPressed: () async {
-                                    set.words.removeAt(index);
-                                    await provider.updateVocabSet(set);
+                                    // Senior fix: immutable removal — never mutate live Hive list
+                                    final updatedWords = List<WordModel>.from(set.words);
+                                    updatedWords.removeAt(index);
+                                    await provider.updateVocabSet(set.copyWith(words: updatedWords));
                                   },
                                 ),
                               ),
@@ -111,9 +123,8 @@ class _SetDetailsScreenState extends State<SetDetailsScreen> {
     );
   }
 
-  Widget _buildStatsHeader(VocabSetModel set) {
-    int learnedCount = set.words.where((WordModel w) => w.isLearned).length;
-    double progress = set.words.isEmpty ? 0 : learnedCount / set.words.length;
+  Widget _buildStatsHeader(VocabSetModel set, AppLocalizations l10n) {
+    final double progress = set.progressPercentage / 100;
 
     return Container(
       padding: const EdgeInsets.all(24),
@@ -125,18 +136,13 @@ class _SetDetailsScreenState extends State<SetDetailsScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '${set.words.length} ta so\'z mavjud',
-                  style: const TextStyle(color: AppTheme.textDim, fontSize: 14),
+                  l10n.wordsFoundCount(set.words.length),
+                  style: const TextStyle(color: AppTheme.textDim, fontSize: 13),
                 ),
                 const SizedBox(height: 8),
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(4),
-                  child: LinearProgressIndicator(
-                    value: progress,
-                    minHeight: 6,
-                    backgroundColor: const Color(0xFF1E2D4A),
-                    color: AppTheme.electricGold,
-                  ),
+                NayzaProgressBar(
+                  current: (progress * 100).toInt(),
+                  total: 100,
                 ),
               ],
             ),
@@ -148,7 +154,7 @@ class _SetDetailsScreenState extends State<SetDetailsScreen> {
                 '${(progress * 100).toInt()}%',
                 style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: AppTheme.electricGold),
               ),
-              const Text('PROGRES', style: TextStyle(fontSize: 10, color: AppTheme.textDim)),
+              Text(l10n.progressLabel.toUpperCase(), style: const TextStyle(fontSize: 10, color: AppTheme.textDim)),
             ],
           ),
         ],
@@ -156,29 +162,48 @@ class _SetDetailsScreenState extends State<SetDetailsScreen> {
     );
   }
 
-  void _showDeleteSetDialog(BuildContext context, VocabSetProvider provider, VocabSetModel set) {
-    showDialog(
+  void _showDeleteSetDialog(BuildContext context, VocabSetProvider provider, VocabSetModel set, AppLocalizations l10n) {
+    showDialog<void>(
       context: context,
       builder: (context) => AlertDialog(
         backgroundColor: AppTheme.surfaceNavy,
-        title: const Text('TO\'PLAMNI O\'CHIRISH', style: TextStyle(color: Colors.redAccent)),
-        content: Text('"${set.title}" to\'plamini o\'chirishga ishonchingiz komilmi?'),
+        title: Text(l10n.deleteSetTitle, style: const TextStyle(color: Colors.redAccent)),
+        content: Text(l10n.deleteSetConfirmation(set.title)),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('BEKOR QILISH', style: TextStyle(color: AppTheme.textDim)),
+            onPressed: () => context.pop(),
+            child: Text(l10n.cancel, style: const TextStyle(color: AppTheme.textDim)),
           ),
           ElevatedButton(
             onPressed: () {
               provider.deleteVocabSet(set.id);
-              Navigator.pop(context);
-              Navigator.pop(context);
+              context.pop();
+              context.pop();
             },
             style: ElevatedButton.styleFrom(backgroundColor: Colors.redAccent, foregroundColor: Colors.white),
-            child: const Text('O\'CHIRISH'),
+            child: Text(l10n.delete.toUpperCase()),
           ),
         ],
       ),
     );
+  }
+
+  Widget _buildWordStatusIndicator(WordModel word) {
+    // Priority: Learned (Green) > Errors (Red) > Untested (Grey)
+    if (word.isLearned) {
+      return Container(
+        width: 12, height: 12,
+        decoration: const BoxDecoration(color: Colors.greenAccent, shape: BoxShape.circle),
+      );
+    }
+    
+    if (word.wrongAttempts > 0) {
+      return Container(
+        width: 12, height: 12,
+        decoration: const BoxDecoration(color: Colors.redAccent, shape: BoxShape.circle),
+      );
+    }
+
+    return Icon(LucideIcons.circle, size: 12, color: AppTheme.textDim.withValues(alpha: 0.3));
   }
 }

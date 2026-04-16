@@ -2,52 +2,70 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:nayza_vocab/core/theme/app_theme.dart';
 import 'package:nayza_vocab/core/services/data_service.dart';
-import 'package:nayza_vocab/features/vocabulary/presentation/provider/vocab_set_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:go_router/go_router.dart';
+import 'package:nayza_vocab/l10n/generated/app_localizations.dart';
 
-import 'package:nayza_vocab/features/settings/presentation/pages/export_selection_page.dart';
+import 'package:nayza_vocab/features/vocabulary/presentation/provider/vocab_set_provider.dart';
+import 'package:nayza_vocab/features/settings/presentation/provider/settings_provider.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final settings = context.watch<SettingsProvider>();
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('SOZLAMALAR'),
+        title: Text(l10n.settings.toUpperCase()),
         centerTitle: true,
       ),
       body: ListView(
         padding: const EdgeInsets.all(16.0),
         children: [
-          _buildSettingsHeader('MA\'LUMOTLARNI BOSHQARISH'),
+          _buildSettingsHeader(l10n.dataManagement),
           const SizedBox(height: 12),
           _buildSettingsCard(
             context,
-            title: 'Export (Zaxiralash)',
-            subtitle: 'To\'plamlarni tanlab zaxira qilish',
+            title: l10n.export,
+            subtitle: l10n.exportSubtitle,
             icon: LucideIcons.download,
-            onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => const ExportSelectionPage()),
-            ),
+            onTap: () => context.pushNamed('export-selection'),
           ),
           const SizedBox(height: 16),
           _buildSettingsCard(
             context,
-            title: 'Import (Tiklash)',
-            subtitle: 'JSON fayldan to\'plamlarni yuklash',
+            title: l10n.import,
+            subtitle: l10n.importSubtitle,
             icon: LucideIcons.upload,
             onTap: () => _handleImport(context),
           ),
-          const SizedBox(height: 48),
-          _buildSettingsHeader('ILOVA HAQIDA'),
+          const SizedBox(height: 32),
+          _buildSettingsHeader(l10n.notifications),
           const SizedBox(height: 12),
-          const Center(
+          _buildSettingsCard(
+            context,
+            title: l10n.dailyReminder,
+            subtitle: settings.getReminderTimeStr() != null 
+                ? l10n.reminderSubtitle(settings.getReminderTimeStr()!) 
+                : l10n.reminderDefault,
+            icon: LucideIcons.bell,
+            onTap: () => _handleScheduleReminder(context, context.read<SettingsProvider>()),
+          ),
+          const SizedBox(height: 32),
+          _buildSettingsHeader(l10n.language.toUpperCase()),
+          const SizedBox(height: 12),
+          _buildLanguageSelector(context, settings, l10n),
+          const SizedBox(height: 48),
+          _buildSettingsHeader(l10n.appInfo),
+          const SizedBox(height: 12),
+          Center(
             child: Text(
-              'Nayza Vocab v1.0.0\nCreated for Nayzadorlar 🔱',
+              l10n.appVersion,
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: const TextStyle(
                 color: AppTheme.textDim,
                 fontSize: 14,
               ),
@@ -89,7 +107,7 @@ class SettingsPage extends StatelessWidget {
           color: AppTheme.surfaceNavy.withValues(alpha: 0.5),
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
-            color: const Color(0xFF233554),
+            color: AppTheme.borderNavy,
             width: 1,
           ),
         ),
@@ -138,8 +156,45 @@ class SettingsPage extends StatelessWidget {
     );
   }
 
+  Future<void> _handleScheduleReminder(BuildContext context, SettingsProvider provider) async {
+    final l10n = AppLocalizations.of(context)!;
+    final TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialTime: const TimeOfDay(hour: 10, minute: 0),
+      builder: (context, child) {
+        return Theme(
+          data: AppTheme.darkTheme.copyWith(
+            colorScheme: const ColorScheme.dark(
+              primary: AppTheme.electricGold,
+              onPrimary: AppTheme.surfaceNavy,
+              surface: AppTheme.surfaceNavy,
+              onSurface: AppTheme.textMain,
+            ),
+          ),
+          child: child!,
+        );
+      },
+    );
+
+    if (picked != null) {
+      if (!context.mounted) return;
+      
+      await provider.saveReminderTime(picked.hour, picked.minute);
+
+      if (!context.mounted) return;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(l10n.reminderSetSuccess(picked.format(context))),
+          backgroundColor: Colors.greenAccent.withValues(alpha: 0.8),
+        ),
+      );
+    }
+  }
+
   Future<void> _handleImport(BuildContext context) async {
     final messenger = ScaffoldMessenger.of(context);
+    final l10n = AppLocalizations.of(context)!;
     try {
       final importedSets = await DataService.importSets();
       if (importedSets.isEmpty) return;
@@ -151,13 +206,42 @@ class SettingsPage extends StatelessWidget {
       }
       
       messenger.showSnackBar(
-        SnackBar(content: Text('${importedSets.length} ta to\'plam muvaffaqiyatli import qilindi')),
+        SnackBar(content: Text(l10n.importSuccess(importedSets.length))),
       );
     } catch (e) {
       if (!context.mounted) return;
       messenger.showSnackBar(
-        SnackBar(content: Text('Import xatoligi: $e')),
+        SnackBar(content: Text(l10n.importError(e.toString()))),
       );
     }
+  }
+
+  Widget _buildLanguageSelector(BuildContext context, SettingsProvider settings, AppLocalizations l10n) {
+    return Container(
+      decoration: BoxDecoration(
+        color: AppTheme.surfaceNavy.withValues(alpha: 0.5),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: AppTheme.borderNavy),
+      ),
+      child: Column(
+        children: [
+          _buildLanguageOption(context, settings, 'uz', l10n.uzbek, LucideIcons.languages),
+          const Divider(color: AppTheme.borderNavy, height: 1),
+          _buildLanguageOption(context, settings, 'ru', l10n.russian, LucideIcons.languages),
+          const Divider(color: AppTheme.borderNavy, height: 1),
+          _buildLanguageOption(context, settings, 'en', l10n.english, LucideIcons.languages),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildLanguageOption(BuildContext context, SettingsProvider settings, String code, String label, IconData icon) {
+    final isSelected = settings.languageCode == code;
+    return ListTile(
+      onTap: () => settings.setLanguage(code),
+      leading: Icon(icon, color: isSelected ? AppTheme.electricGold : AppTheme.textDim, size: 20),
+      title: Text(label, style: TextStyle(color: isSelected ? AppTheme.electricGold : AppTheme.textMain, fontWeight: isSelected ? FontWeight.bold : FontWeight.normal)),
+      trailing: isSelected ? const Icon(LucideIcons.check, color: AppTheme.electricGold, size: 18) : null,
+    );
   }
 }

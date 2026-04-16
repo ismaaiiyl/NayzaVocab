@@ -1,5 +1,5 @@
 import 'dart:convert';
-// ignore: avoid_web_libraries_in_flutter
+// ignore: avoid_web_libraries_in_flutter, deprecated_member_use
 import 'dart:html' as html;
 import 'export_helper.dart';
 
@@ -10,7 +10,7 @@ class WebExportHelper implements ExportHelper {
     final blob = html.Blob([bytes]);
     final url = html.Url.createObjectUrlFromBlob(blob);
     html.AnchorElement(href: url)
-      ..setAttribute("download", fileName)
+      ..setAttribute('download', fileName)
       ..click();
     html.Url.revokeObjectUrl(url);
   }

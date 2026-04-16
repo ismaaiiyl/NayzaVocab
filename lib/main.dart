@@ -3,9 +3,15 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:nayza_vocab/core/theme/app_theme.dart';
 import 'package:nayza_vocab/features/vocabulary/data/models/vocab_set_model.dart';
 import 'package:nayza_vocab/features/vocabulary/data/models/word_model.dart';
-import 'package:nayza_vocab/features/vocabulary/presentation/pages/home_page.dart';
 import 'package:nayza_vocab/features/vocabulary/presentation/provider/vocab_set_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:nayza_vocab/core/services/notification_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:nayza_vocab/features/settings/presentation/provider/settings_provider.dart';
+import 'package:nayza_vocab/features/vocabulary/presentation/provider/quiz_provider.dart';
+import 'package:nayza_vocab/core/router/app_router.dart';
+import 'package:nayza_vocab/l10n/generated/app_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,22 +20,46 @@ void main() async {
   Hive.registerAdapter(WordModelAdapter());
   final vocabSetBox = await Hive.openBox<VocabSetModel>('vocab_sets');
 
-  runApp(MyApp(vocabSetBox: vocabSetBox));
+  // Initialize Notifications
+  await NotificationService().init();
+
+  // Initialize SharedPreferences
+  final prefs = await SharedPreferences.getInstance();
+
+  runApp(MyApp(vocabSetBox: vocabSetBox, prefs: prefs));
 }
 
 class MyApp extends StatelessWidget {
   final Box<VocabSetModel> vocabSetBox;
-  const MyApp({super.key, required this.vocabSetBox});
+  final SharedPreferences prefs;
+  
+  const MyApp({super.key, required this.vocabSetBox, required this.prefs});
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => VocabSetProvider(vocabSetBox),
-      child: MaterialApp(
-        title: 'Nayza Vocab',
-        debugShowCheckedModeBanner: false,
-        theme: AppTheme.darkTheme,
-        home: const HomePage(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => SettingsProvider(prefs)),
+        ChangeNotifierProvider(create: (_) => VocabSetProvider(vocabSetBox)),
+        ChangeNotifierProvider(create: (_) => QuizProvider()),
+      ],
+      child: Consumer<SettingsProvider>(
+        builder: (context, settings, _) {
+          return MaterialApp.router(
+            title: 'Nayza Vocab',
+            debugShowCheckedModeBanner: false,
+            theme: AppTheme.darkTheme,
+            locale: Locale(settings.languageCode),
+            routerConfig: AppRouter.router,
+            localizationsDelegates: const [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: AppLocalizations.supportedLocales,
+          );
+        },
       ),
     );
   }

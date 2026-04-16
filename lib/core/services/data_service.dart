@@ -30,9 +30,9 @@ class DataService {
       final helper = getExportHelper();
       await helper.downloadJson(jsonString, fileName);
       
-      debugPrint("DataService: Export completed successfully.");
+      debugPrint('DataService: Export completed successfully.');
     } catch (e) {
-      debugPrint("DataService: Export Error: $e");
+      debugPrint('DataService: Export Error: $e');
       rethrow;
     }
   }
@@ -60,18 +60,18 @@ class DataService {
         content = await file.readAsString();
       }
 
-      final Map<String, dynamic> data = jsonDecode(content);
-
+      final dynamic decoded = jsonDecode(content);
+      final Map<String, dynamic> data = decoded as Map<String, dynamic>;
       if (data['app'] != _appIdentifier) {
         throw Exception('Ushbu fayl Nayza Vocab’ga tegishli emas yoki formati noto\'g\'ri.');
       }
 
-      final List<dynamic> setsJson = data['sets'] ?? [];
+      final List<dynamic> setsJson = (data['sets'] as List<dynamic>?) ?? [];
       final List<VocabSetModel> importedSets = [];
       final uuid = const Uuid();
 
       for (var sJson in setsJson) {
-        final Map<String, dynamic> setMap = Map<String, dynamic>.from(sJson);
+        final Map<String, dynamic> setMap = Map<String, dynamic>.from(sJson as Map<dynamic, dynamic>);
         final baseSet = VocabSetModel.fromMap(setMap);
         
         final freshSet = VocabSetModel(
@@ -86,7 +86,7 @@ class DataService {
 
       return importedSets;
     } catch (e) {
-      debugPrint("DataService: Import Error: $e");
+      debugPrint('DataService: Import Error: $e');
       rethrow;
     }
   }

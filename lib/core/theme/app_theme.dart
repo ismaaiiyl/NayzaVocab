@@ -8,6 +8,8 @@ class AppTheme {
   static const Color surfaceNavy = Color(0xFF112240);
   static const Color textMain = Colors.white;
   static const Color textDim = Color(0xFF8892B0);
+  static const Color cardDark = Color(0xFF1E2D4A);
+  static const Color borderNavy = Color(0xFF233554);
 
   static ThemeData get darkTheme {
     return ThemeData(
@@ -60,12 +62,12 @@ class AppTheme {
           letterSpacing: 1.5,
         ),
       ),
-      cardTheme: CardThemeData(
+      cardTheme: const CardThemeData(
         color: surfaceNavy,
         elevation: 4,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(16)),
-          side: BorderSide(color: Color(0xFF233554), width: 1),
+          side: BorderSide(color: AppTheme.borderNavy, width: 1),
         ),
       ),
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
@@ -82,19 +84,19 @@ class AppTheme {
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
         ),
       ),
-      inputDecorationTheme: InputDecorationTheme(
+      inputDecorationTheme: const InputDecorationTheme(
         filled: true,
         fillColor: surfaceNavy,
-        border: const OutlineInputBorder(
+        border: OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(12)),
           borderSide: BorderSide.none,
         ),
-        focusedBorder: const OutlineInputBorder(
+        focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(12)),
           borderSide: BorderSide(color: electricGold, width: 2),
         ),
-        hintStyle: const TextStyle(color: textDim),
-        labelStyle: const TextStyle(color: electricGold),
+        hintStyle: TextStyle(color: textDim),
+        labelStyle: TextStyle(color: electricGold),
       ),
     );
   }

@@ -122,19 +122,72 @@ class _NayzaTextFieldState extends State<NayzaTextField> {
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
             borderSide: BorderSide(
-              color: isFocused ? AppTheme.electricGold : const Color(0xFF233554),
+              color: isFocused ? AppTheme.electricGold : AppTheme.borderNavy,
               width: 1.5,
             ),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-            borderSide: const BorderSide(color: Color(0xFF233554), width: 1.5),
+            borderSide: const BorderSide(color: AppTheme.borderNavy, width: 1.5),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
             borderSide: const BorderSide(color: AppTheme.electricGold, width: 2),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class NayzaProgressBar extends StatelessWidget {
+  final int current;
+  final int total;
+
+  const NayzaProgressBar({
+    super.key,
+    required this.current,
+    required this.total,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final double progress = (total == 0) ? 0 : (current / total).clamp(0.0, 1.0);
+
+    return Container(
+      height: 8,
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: AppTheme.surfaceNavy,
+        borderRadius: BorderRadius.circular(4),
+      ),
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          return Stack(
+            children: [
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 600),
+                curve: Curves.easeOutCubic,
+                width: constraints.maxWidth * progress,
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [Color(0xFF00F2FE), Color(0xFF4FACFE)],
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                  ),
+                  borderRadius: BorderRadius.circular(4),
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0xFF4FACFE).withValues(alpha: 0.4),
+                      blurRadius: 8,
+                      offset: const Offset(0, 0),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }
