@@ -62,7 +62,7 @@
   "noCollections": "Нет коллекций",
   "collectionsLabel": "КОЛЛЕКЦИИ",
   "foundWordsLabel": "НАЙДЕННЫЕ СЛОВА",
-  "editWord": "РЕДАКТИРОВАТЬ СЛОВО",
+  "editWord": "ИЗМЕНИТЬ СЛОВО",
   "originalWord": "Оригинал",
   "translationWord": "Перевод",
   "cancel": "ОТМЕНА",
@@ -162,10 +162,8 @@
       }
     }
   },
-  "cancel": "ОТМЕНА",
   "delete": "УДАЛИТЬ",
   "addWord": "ДОБАВИТЬ СЛОВО",
-  "editWord": "ИЗМЕНИТЬ СЛОВО",
   "emptySetWarning": "Эта коллекция пуста.",
   "wordsFoundCount": "Доступно слов: {count}",
   "@wordsFoundCount": {
@@ -177,7 +175,6 @@
   },
   "masteryExplanation": "Слово считается выученным после 1 правильного ответа",
   "progressLabel": "ПРОГРЕСС",
-  "save": "СОХРАНИТЬ",
   "selectSetsTitle": "ВЫБОР КОЛЛЕКЦИЙ",
   "selectAtLeastOneSet": "Выберите хотя бы одну коллекцию.",
   "exportSuccess": "Экспорт успешно завершен!",
@@ -206,8 +203,16 @@
   "onboardingPage3Title": "Отслеживайте Свой Прогресс",
   "onboardingPage3Subtitle": "Следите за своим ростом с течением времени и сосредоточьтесь на трудных словах.",
   "onboardingGetStarted": "НАЧАТЬ",
+  "skip": "ПРОПУСТИТЬ",
+  "submitAnswer": "ПОДТВЕРДИТЬ",
+  "collectionsPageTitle": "КОЛЛЕКЦИИ",
+  "cancelReminder": "Отменить напоминание",
+  "editSetTitle": "ПЕРЕИМЕНОВАТЬ КОЛЛЕКЦИЮ",
+  "resetAllData": "Сбросить все данные",
+  "resetAllDataConfirm": "Это навсегда удалит все ваши коллекции и прогресс. Вы уверены?",
   "shareSuccess": "Успешно отправлено!",
   "shareSubject": "NayzaVocab: {title}",
   "shareMessage": "📚 Коллекция Nayza Vocab: {title}\n🌐 Язык: {lang}\n📝 Слов: {count}\n\nИмпортируйте этот файл в Nayza Vocab, чтобы учиться вместе!",
-  "importedSuffix": "(Импортировано)"
+  "importedSuffix": "(Импортировано)",
+  "deleteSetConfirm": "Вы уверены, что хотите удалить эту коллекцию?"
 }

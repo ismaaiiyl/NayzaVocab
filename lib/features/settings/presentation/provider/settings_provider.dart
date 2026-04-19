@@ -52,11 +52,17 @@ class SettingsProvider with ChangeNotifier {
     
     notifyListeners();
   }
-
   String? getReminderTimeStr() {
     final hour = _prefs.getInt('reminder_hour');
     final minute = _prefs.getInt('reminder_minute');
     if (hour == null || minute == null) return null;
     return '${hour.toString().padLeft(2, '0')}:${minute.toString().padLeft(2, '0')}';
+  }
+
+  Future<void> cancelReminder() async {
+    await _prefs.remove('reminder_hour');
+    await _prefs.remove('reminder_minute');
+    await NotificationService().cancelAll();
+    notifyListeners();
   }
 }

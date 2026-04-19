@@ -42,37 +42,12 @@ class _SetDetailsScreenState extends State<SetDetailsScreen> {
     }
   }
 
+  /// Shows a dialog to rename the collection. Uses a proper StatefulWidget
+  /// so the TextEditingController is always disposed (no memory leak).
   void _showEditTitleDialog(VocabSetModel set) {
-    final l10n = AppLocalizations.of(context)!;
-    final titleController = TextEditingController(text: set.title);
-    
     showDialog<void>(
       context: context,
-      builder: (ctx) => AlertDialog(
-        backgroundColor: AppTheme.surfaceNavy,
-        title: Text(l10n.editWord, style: const TextStyle(color: AppTheme.electricGold)),
-        content: TextField(
-          controller: titleController,
-          decoration: InputDecoration(labelText: l10n.collectionNameLabel),
-          autofocus: true,
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx),
-            child: Text(l10n.cancel, style: const TextStyle(color: AppTheme.textDim)),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              if (titleController.text.trim().isNotEmpty) {
-                final provider = context.read<VocabSetProvider>();
-                provider.updateVocabSet(set.copyWith(title: titleController.text.trim()));
-                Navigator.pop(ctx);
-              }
-            },
-            child: Text(l10n.save),
-          ),
-        ],
-      ),
+      builder: (ctx) => _EditTitleDialog(set: set),
     );
   }
 
@@ -263,5 +238,68 @@ class _SetDetailsScreenState extends State<SetDetailsScreen> {
     }
 
     return Icon(LucideIcons.circle, size: 12, color: AppTheme.textDim.withValues(alpha: 0.3));
+  }
+}
+
+class _EditTitleDialog extends StatefulWidget {
+  final VocabSetModel set;
+
+  const _EditTitleDialog({required this.set});
+
+  @override
+  State<_EditTitleDialog> createState() => _EditTitleDialogState();
+}
+
+class _EditTitleDialogState extends State<_EditTitleDialog> {
+  late final TextEditingController _titleController;
+
+  @override
+  void initState() {
+    super.initState();
+    _titleController = TextEditingController(text: widget.set.title);
+  }
+
+  @override
+  void dispose() {
+    _titleController.dispose();
+    super.dispose();
+  }
+
+  void _save() {
+    final newTitle = _titleController.text.trim();
+    if (newTitle.isEmpty) return;
+    context.read<VocabSetProvider>().updateVocabSet(
+          widget.set.copyWith(title: newTitle),
+        );
+    Navigator.of(context).pop();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    return AlertDialog(
+      backgroundColor: AppTheme.surfaceNavy,
+      title: Text(
+        l10n.editSetTitle,
+        style: const TextStyle(color: AppTheme.electricGold),
+      ),
+      content: TextField(
+        controller: _titleController,
+        autofocus: true,
+        decoration: InputDecoration(labelText: l10n.collectionNameLabel),
+        textInputAction: TextInputAction.done,
+        onSubmitted: (_) => _save(),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: Text(l10n.cancel, style: const TextStyle(color: AppTheme.textDim)),
+        ),
+        ElevatedButton(
+          onPressed: _save,
+          child: Text(l10n.save),
+        ),
+      ],
+    );
   }
 }

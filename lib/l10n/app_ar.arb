@@ -162,10 +162,8 @@
       }
     }
   },
-  "cancel": "إلغاء",
   "delete": "حذف",
   "addWord": "إضافة كلمة",
-  "editWord": "تعديل الكلمة",
   "emptySetWarning": "هذه المجموعة فارغة.",
   "wordsFoundCount": "متوفر {count} كلمات",
   "@wordsFoundCount": {
@@ -208,5 +206,13 @@
   "shareSuccess": "تمت المشاركة بنجاح!",
   "shareSubject": "NayzaVocab: {title}",
   "shareMessage": "📚 مجموعة Nayza Vocab: {title}\n🌐 اللغة: {lang}\n📝 الكلمات: {count}\n\nقم باستيراد هذا الملف إلى Nayza Vocab للتعلم معاً!",
-  "importedSuffix": "(مستورد)"
+  "importedSuffix": "(مستورد)",
+  "editSetTitle": "إعادة تسمية المجموعة",
+  "skip": "تخطي",
+  "submitAnswer": "تأكيد",
+  "collectionsPageTitle": "المجموعات",
+  "cancelReminder": "إلغاء التذكير",
+  "resetAllData": "إعادة تعيين جميع البيانات",
+  "resetAllDataConfirm": "سيؤدي هذا إلى حذف جميع مجموعاتك وتقدمك نهائياً. هل أنت متأكد؟",
+  "deleteSetConfirm": "هل أنت متأكد أنك تريد حذف هذه المجموعة؟"
 }

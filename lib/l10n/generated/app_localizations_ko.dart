@@ -150,6 +150,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get editWord => '단어 편집';
 
   @override
+  String get editSetTitle => '컬렉션 이름 바꾸기';
+
+  @override
   String get originalWord => '원래 단어';
 
   @override
@@ -442,4 +445,25 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get onboardingGetStarted => '시작하기';
+
+  @override
+  String get skip => '건너뛰기';
+
+  @override
+  String get submitAnswer => '확인';
+
+  @override
+  String get collectionsPageTitle => '컬렉션';
+
+  @override
+  String get cancelReminder => '알림 취소';
+
+  @override
+  String get resetAllData => '모든 데이터 초기화';
+
+  @override
+  String get resetAllDataConfirm => '이렇게 하면 모든 컬렉션과 진행 상황이 영구적으로 삭제됩니다. 확실합니까?';
+
+  @override
+  String get deleteSetConfirm => '이 컬렉션을 삭제하시겠습니까?';
 }

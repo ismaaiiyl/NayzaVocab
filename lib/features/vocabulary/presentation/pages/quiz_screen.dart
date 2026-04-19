@@ -1,3 +1,4 @@
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:nayza_vocab/core/theme/app_theme.dart';
 import 'package:nayza_vocab/features/vocabulary/presentation/provider/vocab_set_provider.dart';
@@ -72,7 +73,7 @@ class _QuizScreenState extends State<QuizScreen> {
 
        final bool isReversed;
        if (widget.direction == QuizDirection.random) {
-         isReversed = (index % 2 == 0);
+         isReversed = math.Random().nextBool();
        } else {
          isReversed = widget.direction == QuizDirection.translationToOriginal;
        }
@@ -151,11 +152,21 @@ class _QuizScreenState extends State<QuizScreen> {
       _audioHelper.playError();
     }
 
-    Future<void>.delayed(const Duration(milliseconds: 1500), () {
-      if (mounted) {
-        _nextQuestion();
-      }
-    });
+    try {
+      Future<void>.delayed(const Duration(milliseconds: 1500), () {
+        if (mounted) {
+          _nextQuestion();
+        }
+      });
+    } catch (e) {
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(e.toString()),
+          backgroundColor: Colors.redAccent.withValues(alpha: 0.8),
+        ),
+      );
+    }
   }
 
   void _nextQuestion() {
@@ -319,6 +330,12 @@ class _QuizScreenState extends State<QuizScreen> {
             Text(
               l10n.correctAnswerLabel(question.correctAnswer),
               style: const TextStyle(color: Colors.greenAccent, fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+          ] else ...[
+            const SizedBox(height: 24),
+            NayzaButton(
+              text: l10n.submitAnswer,
+              onPressed: () => _handleAnswer(_answerController.text),
             ),
           ],
         ],

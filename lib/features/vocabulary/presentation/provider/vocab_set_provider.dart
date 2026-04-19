@@ -97,7 +97,7 @@ class VocabSetProvider with ChangeNotifier {
     }
 
     final updatedWord = oldWord.copyWith(
-      correctAnswersCount: isCorrect ? oldWord.correctAnswersCount + 1 : 0,
+      correctAnswersCount: isCorrect ? oldWord.correctAnswersCount + 1 : oldWord.correctAnswersCount,
       wrongAttempts: isCorrect ? oldWord.wrongAttempts : oldWord.wrongAttempts + 1,
       isDifficult: willBeDifficult,
       lastTestedAt: DateTime.now(),
@@ -152,12 +152,17 @@ class VocabSetProvider with ChangeNotifier {
       
       virtualSets.add(VocabSetModel(
         id: 'difficult-group-${i ~/ groupSize}',
-        title: 'Difficult Words #${(i ~/ groupSize) + 1}',
+        title: '', // Localized title is handled in HistoryScreen via l10n.difficultSetTitle
         words: group,
         createdAt: DateTime.now(),
       ));
     }
 
     return virtualSets;
+  }
+
+  Future<void> clearAllData() async {
+    await _vocabSetBox.clear();
+    _loadVocabSets();
   }
 }

@@ -21,6 +21,7 @@ class SettingsPage extends StatelessWidget {
       appBar: AppBar(
         title: Text(l10n.settings.toUpperCase()),
         centerTitle: true,
+        automaticallyImplyLeading: false,
       ),
       body: ListView(
         padding: const EdgeInsets.all(16.0),
@@ -42,6 +43,15 @@ class SettingsPage extends StatelessWidget {
             icon: LucideIcons.upload,
             onTap: () => _handleImport(context),
           ),
+          const SizedBox(height: 16),
+          _buildSettingsCard(
+            context,
+            title: l10n.resetAllData,
+            subtitle: l10n.resetAllDataConfirm,
+            icon: LucideIcons.trash2,
+            iconColor: Colors.redAccent,
+            onTap: () => _handleResetAllData(context),
+          ),
           const SizedBox(height: 32),
           _buildSettingsHeader(l10n.notifications),
           const SizedBox(height: 12),
@@ -52,6 +62,17 @@ class SettingsPage extends StatelessWidget {
                 ? l10n.reminderSubtitle(settings.getReminderTimeStr()!) 
                 : l10n.reminderDefault,
             icon: LucideIcons.bell,
+            trailing: settings.getReminderTimeStr() != null 
+              ? IconButton(
+                  icon: const Icon(LucideIcons.bellOff, color: Colors.redAccent, size: 20),
+                  onPressed: () {
+                    context.read<SettingsProvider>().cancelReminder();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text(l10n.cancelReminder)),
+                    );
+                  },
+                )
+              : null,
             onTap: () => _handleScheduleReminder(context, context.read<SettingsProvider>()),
           ),
           const SizedBox(height: 32),
@@ -96,6 +117,8 @@ class SettingsPage extends StatelessWidget {
     required String title,
     required String subtitle,
     required IconData icon,
+    Color? iconColor,
+    Widget? trailing,
     required VoidCallback onTap,
   }) {
     return InkWell(
@@ -116,10 +139,10 @@ class SettingsPage extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: AppTheme.electricGold.withValues(alpha: 0.1),
+                color: (iconColor ?? AppTheme.electricGold).withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: Icon(icon, color: AppTheme.electricGold, size: 24),
+              child: Icon(icon, color: iconColor ?? AppTheme.electricGold, size: 24),
             ),
             const SizedBox(width: 16),
             Expanded(
@@ -150,6 +173,10 @@ class SettingsPage extends StatelessWidget {
               color: AppTheme.textDim,
               size: 20,
             ),
+            if (trailing != null) ...[
+              const SizedBox(width: 8),
+              trailing,
+            ],
           ],
         ),
       ),
@@ -211,7 +238,42 @@ class SettingsPage extends StatelessWidget {
     } catch (e) {
       if (!context.mounted) return;
       messenger.showSnackBar(
-        SnackBar(content: Text(l10n.importError(e.toString()))),
+        SnackBar(
+          content: Text(l10n.importError(e.toString())),
+          backgroundColor: Colors.redAccent.withValues(alpha: 0.8),
+        ),
+      );
+    }
+  }
+
+  Future<void> _handleResetAllData(BuildContext context) async {
+    final l10n = AppLocalizations.of(context)!;
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: AppTheme.surfaceNavy,
+        title: Text(l10n.resetAllData, style: const TextStyle(color: Colors.redAccent)),
+        content: Text(l10n.resetAllDataConfirm),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: Text(l10n.cancel, style: const TextStyle(color: AppTheme.textDim)),
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.redAccent),
+            onPressed: () => Navigator.pop(ctx, true),
+            child: Text(l10n.resetAllData),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed == true) {
+      if (!context.mounted) return;
+      await context.read<VocabSetProvider>().clearAllData();
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('All data cleared!')),
       );
     }
   }
@@ -225,27 +287,26 @@ class SettingsPage extends StatelessWidget {
       ),
       child: Column(
         children: [
-          _buildLanguageOption(context, settings, 'uz', l10n.uzbek, LucideIcons.languages),
+          _buildLanguageOption(context, settings, 'uz', '${l10n.uzbek} 🇺🇿'),
           const Divider(color: AppTheme.borderNavy, height: 1),
-          _buildLanguageOption(context, settings, 'ru', l10n.russian, LucideIcons.languages),
+          _buildLanguageOption(context, settings, 'ru', '${l10n.russian} 🇷🇺'),
           const Divider(color: AppTheme.borderNavy, height: 1),
-          _buildLanguageOption(context, settings, 'en', l10n.english, LucideIcons.languages),
+          _buildLanguageOption(context, settings, 'en', '${l10n.english} 🇬🇧'),
           const Divider(color: AppTheme.borderNavy, height: 1),
-          _buildLanguageOption(context, settings, 'ar', l10n.arabicLang, LucideIcons.languages),
+          _buildLanguageOption(context, settings, 'ar', '${l10n.arabicLang} 🇸🇦'),
           const Divider(color: AppTheme.borderNavy, height: 1),
-          _buildLanguageOption(context, settings, 'de', l10n.germanLang, LucideIcons.languages),
+          _buildLanguageOption(context, settings, 'de', '${l10n.germanLang} 🇩🇪'),
           const Divider(color: AppTheme.borderNavy, height: 1),
-          _buildLanguageOption(context, settings, 'ko', l10n.koreanLang, LucideIcons.languages),
+          _buildLanguageOption(context, settings, 'ko', '${l10n.koreanLang} 🇰🇷'),
         ],
       ),
     );
   }
 
-  Widget _buildLanguageOption(BuildContext context, SettingsProvider settings, String code, String label, IconData icon) {
+  Widget _buildLanguageOption(BuildContext context, SettingsProvider settings, String code, String label) {
     final isSelected = settings.languageCode == code;
     return ListTile(
       onTap: () => settings.setLanguage(code),
-      leading: Icon(icon, color: isSelected ? AppTheme.electricGold : AppTheme.textDim, size: 20),
       title: Text(label, style: TextStyle(color: isSelected ? AppTheme.electricGold : AppTheme.textMain, fontWeight: isSelected ? FontWeight.bold : FontWeight.normal)),
       trailing: isSelected ? const Icon(LucideIcons.check, color: AppTheme.electricGold, size: 18) : null,
     );

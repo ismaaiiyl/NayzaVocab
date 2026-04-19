@@ -18,6 +18,7 @@ class DifficultWordsScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(l10n.difficultWordsTitle),
         centerTitle: true,
+        automaticallyImplyLeading: false,
       ),
       body: Consumer<VocabSetProvider>(
         builder: (context, provider, child) {

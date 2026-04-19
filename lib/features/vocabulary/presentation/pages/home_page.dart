@@ -8,9 +8,36 @@ import 'package:go_router/go_router.dart';
 import 'package:nayza_vocab/l10n/generated/app_localizations.dart';
 import 'package:nayza_vocab/features/vocabulary/presentation/provider/vocab_set_provider.dart';
 import 'package:nayza_vocab/features/settings/presentation/provider/settings_provider.dart';
+import 'package:nayza_vocab/core/widgets/nayza_icon.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin {
+  late AnimationController _pulseController;
+  late Animation<double> _scaleAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _pulseController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 2),
+    )..repeat(reverse: true);
+    _scaleAnimation = Tween<double>(begin: 1.0, end: 1.1).animate(
+      CurvedAnimation(parent: _pulseController, curve: Curves.easeInOut),
+    );
+  }
+
+  @override
+  void dispose() {
+    _pulseController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,10 +48,6 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(l10n.appTitle.toUpperCase()),
-        leading: IconButton(
-          icon: const Icon(LucideIcons.settings),
-          onPressed: () => context.pushNamed('settings'),
-        ),
         actions: [
           IconButton(
             icon: Icon(
@@ -37,24 +60,36 @@ class HomePage extends StatelessWidget {
               AudioHelper().isMuted = settings.isMuted;
             },
           ),
-          IconButton(
-            icon: const Icon(LucideIcons.history),
-            onPressed: () => context.pushNamed('history'),
-          ),
+          const SizedBox(width: 8),
         ],
       ),
-      body: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.symmetric(horizontal: 24.0),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 32.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(
-              LucideIcons.sword,
-              size: 100,
-              color: AppTheme.electricGold,
+            const SizedBox(height: 20),
+            ScaleTransition(
+              scale: _scaleAnimation,
+              child: Container(
+                padding: const EdgeInsets.all(24),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: AppTheme.electricGold.withValues(alpha: 0.1),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppTheme.electricGold.withValues(alpha: 0.2),
+                      blurRadius: 30,
+                      spreadRadius: 10,
+                    ),
+                  ],
+                ),
+                child: const NayzaIcon(
+                  size: 80,
+                  color: AppTheme.electricGold,
+                ),
+              ),
             ),
-            const SizedBox(height: 32),
+            const SizedBox(height: 48),
             Text(
               l10n.homeTitle,
               textAlign: TextAlign.center,
@@ -66,7 +101,7 @@ class HomePage extends StatelessWidget {
               textAlign: TextAlign.center,
               style: const TextStyle(color: AppTheme.textDim, fontSize: 16),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 40),
             _buildDifficultWordsCard(context, vocabSetProvider),
             const SizedBox(height: 48),
             Hero(
@@ -77,7 +112,7 @@ class HomePage extends StatelessWidget {
                 onPressed: () => context.pushNamed('select-collections'),
               ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 16),
             NayzaButton(
               text: l10n.matchingGame,
               icon: LucideIcons.layoutGrid,
@@ -86,15 +121,7 @@ class HomePage extends StatelessWidget {
                 queryParameters: {'mode': 'matching'},
               ),
             ),
-            const SizedBox(height: 16),
-            TextButton.icon(
-              onPressed: () => context.pushNamed('history'),
-              icon: const Icon(LucideIcons.list, color: AppTheme.electricGold),
-              label: Text(
-                l10n.manageCollections,
-                style: const TextStyle(color: AppTheme.electricGold),
-              ),
-            ),
+            const SizedBox(height: 40), // Safe margin above bottom bar
           ],
         ),
       ),

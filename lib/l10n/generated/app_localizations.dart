@@ -151,7 +151,7 @@ abstract class AppLocalizations {
   /// No description provided for @history.
   ///
   /// In en, this message translates to:
-  /// **'History'**
+  /// **'Collections'**
   String get history;
 
   /// No description provided for @collections.
@@ -283,7 +283,7 @@ abstract class AppLocalizations {
   /// No description provided for @appVersion.
   ///
   /// In en, this message translates to:
-  /// **'Nayza Vocab v1.0.0\nCreated for Nayzadorlar 🔱'**
+  /// **'Nayza Vocab v1.0.1\nCreated for Nayzadorlar 🔱'**
   String get appVersion;
 
   /// No description provided for @language.
@@ -363,6 +363,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'EDIT WORD'**
   String get editWord;
+
+  /// No description provided for @editSetTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'RENAME COLLECTION'**
+  String get editSetTitle;
 
   /// No description provided for @originalWord.
   ///
@@ -891,6 +897,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'GET STARTED'**
   String get onboardingGetStarted;
+
+  /// No description provided for @skip.
+  ///
+  /// In en, this message translates to:
+  /// **'SKIP'**
+  String get skip;
+
+  /// No description provided for @submitAnswer.
+  ///
+  /// In en, this message translates to:
+  /// **'SUBMIT'**
+  String get submitAnswer;
+
+  /// No description provided for @collectionsPageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'COLLECTIONS'**
+  String get collectionsPageTitle;
+
+  /// No description provided for @cancelReminder.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel Reminder'**
+  String get cancelReminder;
+
+  /// No description provided for @resetAllData.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset All Data'**
+  String get resetAllData;
+
+  /// No description provided for @resetAllDataConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'This will permanently delete all your collections and progress. Are you sure?'**
+  String get resetAllDataConfirm;
+
+  /// No description provided for @deleteSetConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this collection?'**
+  String get deleteSetConfirm;
 }
 
 class _AppLocalizationsDelegate

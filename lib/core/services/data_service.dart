@@ -94,7 +94,7 @@ class DataService {
       final uuid = const Uuid();
 
       if (fileExt == 'csv') {
-        // --- CSV IMPORT LIGIC ---
+        // --- CSV IMPORT LOGIC ---
         final List<List<dynamic>> csvTable = csv.decode(content);
         if (csvTable.isEmpty) throw Exception("CSV fayli bo'sh.");
 
@@ -126,7 +126,7 @@ class DataService {
                 id: uuid.v4(),
                 original: original,
                 translation: translation,
-                langCode: 'en', // Default, foydalanuvchi o'zgartirib oladi
+                langCode: 'en-US',
               ));
             }
           }
@@ -136,7 +136,7 @@ class DataService {
 
         importedSets.add(VocabSetModel(
           id: uuid.v4(),
-          title: '$title $importedSuffix',
+          title: '',
           createdAt: DateTime.now(),
           words: words,
         ));

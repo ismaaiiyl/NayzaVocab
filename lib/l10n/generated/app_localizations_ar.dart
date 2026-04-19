@@ -151,6 +151,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get editWord => 'تعديل الكلمة';
 
   @override
+  String get editSetTitle => 'إعادة تسمية المجموعة';
+
+  @override
   String get originalWord => 'الكلمة الأصلية';
 
   @override
@@ -445,4 +448,26 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get onboardingGetStarted => 'البدء';
+
+  @override
+  String get skip => 'تخطي';
+
+  @override
+  String get submitAnswer => 'تأكيد';
+
+  @override
+  String get collectionsPageTitle => 'المجموعات';
+
+  @override
+  String get cancelReminder => 'إلغاء التذكير';
+
+  @override
+  String get resetAllData => 'إعادة تعيين جميع البيانات';
+
+  @override
+  String get resetAllDataConfirm =>
+      'سيؤدي هذا إلى حذف جميع مجموعاتك وتقدمك نهائياً. هل أنت متأكد؟';
+
+  @override
+  String get deleteSetConfirm => 'هل أنت متأكد أنك تريد حذف هذه المجموعة؟';
 }

@@ -162,10 +162,8 @@
       }
     }
   },
-  "cancel": "ABBRECHEN",
   "delete": "LÖSCHEN",
   "addWord": "WORT HINZUFÜGEN",
-  "editWord": "WORT BEARBEITEN",
   "emptySetWarning": "Diese Sammlung ist leer.",
   "wordsFoundCount": "{count} Wörter verfügbar",
   "@wordsFoundCount": {
@@ -208,5 +206,13 @@
   "shareSuccess": "Erfolgreich geteilt!",
   "shareSubject": "NayzaVocab: {title}",
   "shareMessage": "📚 Nayza Vocab Sammlung: {title}\n🌐 Sprache: {lang}\n📝 Wörter: {count}\n\nImportiere diese Datei in Nayza Vocab, um gemeinsam zu lernen!",
-  "importedSuffix": "(Importiert)"
+  "importedSuffix": "(Importiert)",
+  "editSetTitle": "SAMMLUNG UMBENENNEN",
+  "skip": "ÜBERSPRINGEN",
+  "submitAnswer": "BESTÄTIGEN",
+  "collectionsPageTitle": "SAMMLUNGEN",
+  "cancelReminder": "Erinnerung abbrechen",
+  "resetAllData": "Alle Daten zurücksetzen",
+  "resetAllDataConfirm": "Dadurch werden alle deine Sammlungen und Fortschritte dauerhaft gelöscht. Bist du sicher?",
+  "deleteSetConfirm": "Sind Sie sicher, dass Sie diese Sammlung löschen möchten?"
 }

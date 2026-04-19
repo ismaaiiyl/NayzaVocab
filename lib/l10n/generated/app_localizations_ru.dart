@@ -151,6 +151,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get editWord => 'ИЗМЕНИТЬ СЛОВО';
 
   @override
+  String get editSetTitle => 'ПЕРЕИМЕНОВАТЬ КОЛЛЕКЦИЮ';
+
+  @override
   String get originalWord => 'Оригинал';
 
   @override
@@ -448,4 +451,27 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get onboardingGetStarted => 'НАЧАТЬ';
+
+  @override
+  String get skip => 'ПРОПУСТИТЬ';
+
+  @override
+  String get submitAnswer => 'ПОДТВЕРДИТЬ';
+
+  @override
+  String get collectionsPageTitle => 'КОЛЛЕКЦИИ';
+
+  @override
+  String get cancelReminder => 'Отменить напоминание';
+
+  @override
+  String get resetAllData => 'Сбросить все данные';
+
+  @override
+  String get resetAllDataConfirm =>
+      'Это навсегда удалит все ваши коллекции и прогресс. Вы уверены?';
+
+  @override
+  String get deleteSetConfirm =>
+      'Вы уверены, что хотите удалить эту коллекцию?';
 }

@@ -30,7 +30,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settings => 'Settings';
 
   @override
-  String get history => 'History';
+  String get history => 'Collections';
 
   @override
   String get collections => 'Collections';
@@ -104,7 +104,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get appInfo => 'APP INFO';
 
   @override
-  String get appVersion => 'Nayza Vocab v1.0.0\nCreated for Nayzadorlar 🔱';
+  String get appVersion => 'Nayza Vocab v1.0.1\nCreated for Nayzadorlar 🔱';
 
   @override
   String get language => 'Language';
@@ -148,6 +148,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get editWord => 'EDIT WORD';
+
+  @override
+  String get editSetTitle => 'RENAME COLLECTION';
 
   @override
   String get originalWord => 'Original word';
@@ -445,4 +448,27 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get onboardingGetStarted => 'GET STARTED';
+
+  @override
+  String get skip => 'SKIP';
+
+  @override
+  String get submitAnswer => 'SUBMIT';
+
+  @override
+  String get collectionsPageTitle => 'COLLECTIONS';
+
+  @override
+  String get cancelReminder => 'Cancel Reminder';
+
+  @override
+  String get resetAllData => 'Reset All Data';
+
+  @override
+  String get resetAllDataConfirm =>
+      'This will permanently delete all your collections and progress. Are you sure?';
+
+  @override
+  String get deleteSetConfirm =>
+      'Are you sure you want to delete this collection?';
 }

@@ -6,7 +6,7 @@
   "matchingGame": "MATCHING GAME",
   "manageCollections": "MANAGE COLLECTIONS",
   "settings": "Settings",
-  "history": "History",
+  "history": "Collections",
   "collections": "Collections",
   "difficultWordsTitle": "DIFFICULT WORDS",
   "difficultWordsSubtitle": "You have {count} failed words",
@@ -49,7 +49,7 @@
   "reminderDefault": "Remind difficult words daily",
   "reminderSetSuccess": "Daily reminder set for {time}",
   "appInfo": "APP INFO",
-  "appVersion": "Nayza Vocab v1.0.0\nCreated for Nayzadorlar 🔱",
+  "appVersion": "Nayza Vocab v1.0.1\nCreated for Nayzadorlar 🔱",
   "language": "Language",
   "uzbek": "Uzbek",
   "russian": "Russian",
@@ -63,6 +63,7 @@
   "collectionsLabel": "COLLECTIONS",
   "foundWordsLabel": "FOUND WORDS",
   "editWord": "EDIT WORD",
+  "editSetTitle": "RENAME COLLECTION",
   "originalWord": "Original word",
   "translationWord": "Translation",
   "cancel": "CANCEL",
@@ -162,10 +163,8 @@
       }
     }
   },
-  "cancel": "CANCEL",
   "delete": "DELETE",
   "addWord": "ADD WORD",
-  "editWord": "EDIT WORD",
   "emptySetWarning": "This collection is empty.",
   "wordsFoundCount": "{count} words available",
   "@wordsFoundCount": {
@@ -208,5 +207,12 @@
   "onboardingPage2Subtitle": "Interactive quizzes and matching games designed to make learning addictive.",
   "onboardingPage3Title": "Track Your Progress",
   "onboardingPage3Subtitle": "See your improvements over time and focus on difficult words.",
-  "onboardingGetStarted": "GET STARTED"
+  "onboardingGetStarted": "GET STARTED",
+  "skip": "SKIP",
+  "submitAnswer": "SUBMIT",
+  "collectionsPageTitle": "COLLECTIONS",
+  "cancelReminder": "Cancel Reminder",
+  "resetAllData": "Reset All Data",
+  "resetAllDataConfirm": "This will permanently delete all your collections and progress. Are you sure?",
+  "deleteSetConfirm": "Are you sure you want to delete this collection?"
 }

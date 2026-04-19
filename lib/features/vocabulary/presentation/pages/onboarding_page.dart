@@ -19,6 +19,12 @@ class _OnboardingPageState extends State<OnboardingPage> {
   int _currentPage = 0;
 
   @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 

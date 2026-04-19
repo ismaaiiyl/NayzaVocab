@@ -6,7 +6,7 @@
   "matchingGame": "MATCHING GAME",
   "manageCollections": "TO'PLAMLARNI BOSHQARISH",
   "settings": "Sozlamalar",
-  "history": "Tarix",
+  "history": "To'plamlar",
   "collections": "To'plamlar",
   "difficultWordsTitle": "QIYIN SO'ZLAR",
   "difficultWordsSubtitle": "Sizda {count} ta xato qilingan so'z bor",
@@ -49,7 +49,7 @@
   "reminderDefault": "Har kuni qiyin so'zlarni eslatish",
   "reminderSetSuccess": "Kunlik eslatma soat {time} ga belgilandi",
   "appInfo": "ILOVA HAQIDA",
-  "appVersion": "Nayza Vocab v1.0.0\nCreated for Nayzadorlar 🔱",
+  "appVersion": "Nayza Vocab v1.0.1\nCreated for Nayzadorlar 🔱",
   "language": "Til",
   "uzbek": "O'zbek",
   "russian": "Ruscha",
@@ -63,6 +63,7 @@
   "collectionsLabel": "TO'PLAMLAR",
   "foundWordsLabel": "TOPILGAN SO'ZLAR",
   "editWord": "SO'ZNI TAHRIRLASH",
+  "editSetTitle": "TO'PLAM NOMINI O'ZGARTIRISH",
   "originalWord": "Asl so'z",
   "translationWord": "Tarjima",
   "cancel": "BEKOR QILISH",
@@ -162,10 +163,8 @@
       }
     }
   },
-  "cancel": "BEKOR QILISH",
   "delete": "O'CHIRISH",
   "addWord": "SO'Z QO'SHISH",
-  "editWord": "SO'ZNI TAHRIRLASH",
   "emptySetWarning": "Bu to'plam hali bo'sh.",
   "wordsFoundCount": "{count} ta so'z mavjud",
   "@wordsFoundCount": {
@@ -177,7 +176,6 @@
   },
   "masteryExplanation": "So'z bir marta to'g'ri topilganda 100% yodlangan hisoblanadi",
   "progressLabel": "PROGRES",
-  "save": "SAQLASH",
   "selectSetsTitle": "TO'PLAMLARNI TANLASH",
   "selectAtLeastOneSet": "Kamida bitta to'plamni tanlang.",
   "exportSuccess": "Eksport muvaffaqiyatli yakunlandi!",
@@ -209,5 +207,12 @@
   "onboardingPage2Subtitle": "O'rganishni qiziqarli qilish uchun mo'ljallangan interaktiv testlar va moslashtirish o'yinlari.",
   "onboardingPage3Title": "Progresingizni Kuzating",
   "onboardingPage3Subtitle": "Vaqt o'tishi bilan o'sishingizni ko'ring va qiyin so'zlarga e'tibor qaratib boring.",
-  "onboardingGetStarted": "BOSHLASH"
+  "onboardingGetStarted": "BOSHLASH",
+  "skip": "O'TKAZIB YUBORISH",
+  "submitAnswer": "TASDIQLASH",
+  "collectionsPageTitle": "TO'PLAMLAR",
+  "cancelReminder": "Eslatmani bekor qilish",
+  "resetAllData": "Barcha ma'lumotlarni o'chirish",
+  "resetAllDataConfirm": "Bu barcha to'plamlar va progressingizni butunlay o'chirib tashlaydi. Ishonchingiz komilmi?",
+  "deleteSetConfirm": "Ushbu to'plamni o'chirishni xohlaysizmi?"
 }

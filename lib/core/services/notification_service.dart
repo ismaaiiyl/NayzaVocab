@@ -43,6 +43,11 @@ class NotificationService {
         settings: initializationSettings,
         onDidReceiveNotificationResponse: (NotificationResponse response) {
           debugPrint('🔔 [NotificationService] Notification Tapped: ${response.payload}');
+          if (response.payload == 'difficult-words') {
+            // This is a placeholder for deep linking logic. 
+            // In a real app, you'd use a stream or a global navigator key.
+            // For now, we log it. The UI should check this on app start.
+          }
         },
       );
 
@@ -76,24 +81,26 @@ class NotificationService {
       notificationDetails: notificationDetails,
     );
   }
-
   Future<void> scheduleDailyReminder({required int hour, required int minute}) async {
     await _notificationsPlugin.zonedSchedule(
       id: 100,
-      title: 'Nayza Vocab: Takrorlash vaqti!',
-      body: 'Bugungi qiyin so\'zlarni takrorlashni unutmang 🚀',
+      title: 'Nayza Vocab: Repetition Time!',
+      body: 'Don\'t forget to practice your difficult words today 🚀',
       scheduledDate: _nextInstanceOfTime(hour, minute),
       notificationDetails: const NotificationDetails(
         android: AndroidNotificationDetails(
-          'nayza_daily_reminder',
-          'Nayza Daily Reminders',
-          channelDescription: 'Daily reminders for word repetition',
-          importance: Importance.high,
-          priority: Priority.high,
+          'nayza_daily_reminder_v1',
+          'Daily Study Reminders',
+          channelDescription: 'Keeps you on track with your vocabulary goals',
+          importance: Importance.max,
+          priority: Priority.max,
+          showWhen: true,
+          styleInformation: BigTextStyleInformation(''),
         ),
       ),
       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
       matchDateTimeComponents: DateTimeComponents.time,
+      payload: 'difficult-words',
     );
     
     debugPrint('🔔 [NotificationService] Daily reminder scheduled for $hour:$minute');

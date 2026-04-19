@@ -151,6 +151,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get editWord => 'WORT BEARBEITEN';
 
   @override
+  String get editSetTitle => 'SAMMLUNG UMBENENNEN';
+
+  @override
   String get originalWord => 'Originalwort';
 
   @override
@@ -446,4 +449,27 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get onboardingGetStarted => 'LOSLEGEN';
+
+  @override
+  String get skip => 'ÜBERSPRINGEN';
+
+  @override
+  String get submitAnswer => 'BESTÄTIGEN';
+
+  @override
+  String get collectionsPageTitle => 'SAMMLUNGEN';
+
+  @override
+  String get cancelReminder => 'Erinnerung abbrechen';
+
+  @override
+  String get resetAllData => 'Alle Daten zurücksetzen';
+
+  @override
+  String get resetAllDataConfirm =>
+      'Dadurch werden alle deine Sammlungen und Fortschritte dauerhaft gelöscht. Bist du sicher?';
+
+  @override
+  String get deleteSetConfirm =>
+      'Sind Sie sicher, dass Sie diese Sammlung löschen möchten?';
 }

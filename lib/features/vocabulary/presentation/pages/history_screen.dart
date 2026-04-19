@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:lucide_icons/lucide_icons.dart';
@@ -21,100 +22,40 @@ class HistoryScreen extends StatefulWidget {
 class _HistoryScreenState extends State<HistoryScreen> {
   final TextEditingController _searchController = TextEditingController();
   String _searchQuery = '';
+  Timer? _debounce;
+
+  void _onSearchChanged(String query) {
+    if (_debounce?.isActive ?? false) _debounce!.cancel();
+    _debounce = Timer(const Duration(milliseconds: 300), () {
+      setState(() {
+        _searchQuery = query;
+      });
+    });
+  }
 
   @override
   void dispose() {
     _searchController.dispose();
+    _debounce?.cancel();
     super.dispose();
   }
 
 
+  /// Shows a dialog to edit a word. Uses a proper StatefulWidget
+  /// so TextEditingControllers are always disposed (no memory leak).
   void _showEditWordDialog(BuildContext context, WordModel word, String setId) {
-    final l10n = AppLocalizations.of(context)!;
-    final originalController = TextEditingController(text: word.original);
-    final translationController = TextEditingController(text: word.translation);
-    
     showDialog<void>(
       context: context,
-      builder: (ctx) => AlertDialog(
-        backgroundColor: AppTheme.surfaceNavy,
-        title: Text(l10n.editWord, style: const TextStyle(color: AppTheme.electricGold)),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextField(
-              controller: originalController,
-              decoration: InputDecoration(labelText: l10n.originalWord),
-            ),
-            const SizedBox(height: 16),
-            TextField(
-              controller: translationController,
-              decoration: InputDecoration(labelText: l10n.translationWord),
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx),
-            child: Text(l10n.cancel, style: const TextStyle(color: AppTheme.textDim)),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              final provider = context.read<VocabSetProvider>();
-              final updatedWord = word.copyWith(
-                original: originalController.text,
-                translation: translationController.text,
-              );
-              
-              final set = provider.getSetById(setId);
-              if (set != null) {
-                final updatedWords = set.words.map((w) => w.id == word.id ? updatedWord : w).toList();
-                provider.updateVocabSet(set.copyWith(words: updatedWords));
-              }
-              
-              Navigator.pop(ctx);
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(l10n.wordUpdated)),
-              );
-            },
-            child: Text(l10n.save),
-          ),
-        ],
-      ),
+      builder: (ctx) => _EditWordDialog(word: word, setId: setId),
     );
   }
 
+  /// Shows a dialog to rename a collection. Uses a proper StatefulWidget
+  /// so the TextEditingController is always disposed (no memory leak).
   void _showEditTitleDialog(BuildContext context, VocabSetModel set) {
-    final l10n = AppLocalizations.of(context)!;
-    final titleController = TextEditingController(text: set.title);
-    
     showDialog<void>(
       context: context,
-      builder: (ctx) => AlertDialog(
-        backgroundColor: AppTheme.surfaceNavy,
-        title: Text(l10n.editWord, style: const TextStyle(color: AppTheme.electricGold)), // Using editWord for title edit
-        content: TextField(
-          controller: titleController,
-          decoration: InputDecoration(labelText: l10n.collectionNameLabel),
-          autofocus: true,
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx),
-            child: Text(l10n.cancel, style: const TextStyle(color: AppTheme.textDim)),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              if (titleController.text.trim().isNotEmpty) {
-                final provider = context.read<VocabSetProvider>();
-                provider.updateVocabSet(set.copyWith(title: titleController.text.trim()));
-                Navigator.pop(ctx);
-              }
-            },
-            child: Text(l10n.save),
-          ),
-        ],
-      ),
+      builder: (ctx) => _EditTitleDialog(set: set),
     );
   }
 
@@ -174,108 +115,152 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 12.0),
-      child: Hero(
-        tag: 'set-${set.id}',
-        child: Material(
-          color: Colors.transparent,
-          child: InkWell(
-            onTap: () => context.pushNamed('set-details', pathParameters: {'id': set.id}),
+      child: Dismissible(
+        key: Key('set-dismiss-${set.id}'),
+        direction: DismissDirection.endToStart,
+        background: Container(
+          alignment: Alignment.centerRight,
+          padding: const EdgeInsets.only(right: 20),
+          decoration: BoxDecoration(
+            color: Colors.redAccent.withValues(alpha: 0.8),
             borderRadius: BorderRadius.circular(16),
-            child: Card(
-              margin: EdgeInsets.zero,
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Column(
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // ─── LEFT STATUS INDICATOR ───────────────────────
-                        Padding(
-                          padding: const EdgeInsets.only(right: 12.0, top: 4.0),
-                          child: _buildSetStatusIndicator(set),
-                        ),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Expanded(
-                                    child: Text(
-                                      set.title, 
-                                      style: theme.textTheme.titleLarge?.copyWith(
-                                        color: AppTheme.electricGold, 
-                                        fontSize: titleFontSize,
-                                        fontWeight: FontWeight.bold,
+          ),
+          child: const Icon(LucideIcons.trash2, color: Colors.white),
+        ),
+        confirmDismiss: (direction) async {
+          final confirmed = await showDialog<bool>(
+            context: context,
+            builder: (ctx) => AlertDialog(
+              backgroundColor: AppTheme.surfaceNavy,
+              title: Text(l10n.deleteSetConfirm, style: const TextStyle(color: Colors.redAccent)),
+              content: Text(set.title),
+              actions: [
+                TextButton(onPressed: () => Navigator.pop(ctx, false), child: Text(l10n.cancel, style: const TextStyle(color: AppTheme.textDim))),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.redAccent),
+                  onPressed: () => Navigator.pop(ctx, true), 
+                  child: Text(l10n.delete),
+                ),
+              ],
+            ),
+          );
+          return confirmed;
+        },
+        onDismissed: (direction) {
+          final provider = context.read<VocabSetProvider>();
+          provider.deleteVocabSet(set.id);
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('${set.title} deleted'),
+              action: SnackBarAction(
+                label: 'UNDO',
+                onPressed: () => provider.addSet(set),
+              ),
+            ),
+          );
+        },
+        child: Hero(
+          tag: 'set-${set.id}',
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: () => context.pushNamed('set-details', pathParameters: {'id': set.id}),
+              borderRadius: BorderRadius.circular(16),
+              child: Card(
+                margin: EdgeInsets.zero,
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // ─── LEFT STATUS INDICATOR ───────────────────────
+                          Padding(
+                            padding: const EdgeInsets.only(right: 12.0, top: 4.0),
+                            child: _buildSetStatusIndicator(set),
+                          ),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        set.title, 
+                                        style: theme.textTheme.titleLarge?.copyWith(
+                                          color: AppTheme.electricGold, 
+                                          fontSize: titleFontSize,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
                                     ),
+                                    IconButton(
+                                      icon: const Icon(LucideIcons.edit2, size: 16, color: AppTheme.textDim),
+                                      onPressed: () => _showEditTitleDialog(context, set),
+                                      padding: const EdgeInsets.all(12), // Senior fix: Larger tap area
+                                      constraints: const BoxConstraints(),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 8),
+                                Row(
+                                  children: [
+                                    const Icon(LucideIcons.layers, size: 14, color: AppTheme.textDim),
+                                    const SizedBox(width: 4),
+                                    Text(l10n.wordCountLabel(set.words.length), style: const TextStyle(color: AppTheme.textDim, fontSize: 12)),
+                                    const SizedBox(width: 12),
+                                    const Icon(LucideIcons.calendar, size: 14, color: AppTheme.textDim),
+                                    const SizedBox(width: 4),
+                                    Text(DateFormat.yMMMd().format(set.createdAt), style: const TextStyle(color: AppTheme.textDim, fontSize: 12)),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  SizedBox(
+                                    height: 48, width: 48,
+                                    child: CircularProgressIndicator(
+                                      value: progress / 100,
+                                      backgroundColor: AppTheme.cardDark.withValues(alpha: 0.5),
+                                      color: progress == 100 ? Colors.greenAccent : AppTheme.electricGold,
+                                      strokeWidth: 4,
+                                    ),
                                   ),
-                                  IconButton(
-                                    icon: const Icon(LucideIcons.edit2, size: 16, color: AppTheme.textDim),
-                                    onPressed: () => _showEditTitleDialog(context, set),
-                                    padding: EdgeInsets.zero,
-                                    constraints: const BoxConstraints(),
-                                  ),
+                                  Text('${progress.toInt()}%', style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold)),
                                 ],
                               ),
                               const SizedBox(height: 8),
-                              Row(
-                                children: [
-                                  const Icon(LucideIcons.layers, size: 14, color: AppTheme.textDim),
-                                  const SizedBox(width: 4),
-                                  Text(l10n.wordCountLabel(set.words.length), style: const TextStyle(color: AppTheme.textDim, fontSize: 12)),
-                                  const SizedBox(width: 12),
-                                  const Icon(LucideIcons.calendar, size: 14, color: AppTheme.textDim),
-                                  const SizedBox(width: 4),
-                                  Text(DateFormat.yMMMd().format(set.createdAt), style: const TextStyle(color: AppTheme.textDim, fontSize: 12)),
-                                ],
+                              IconButton(
+                                onPressed: () {
+                                  if (set.words.isNotEmpty) {
+                                    context.read<QuizProvider>().prepareSession(set.words);
+                                    context.pushNamed('quiz-setup');
+                                  }
+                                },
+                                padding: const EdgeInsets.all(8), // Larger tap area
+                                icon: const Icon(LucideIcons.playCircle, color: AppTheme.electricGold, size: 32),
                               ),
                             ],
                           ),
-                        ),
-                        const SizedBox(width: 12),
-                        Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Stack(
-                              alignment: Alignment.center,
-                              children: [
-                                SizedBox(
-                                  height: 48, width: 48,
-                                  child: CircularProgressIndicator(
-                                    value: progress / 100,
-                                    backgroundColor: AppTheme.cardDark.withValues(alpha: 0.5),
-                                    color: progress == 100 ? Colors.greenAccent : AppTheme.electricGold,
-                                    strokeWidth: 4,
-                                  ),
-                                ),
-                                Text('${progress.toInt()}%', style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold)),
-                              ],
-                            ),
-                            const SizedBox(height: 8),
-                            IconButton(
-                              onPressed: () {
-                                if (set.words.isNotEmpty) {
-                                  context.read<QuizProvider>().prepareSession(set.words);
-                                  context.pushNamed('quiz-setup');
-                                }
-                              },
-                              padding: EdgeInsets.zero,
-                              constraints: const BoxConstraints(),
-                              icon: const Icon(LucideIcons.playCircle, color: AppTheme.electricGold, size: 28),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 16),
-                    NayzaProgressBar(
-                      current: progress.toInt(),
-                      total: 100,
-                    ),
-                  ],
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+                      NayzaProgressBar(
+                        current: progress.toInt(),
+                        total: 100,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -286,10 +271,13 @@ class _HistoryScreenState extends State<HistoryScreen> {
   }
 
   Widget _buildSetStatusIndicator(VocabSetModel set) {
-    if (set.progressPercentage == 100) {
+    final progress = set.progressPercentage;
+    if (progress == 100) {
       return const Icon(LucideIcons.star, color: AppTheme.electricGold, size: 28);
+    } else if (progress > 0) {
+      return Icon(LucideIcons.starHalf, color: AppTheme.electricGold.withValues(alpha: 0.5), size: 28);
     }
-    return const SizedBox(width: 28); // Keep the space but show nothing
+    return Icon(LucideIcons.star, color: AppTheme.textDim.withValues(alpha: 0.2), size: 28);
   }
 
   Widget _buildWordResultCard(BuildContext context, WordModel word, String setId) {
@@ -334,7 +322,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(l10n.historyTitle),
+        title: Text(l10n.collectionsPageTitle.toUpperCase()),
+        automaticallyImplyLeading: false, // Cleaner tab look
       ),
       body: Column(
         children: [
@@ -342,7 +331,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
             child: TextField(
               controller: _searchController,
-              onChanged: (v) => setState(() => _searchQuery = v),
+              onChanged: _onSearchChanged,
               decoration: InputDecoration(
                 hintText: l10n.searchHint,
                 prefixIcon: const Icon(LucideIcons.search, color: AppTheme.textDim),
@@ -415,10 +404,174 @@ class _HistoryScreenState extends State<HistoryScreen> {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => context.pushNamed('create-set'),
-        child: const Icon(LucideIcons.plus, size: 32),
+    );
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// PRIVATE DIALOG WIDGETS — Each owns and disposes its own controllers.
+// Senior pattern: Never create TextEditingControllers inside a builder() closure.
+// ─────────────────────────────────────────────────────────────────────────────
+
+/// Dialog for editing a word's original text and translation.
+class _EditWordDialog extends StatefulWidget {
+  final WordModel word;
+  final String setId;
+
+  const _EditWordDialog({required this.word, required this.setId});
+
+  @override
+  State<_EditWordDialog> createState() => _EditWordDialogState();
+}
+
+class _EditWordDialogState extends State<_EditWordDialog> {
+  late final TextEditingController _originalController;
+  late final TextEditingController _translationController;
+
+  @override
+  void initState() {
+    super.initState();
+    _originalController = TextEditingController(text: widget.word.original);
+    _translationController = TextEditingController(text: widget.word.translation);
+  }
+
+  @override
+  void dispose() {
+    _originalController.dispose();
+    _translationController.dispose();
+    super.dispose();
+  }
+
+  void _save() {
+    final originalText = _originalController.text.trim();
+    final translationText = _translationController.text.trim();
+    if (originalText.isEmpty || translationText.isEmpty) return;
+
+    final provider = context.read<VocabSetProvider>();
+    final updatedWord = widget.word.copyWith(
+      original: originalText,
+      translation: translationText,
+    );
+    final set = provider.getSetById(widget.setId);
+    if (set != null) {
+      final updatedWords =
+          set.words.map((w) => w.id == widget.word.id ? updatedWord : w).toList();
+      provider.updateVocabSet(set.copyWith(words: updatedWords));
+    }
+
+    Navigator.of(context).pop();
+
+    // Show snackbar using root context after dialog closes
+    final l10n = AppLocalizations.of(context)!;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(l10n.wordUpdated),
+        backgroundColor: Colors.greenAccent.withValues(alpha: 0.85),
       ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    return AlertDialog(
+      backgroundColor: AppTheme.surfaceNavy,
+      title: Text(
+        l10n.editWord,
+        style: const TextStyle(color: AppTheme.electricGold),
+      ),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          TextField(
+            controller: _originalController,
+            autofocus: true,
+            decoration: InputDecoration(labelText: l10n.originalWord),
+            textInputAction: TextInputAction.next,
+          ),
+          const SizedBox(height: 16),
+          TextField(
+            controller: _translationController,
+            decoration: InputDecoration(labelText: l10n.translationWord),
+            textInputAction: TextInputAction.done,
+            onSubmitted: (_) => _save(),
+          ),
+        ],
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: Text(l10n.cancel, style: const TextStyle(color: AppTheme.textDim)),
+        ),
+        ElevatedButton(
+          onPressed: _save,
+          child: Text(l10n.save),
+        ),
+      ],
+    );
+  }
+}
+
+/// Dialog for renaming a collection's title.
+class _EditTitleDialog extends StatefulWidget {
+  final VocabSetModel set;
+
+  const _EditTitleDialog({required this.set});
+
+  @override
+  State<_EditTitleDialog> createState() => _EditTitleDialogState();
+}
+
+class _EditTitleDialogState extends State<_EditTitleDialog> {
+  late final TextEditingController _titleController;
+
+  @override
+  void initState() {
+    super.initState();
+    _titleController = TextEditingController(text: widget.set.title);
+  }
+
+  @override
+  void dispose() {
+    _titleController.dispose();
+    super.dispose();
+  }
+
+  void _save() {
+    final newTitle = _titleController.text.trim();
+    if (newTitle.isEmpty) return;
+    context.read<VocabSetProvider>().updateVocabSet(
+          widget.set.copyWith(title: newTitle),
+        );
+    Navigator.of(context).pop();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    return AlertDialog(
+      backgroundColor: AppTheme.surfaceNavy,
+      title: Text(
+        l10n.editSetTitle,
+        style: const TextStyle(color: AppTheme.electricGold),
+      ),
+      content: TextField(
+        controller: _titleController,
+        autofocus: true,
+        decoration: InputDecoration(labelText: l10n.collectionNameLabel),
+        textInputAction: TextInputAction.done,
+        onSubmitted: (_) => _save(),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: Text(l10n.cancel, style: const TextStyle(color: AppTheme.textDim)),
+        ),
+        ElevatedButton(
+          onPressed: _save,
+          child: Text(l10n.save),
+        ),
+      ],
     );
   }
 }

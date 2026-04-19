@@ -30,7 +30,7 @@ class AppLocalizationsUz extends AppLocalizations {
   String get settings => 'Sozlamalar';
 
   @override
-  String get history => 'Tarix';
+  String get history => 'To\'plamlar';
 
   @override
   String get collections => 'To\'plamlar';
@@ -105,7 +105,7 @@ class AppLocalizationsUz extends AppLocalizations {
   String get appInfo => 'ILOVA HAQIDA';
 
   @override
-  String get appVersion => 'Nayza Vocab v1.0.0\nCreated for Nayzadorlar 🔱';
+  String get appVersion => 'Nayza Vocab v1.0.1\nCreated for Nayzadorlar 🔱';
 
   @override
   String get language => 'Til';
@@ -149,6 +149,9 @@ class AppLocalizationsUz extends AppLocalizations {
 
   @override
   String get editWord => 'SO\'ZNI TAHRIRLASH';
+
+  @override
+  String get editSetTitle => 'TO\'PLAM NOMINI O\'ZGARTIRISH';
 
   @override
   String get originalWord => 'Asl so\'z';
@@ -446,4 +449,26 @@ class AppLocalizationsUz extends AppLocalizations {
 
   @override
   String get onboardingGetStarted => 'BOSHLASH';
+
+  @override
+  String get skip => 'O\'TKAZIB YUBORISH';
+
+  @override
+  String get submitAnswer => 'TASDIQLASH';
+
+  @override
+  String get collectionsPageTitle => 'TO\'PLAMLAR';
+
+  @override
+  String get cancelReminder => 'Eslatmani bekor qilish';
+
+  @override
+  String get resetAllData => 'Barcha ma\'lumotlarni o\'chirish';
+
+  @override
+  String get resetAllDataConfirm =>
+      'Bu barcha to\'plamlar va progressingizni butunlay o\'chirib tashlaydi. Ishonchingiz komilmi?';
+
+  @override
+  String get deleteSetConfirm => 'Ushbu to\'plamni o\'chirishni xohlaysizmi?';
 }
