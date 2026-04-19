@@ -230,6 +230,12 @@ class SettingsPage extends StatelessWidget {
           _buildLanguageOption(context, settings, 'ru', l10n.russian, LucideIcons.languages),
           const Divider(color: AppTheme.borderNavy, height: 1),
           _buildLanguageOption(context, settings, 'en', l10n.english, LucideIcons.languages),
+          const Divider(color: AppTheme.borderNavy, height: 1),
+          _buildLanguageOption(context, settings, 'ar', l10n.arabicLang, LucideIcons.languages),
+          const Divider(color: AppTheme.borderNavy, height: 1),
+          _buildLanguageOption(context, settings, 'de', l10n.germanLang, LucideIcons.languages),
+          const Divider(color: AppTheme.borderNavy, height: 1),
+          _buildLanguageOption(context, settings, 'ko', l10n.koreanLang, LucideIcons.languages),
         ],
       ),
     );

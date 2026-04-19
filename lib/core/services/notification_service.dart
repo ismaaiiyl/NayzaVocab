@@ -19,11 +19,21 @@ class NotificationService {
 
     try {
       tz.initializeTimeZones();
-      final String timeZoneName = (await FlutterTimezone.getLocalTimezone()).toString();
+      final timezoneInfo = await FlutterTimezone.getLocalTimezone();
+      String timeZoneName = timezoneInfo.toString();
+      
+      // Fix for some emulators/devices returning a full TimezoneInfo object string
+      if (timeZoneName.startsWith('TimezoneInfo(')) {
+        final parts = timeZoneName.split(',');
+        if (parts.isNotEmpty) {
+          timeZoneName = parts[0].replaceAll('TimezoneInfo(', '').trim();
+        }
+      }
+      
       tz.setLocalLocation(tz.getLocation(timeZoneName));
       
       const AndroidInitializationSettings initializationSettingsAndroid =
-          AndroidInitializationSettings('@mipmap/ic_launcher');
+          AndroidInitializationSettings('@mipmap/launcher_icon');
 
       const InitializationSettings initializationSettings = InitializationSettings(
         android: initializationSettingsAndroid,

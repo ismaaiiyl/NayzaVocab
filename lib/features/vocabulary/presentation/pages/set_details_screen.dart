@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:nayza_vocab/core/widgets/nayza_widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nayza_vocab/l10n/generated/app_localizations.dart';
+import 'package:nayza_vocab/core/services/data_service.dart';
 
 class SetDetailsScreen extends StatefulWidget {
   final String setId;
@@ -26,7 +27,7 @@ class _SetDetailsScreenState extends State<SetDetailsScreen> {
 
     final newWord = await showDialog<WordModel>(
       context: context,
-      builder: (context) => AddEditWordDialog(word: existingWord),
+      builder: (context) => AddEditWordDialog(word: existingWord, setId: widget.setId),
     );
 
     if (newWord != null) {
@@ -55,6 +56,20 @@ class _SetDetailsScreenState extends State<SetDetailsScreen> {
           appBar: AppBar(
             title: Text(set.title.toUpperCase()),
             actions: [
+              IconButton(
+                icon: const Icon(LucideIcons.share2, color: AppTheme.electricGold, size: 20),
+                onPressed: () async {
+                  try {
+                    await DataService.shareSingleSet(set);
+                  } catch (e) {
+                    if (mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Ulashishda xatolik: $e')),
+                      );
+                    }
+                  }
+                },
+              ),
               IconButton(
                 icon: const Icon(LucideIcons.plus, color: AppTheme.electricGold),
                 onPressed: () => _showAddEditWordDialog(),

@@ -330,6 +330,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get uzbekLang => 'Uzbek (TTS off)';
 
   @override
+  String get germanLang => 'German';
+
+  @override
+  String get koreanLang => 'Korean';
+
+  @override
   String get wordPlaceholder => 'Word';
 
   @override

@@ -328,7 +328,13 @@ class AppLocalizationsUz extends AppLocalizations {
   String get russianLang => 'Rus tili';
 
   @override
-  String get uzbekLang => 'O\'zbek tili (TTS o\'chiq)';
+  String get uzbekLang => 'O\'zbek (Ovozli o\'qish yo\'q)';
+
+  @override
+  String get germanLang => 'Nemis';
+
+  @override
+  String get koreanLang => 'Koreys';
 
   @override
   String get wordPlaceholder => 'So\'z';

@@ -1,0 +1,208 @@
+{
+  "appTitle": "Nayza Vocab",
+  "homeTitle": "تحقق من معرفتك!",
+  "homeSubtitle": "اختر مجموعاتك وابدأ الاختبار.",
+  "startTest": "ابدأ الاختبار",
+  "matchingGame": "لعبة المطابقة",
+  "manageCollections": "إدارة المجموعات",
+  "settings": "الإعدادات",
+  "history": "السجل",
+  "collections": "المجموعات",
+  "difficultWordsTitle": "كلمات صعبة",
+  "difficultWordsSubtitle": "لديك {count} كلمات صعبة",
+  "difficultSetTitle": "الكلمات الصعبة #{number}",
+  "@difficultSetTitle": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "removeFromDifficult": "إزالة من قائمة الكلمات الصعبة",
+  "noDifficultWords": "لا توجد كلمات صعبة حتى الآن. استمر في التدريب!",
+  "myCollectionsHeader": "مجموعاتي",
+  "difficultCollectionsHeader": "مجموعات صعبة",
+  "@difficultWordsSubtitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "muteOn": "إلغاء كتم الصوت",
+  "muteOff": "كتم الصوت",
+  "dataManagement": "إدارة البيانات",
+  "export": "تصدير (نسخة احتياطية)",
+  "exportSubtitle": "تحديد ونسخ المجموعات احتياطياً",
+  "import": "استيراد (استعادة)",
+  "importSubtitle": "تحميل المجموعات من ملف JSON",
+  "notifications": "الإشعارات",
+  "dailyReminder": "تذكير يومي",
+  "reminderSubtitle": "تذكير يومي في {time}",
+  "@reminderSubtitle": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "reminderDefault": "تذكير بالكلمات الصعبة يومياً",
+  "reminderSetSuccess": "تم تعيين التذكير اليومي في {time}",
+  "appInfo": "معلومات التطبيق",
+  "appVersion": "Nayza Vocab v1.0.0\nتم الإنشاء لـ Nayzadorlar 🔱",
+  "language": "اللغة",
+  "uzbek": "الأوزبكية",
+  "russian": "الروسية",
+  "english": "الإنجليزية",
+  "importSuccess": "تم استيراد {count} مجموعة بنجاح",
+  "importError": "خطأ في الاستيراد: {error}",
+  "historyTitle": "مجموعاتي",
+  "searchHint": "ابحث عن مجموعة أو كلمة...",
+  "noResults": "لم يتم العثور على نتائج",
+  "noCollections": "لا توجد مجموعات حتى الآن",
+  "collectionsLabel": "المجموعات",
+  "foundWordsLabel": "الكلمات الموجودة",
+  "editWord": "تعديل الكلمة",
+  "originalWord": "الكلمة الأصلية",
+  "translationWord": "الترجمة",
+  "cancel": "إلغاء",
+  "save": "حفظ",
+  "wordUpdated": "تم تحديث الكلمة",
+  "wordCountLabel": "{count} كلمات",
+  "@wordCountLabel": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "selectCollectionsTitle": "تحديد المجموعات",
+  "emptyCollectionsWarning": "يجب عليك إنشاء مجموعة واحدة على الأقل أولاً.",
+  "selectAll": "تحديد الكل",
+  "deselectAll": "إلغاء تحديد الكل",
+  "selectToStart": "حدد للبدء",
+  "emptySelectionWarning": "المجموعات المحددة فارغة!",
+  "quizSetupTitle": "إعداد الاختبار",
+  "selectQuizMode": "حدد وضع الاختبار",
+  "selectDirection": "اتجاه الاختبار",
+  "start": "ابدأ",
+  "choiceMode": "اختيار من متعدد",
+  "choiceSubtitle": "اختر من 4 خيارات",
+  "inputMode": "كتابة",
+  "inputSubtitle": "اكتب الإجابة بنفسك",
+  "flashcardMode": "بطاقة تعليمية",
+  "flashcardSubtitle": "تكرار كلاسيكي",
+  "matchingMode": "مطابقة",
+  "matchingSubtitle": "ابحث عن الأزواج",
+  "originalToTranslation": "الأصلي -> الترجمة",
+  "translationToOriginal": "الترجمة -> الأصلي",
+  "randomDirection": "مختلط (عشوائي)",
+  "originalToTranslationSubtitle": "مثال: الإنجليزية -> الأوزبكية",
+  "translationToOriginalSubtitle": "مثال: الأوزبكية -> الإنجليزية",
+  "randomDirectionSubtitle": "تغيير عشوائي",
+  "correctAnswerLabel": "الإجابة الصحيحة: {answer}",
+  "@correctAnswerLabel": {
+    "placeholders": {
+      "answer": {
+        "type": "String"
+      }
+    }
+  },
+  "typeTranslationHint": "اكتب الترجمة...",
+  "summaryTitle": "ملخص الاختبار",
+  "scoreLabel": "نتيجتك: {score}",
+  "@scoreLabel": {
+    "placeholders": {
+      "score": {
+        "type": "int"
+      }
+    }
+  },
+  "correctCountLabel": "صحيح: {count}",
+  "incorrectCountLabel": "غير صحيح: {count}",
+  "finish": "إنهاء",
+  "tryAgain": "حاول مرة أخرى",
+  "learnedWordsCount": "لقد أتقنت {count} كلمة في هذه الجلسة!",
+  "flashcardLabel": "بطاقة تعليمية",
+  "knowWord": "أعرف",
+  "dontKnowWord": "لا أعرف",
+  "matchingGameTitle": "لعبة المطابقة",
+  "findPairsLabel": "ابحث عن الأزواج",
+  "stageLabel": "المرحلة {count}",
+  "@stageLabel": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "gameOverTitle": "انتهت اللعبة!",
+  "createSetTitle": "مجموعة جديدة",
+  "collectionNameLabel": "اسم المجموعة",
+  "collectionNameHint": "مثل: السفر، العائلة...",
+  "nameRequiredError": "يرجى إدخال اسم",
+  "languageLabel": "لغة التعلم",
+  "englishLang": "الإنجليزية",
+  "arabicLang": "العربية",
+  "russianLang": "الروسية",
+  "uzbekLang": "الأوزبكية (بدون نطق)",
+  "germanLang": "الألمانية",
+  "koreanLang": "الكورية",
+  "wordPlaceholder": "كلمة",
+  "translationPlaceholder": "ترجمة",
+  "addRowButton": "إضافة صف",
+  "atLeastOneWordWarning": "أدخل كلمة واحدة على الأقل",
+  "setNotFound": "المجموعة غير موجودة.",
+  "deleteSetTitle": "حذف المجموعة",
+  "deleteSetConfirmation": "هل أنت متأكد أنك تريد حذف \"{title}\"؟",
+  "@deleteSetConfirmation": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "cancel": "إلغاء",
+  "delete": "حذف",
+  "addWord": "إضافة كلمة",
+  "editWord": "تعديل الكلمة",
+  "emptySetWarning": "هذه المجموعة فارغة.",
+  "wordsFoundCount": "متوفر {count} كلمات",
+  "@wordsFoundCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "masteryExplanation": "تعتبر الكلمة متقنة بعد إجابة واحدة صحيحة",
+  "progressLabel": "التقدم",
+  "selectSetsTitle": "تحديد المجموعات",
+  "selectAtLeastOneSet": "يرجى تحديد مجموعة واحدة على الأقل.",
+  "exportSuccess": "اكتمل التصدير بنجاح!",
+  "exportError": "خطأ في التصدير: {error}",
+  "@exportError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "wordsCountLabel": "{count} كلمات",
+  "@wordsCountLabel": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "exportAction": "تصدير ({count})",
+  "onboardingWelcome": "مرحباً بكم في NAYZA VOCAB",
+  "onboardingPage1Title": "أتقن مفرداتك",
+  "onboardingPage1Subtitle": "أقوى طريقة لتعلم وتذكر الكلمات الجديدة بأساليب مدعومة علمياً.",
+  "onboardingPage2Title": "بطاقات تعليمية وألعاب",
+  "onboardingPage2Subtitle": "اختبارات تفاعلية وألعاب مطابقة مصممة لجعل التعلم إدماناً.",
+  "onboardingPage3Title": "تتبع تقدمك",
+  "onboardingPage3Subtitle": "شاهد تحسنك بمرور الوقت وركز على الكلمات الصعبة.",
+  "onboardingGetStarted": "البدء"
+}

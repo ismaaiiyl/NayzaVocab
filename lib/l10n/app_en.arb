@@ -146,6 +146,8 @@
   "arabicLang": "Arabic",
   "russianLang": "Russian",
   "uzbekLang": "Uzbek (TTS off)",
+  "germanLang": "German",
+  "koreanLang": "Korean",
   "wordPlaceholder": "Word",
   "translationPlaceholder": "Translation",
   "addRowButton": "ADD ROW",

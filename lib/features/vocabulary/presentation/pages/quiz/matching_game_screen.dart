@@ -107,7 +107,7 @@ class _MatchingGameScreenState extends State<MatchingGameScreen> {
         // MATCH!
         _audioHelper.playSuccess();
         quizProvider.markCorrect();
-        context.read<VocabSetProvider>().updateWordStats(_firstSelection!.pairId, isCorrect: true);
+        context.read<VocabSetProvider>().updateWordStats(word1, isCorrect: true);
         
         setState(() {
           _correctSelection = _firstSelection;
@@ -136,7 +136,7 @@ class _MatchingGameScreenState extends State<MatchingGameScreen> {
         // WRONG
         _audioHelper.playError();
         quizProvider.markIncorrect(word1);
-        context.read<VocabSetProvider>().updateWordStats(word1.id, isCorrect: false);
+        context.read<VocabSetProvider>().updateWordStats(word1, isCorrect: false);
 
         setState(() {
           _wrongSelection = _firstSelection;

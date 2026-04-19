@@ -143,11 +143,11 @@ class _QuizScreenState extends State<QuizScreen> {
 
     if (correct) {
       context.read<QuizProvider>().markCorrect();
-      context.read<VocabSetProvider>().updateWordStats(currentQuestion.word.id, isCorrect: true);
+      context.read<VocabSetProvider>().updateWordStats(currentQuestion.word, isCorrect: true);
       _audioHelper.playSuccess();
     } else {
       context.read<QuizProvider>().markIncorrect(currentQuestion.word);
-      context.read<VocabSetProvider>().updateWordStats(currentQuestion.word.id, isCorrect: false);
+      context.read<VocabSetProvider>().updateWordStats(currentQuestion.word, isCorrect: false);
       _audioHelper.playError();
     }
 

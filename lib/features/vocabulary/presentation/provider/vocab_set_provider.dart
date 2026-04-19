@@ -13,10 +13,6 @@ class VocabSetProvider with ChangeNotifier {
   List<VocabSetModel> _vocabSets = [];
   final Uuid _uuid = const Uuid();
 
-  // O(1) lookup: wordId → setId
-  // Maintains a global index for constant-time updates across the app.
-  final Map<String, String> _wordSetIndex = {};
-
   VocabSetProvider(this._vocabSetBox) {
     _loadVocabSets();
   }
@@ -28,17 +24,7 @@ class VocabSetProvider with ChangeNotifier {
   void _loadVocabSets() {
     _vocabSets = _vocabSetBox.values.toList();
     _vocabSets.sort((a, b) => b.createdAt.compareTo(a.createdAt));
-    _rebuildWordSetIndex();
     notifyListeners();
-  }
-
-  void _rebuildWordSetIndex() {
-    _wordSetIndex.clear();
-    for (var set in _vocabSets) {
-      for (var word in set.words) {
-        _wordSetIndex[word.id] = set.id;
-      }
-    }
   }
 
   // ─── CRUD Operations ───────────────────────────────────────────────────────
@@ -83,14 +69,14 @@ class VocabSetProvider with ChangeNotifier {
 
   // ─── Optimized Word Updates ────────────────────────────────────────────────
 
-  Future<void> updateWordStats(String wordId, {bool isCorrect = true}) async {
-    final setId = _wordSetIndex[wordId];
-    if (setId == null) return;
+  Future<void> updateWordStats(WordModel word, {bool isCorrect = true}) async {
+    final setId = word.setId;
+    if (setId.isEmpty) return;
 
     final set = getSetById(setId);
     if (set == null) return;
 
-    final index = set.words.indexWhere((w) => w.id == wordId);
+    final index = set.words.indexWhere((w) => w.id == word.id);
     if (index == -1) return;
 
     final oldWord = set.words[index];
@@ -111,7 +97,7 @@ class VocabSetProvider with ChangeNotifier {
     }
 
     final updatedWord = oldWord.copyWith(
-      correctAnswersCount: isCorrect ? oldWord.correctAnswersCount + 1 : oldWord.correctAnswersCount,
+      correctAnswersCount: isCorrect ? oldWord.correctAnswersCount + 1 : 0,
       wrongAttempts: isCorrect ? oldWord.wrongAttempts : oldWord.wrongAttempts + 1,
       isDifficult: willBeDifficult,
       lastTestedAt: DateTime.now(),
@@ -119,11 +105,20 @@ class VocabSetProvider with ChangeNotifier {
 
     final updatedWords = List<WordModel>.from(set.words);
     updatedWords[index] = updatedWord;
-    await updateVocabSet(set.copyWith(words: updatedWords));
+    
+    final updatedSet = set.copyWith(words: updatedWords);
+    await _vocabSetBox.put(updatedSet.id, updatedSet);
+    
+    // O(1) in-memory update instead of _loadVocabSets() full rebuild
+    final setIndex = _vocabSets.indexWhere((s) => s.id == updatedSet.id);
+    if (setIndex != -1) {
+      _vocabSets[setIndex] = updatedSet;
+    }
+    notifyListeners();
   }
 
-  Future<void> resetWordDifficultStatus(String wordId) async {
-    await updateWordStats(wordId, isCorrect: true);
+  Future<void> resetWordDifficultStatus(WordModel word) async {
+    await updateWordStats(word, isCorrect: true);
   }
 
   // ─── Query Helpers ─────────────────────────────────────────────────────────

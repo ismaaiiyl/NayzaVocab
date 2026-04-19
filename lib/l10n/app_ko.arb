@@ -1,0 +1,208 @@
+{
+  "appTitle": "Nayza Vocab",
+  "homeTitle": "당신의 지식을 확인하세요!",
+  "homeSubtitle": "컬렉션을 선택하고 테스트를 시작하세요.",
+  "startTest": "테스트 시작",
+  "matchingGame": "매칭 게임",
+  "manageCollections": "컬렉션 관리",
+  "settings": "설정",
+  "history": "기록",
+  "collections": "컬렉션",
+  "difficultWordsTitle": "어려운 단어",
+  "difficultWordsSubtitle": "{count}개의 어려운 단어가 있습니다",
+  "difficultSetTitle": "어려운 단어 #{number}",
+  "@difficultSetTitle": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "removeFromDifficult": "어려운 단어 목록에서 제거",
+  "noDifficultWords": "어려운 단어가 없습니다. 계속 연습하세요!",
+  "myCollectionsHeader": "내 컬렉션",
+  "difficultCollectionsHeader": "어려운 세트",
+  "@difficultWordsSubtitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "muteOn": "음소거 해제",
+  "muteOff": "음소거",
+  "dataManagement": "데이터 관리",
+  "export": "내보내기 (백업)",
+  "exportSubtitle": "컬렉션 선택 및 백업",
+  "import": "가져오기 (복원)",
+  "importSubtitle": "JSON 파일에서 컬렉션 로드",
+  "notifications": "알림",
+  "dailyReminder": "일일 알림",
+  "reminderSubtitle": "매일 {time}에 알림",
+  "@reminderSubtitle": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "reminderDefault": "매일 어려운 단어 알림",
+  "reminderSetSuccess": "{time}에 일일 알림이 설정되었습니다",
+  "appInfo": "앱 정보",
+  "appVersion": "Nayza Vocab v1.0.0\nNayzadorlar를 위해 제작됨 🔱",
+  "language": "언어",
+  "uzbek": "우즈베크어",
+  "russian": "러시아어",
+  "english": "영어",
+  "importSuccess": "{count}개의 컬렉션을 성공적으로 가져왔습니다",
+  "importError": "가져오기 오류: {error}",
+  "historyTitle": "내 컬렉션",
+  "searchHint": "컬렉션 또는 단어 검색...",
+  "noResults": "결과 없음",
+  "noCollections": "아직 컬렉션이 없습니다",
+  "collectionsLabel": "컬렉션",
+  "foundWordsLabel": "찾은 단어",
+  "editWord": "단어 편집",
+  "originalWord": "원래 단어",
+  "translationWord": "번역",
+  "cancel": "취소",
+  "save": "저장",
+  "wordUpdated": "단어 업데이트됨",
+  "wordCountLabel": "{count} 단어",
+  "@wordCountLabel": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "selectCollectionsTitle": "컬렉션 선택",
+  "emptyCollectionsWarning": "먼저 하나 이상의 컬렉션을 만들어야 합니다.",
+  "selectAll": "모두 선택",
+  "deselectAll": "선택 취소",
+  "selectToStart": "시작하려면 선택하세요",
+  "emptySelectionWarning": "선택한 컬렉션이 비어 있습니다!",
+  "quizSetupTitle": "퀴즈 설정",
+  "selectQuizMode": "퀴즈 모드 선택",
+  "selectDirection": "퀴즈 방향",
+  "start": "시작",
+  "choiceMode": "객관식",
+  "choiceSubtitle": "4가지 옵션 중 선택",
+  "inputMode": "쓰기",
+  "inputSubtitle": "직접 답을 입력하세요",
+  "flashcardMode": "플래시카드",
+  "flashcardSubtitle": "클래식 반복",
+  "matchingMode": "매칭",
+  "matchingSubtitle": "쌍 찾기",
+  "originalToTranslation": "원본 -> 번역",
+  "translationToOriginal": "번역 -> 원본",
+  "randomDirection": "혼합 (무작위)",
+  "originalToTranslationSubtitle": "예: 영어 -> 우즈베크어",
+  "translationToOriginalSubtitle": "예: 우즈베크어 -> 영어",
+  "randomDirectionSubtitle": "무작위로 번갈아가며",
+  "correctAnswerLabel": "정답: {answer}",
+  "@correctAnswerLabel": {
+    "placeholders": {
+      "answer": {
+        "type": "String"
+      }
+    }
+  },
+  "typeTranslationHint": "번역 입력...",
+  "summaryTitle": "퀴즈 요약",
+  "scoreLabel": "당신의 점수: {score}",
+  "@scoreLabel": {
+    "placeholders": {
+      "score": {
+        "type": "int"
+      }
+    }
+  },
+  "correctCountLabel": "맞음: {count}",
+  "incorrectCountLabel": "틀림: {count}",
+  "finish": "완료",
+  "tryAgain": "다시 시도",
+  "learnedWordsCount": "이 세션에서 {count} 단어를 마스터했습니다!",
+  "flashcardLabel": "플래시카드",
+  "knowWord": "알아요",
+  "dontKnowWord": "몰라요",
+  "matchingGameTitle": "매칭 게임",
+  "findPairsLabel": "쌍 찾기",
+  "stageLabel": "단계 {count}",
+  "@stageLabel": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "gameOverTitle": "게임 오버!",
+  "createSetTitle": "새 컬렉션",
+  "collectionNameLabel": "컬렉션 이름",
+  "collectionNameHint": "예: 여행, 가족...",
+  "nameRequiredError": "이름을 입력하세요",
+  "languageLabel": "학습 언어",
+  "englishLang": "영어",
+  "arabicLang": "아랍어",
+  "russianLang": "러시아어",
+  "uzbekLang": "우즈베크어 (TTS 꺼짐)",
+  "germanLang": "독일어",
+  "koreanLang": "한국어",
+  "wordPlaceholder": "단어",
+  "translationPlaceholder": "번역",
+  "addRowButton": "행 추가",
+  "atLeastOneWordWarning": "하나 이상의 단어를 입력하세요",
+  "setNotFound": "컬렉션을 찾을 수 없습니다.",
+  "deleteSetTitle": "컬렉션 삭제",
+  "deleteSetConfirmation": "\"{title}\" 컬렉션을 삭제하시겠습니까?",
+  "@deleteSetConfirmation": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "cancel": "취소",
+  "delete": "삭제",
+  "addWord": "단어 추가",
+  "editWord": "단어 편집",
+  "emptySetWarning": "이 컬렉션은 비어 있습니다.",
+  "wordsFoundCount": "사용 가능한 단어 {count}개",
+  "@wordsFoundCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "masteryExplanation": "1번 올바르게 대답하면 단어를 마스터한 것으로 간주됩니다",
+  "progressLabel": "진행률",
+  "selectSetsTitle": "컬렉션 선택",
+  "selectAtLeastOneSet": "적어도 하나의 컬렉션을 선택하세요.",
+  "exportSuccess": "내보내기가 성공적으로 완료되었습니다!",
+  "exportError": "내보내기 오류: {error}",
+  "@exportError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "wordsCountLabel": "{count} 단어",
+  "@wordsCountLabel": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "exportAction": "내보내기 ({count})",
+  "onboardingWelcome": "NAYZA VOCAB에 오신 것을 환영합니다",
+  "onboardingPage1Title": "어휘력 마스터",
+  "onboardingPage1Subtitle": "과학적으로 입증된 방법으로 새로운 단어를 배우고 기억하는 가장 강력한 방법입니다.",
+  "onboardingPage2Title": "플래시카드 및 게임",
+  "onboardingPage2Subtitle": "학습에 중독되게 만드는 대화형 퀴즈 및 매칭 게임.",
+  "onboardingPage3Title": "진행 상황 추적",
+  "onboardingPage3Subtitle": "시간이 지남에 따라 향상되는 것을 확인하고 어려운 단어에 집중하세요.",
+  "onboardingGetStarted": "시작하기"
+}

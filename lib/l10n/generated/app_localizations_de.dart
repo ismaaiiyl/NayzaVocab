@@ -1,0 +1,433 @@
+// ignore: unused_import
+import 'package:intl/intl.dart' as intl;
+import 'app_localizations.dart';
+
+// ignore_for_file: type=lint
+
+/// The translations for German (`de`).
+class AppLocalizationsDe extends AppLocalizations {
+  AppLocalizationsDe([String locale = 'de']) : super(locale);
+
+  @override
+  String get appTitle => 'Nayza Vocab';
+
+  @override
+  String get homeTitle => 'ÜBERPRÜFE DEIN WISSEN!';
+
+  @override
+  String get homeSubtitle => 'Wähle deine Sammlungen und starte den Test.';
+
+  @override
+  String get startTest => 'TEST STARTEN';
+
+  @override
+  String get matchingGame => 'ZUORDNUNGSSPIEL';
+
+  @override
+  String get manageCollections => 'SAMMLUNGEN VERWALTEN';
+
+  @override
+  String get settings => 'Einstellungen';
+
+  @override
+  String get history => 'Verlauf';
+
+  @override
+  String get collections => 'Sammlungen';
+
+  @override
+  String get difficultWordsTitle => 'SCHWIERIGE WÖRTER';
+
+  @override
+  String difficultWordsSubtitle(int count) {
+    return 'Du hast $count schwierige Wörter';
+  }
+
+  @override
+  String difficultSetTitle(int number) {
+    return 'Schwierige Wörter #$number';
+  }
+
+  @override
+  String get removeFromDifficult =>
+      'Aus der Liste schwieriger Wörter entfernen';
+
+  @override
+  String get noDifficultWords => 'Noch keine schwierigen Wörter. Übe weiter!';
+
+  @override
+  String get myCollectionsHeader => 'MEINE SAMMLUNGEN';
+
+  @override
+  String get difficultCollectionsHeader => 'SCHWIERIGE SAMMLUNGEN';
+
+  @override
+  String get muteOn => 'Stummschaltung aufheben';
+
+  @override
+  String get muteOff => 'Stummschalten';
+
+  @override
+  String get dataManagement => 'DATENVERWALTUNG';
+
+  @override
+  String get export => 'Exportieren (Backup)';
+
+  @override
+  String get exportSubtitle => 'Sammlungen auswählen und sichern';
+
+  @override
+  String get import => 'Importieren (Wiederherstellen)';
+
+  @override
+  String get importSubtitle => 'Sammlungen aus JSON-Datei laden';
+
+  @override
+  String get notifications => 'BENACHRICHTIGUNGEN';
+
+  @override
+  String get dailyReminder => 'Tägliche Erinnerung';
+
+  @override
+  String reminderSubtitle(String time) {
+    return 'Täglich um $time erinnern';
+  }
+
+  @override
+  String get reminderDefault => 'Täglich an schwierige Wörter erinnern';
+
+  @override
+  String reminderSetSuccess(Object time) {
+    return 'Tägliche Erinnerung für $time eingestellt';
+  }
+
+  @override
+  String get appInfo => 'APP INFO';
+
+  @override
+  String get appVersion => 'Nayza Vocab v1.0.0\nErstellt für Nayzadorlar 🔱';
+
+  @override
+  String get language => 'Sprache';
+
+  @override
+  String get uzbek => 'Usbekisch';
+
+  @override
+  String get russian => 'Russisch';
+
+  @override
+  String get english => 'Englisch';
+
+  @override
+  String importSuccess(Object count) {
+    return 'Erfolgreich $count Sammlungen importiert';
+  }
+
+  @override
+  String importError(Object error) {
+    return 'Importfehler: $error';
+  }
+
+  @override
+  String get historyTitle => 'MEINE SAMMLUNGEN';
+
+  @override
+  String get searchHint => 'Sammlung oder Wort suchen...';
+
+  @override
+  String get noResults => 'Keine Ergebnisse gefunden';
+
+  @override
+  String get noCollections => 'Noch keine Sammlungen';
+
+  @override
+  String get collectionsLabel => 'SAMMLUNGEN';
+
+  @override
+  String get foundWordsLabel => 'GEFUNDENE WÖRTER';
+
+  @override
+  String get editWord => 'WORT BEARBEITEN';
+
+  @override
+  String get originalWord => 'Originalwort';
+
+  @override
+  String get translationWord => 'Übersetzung';
+
+  @override
+  String get cancel => 'ABBRECHEN';
+
+  @override
+  String get save => 'SPEICHERN';
+
+  @override
+  String get wordUpdated => 'Wort aktualisiert';
+
+  @override
+  String wordCountLabel(int count) {
+    return '$count Wörter';
+  }
+
+  @override
+  String get selectCollectionsTitle => 'SAMMLUNGEN AUSWÄHLEN';
+
+  @override
+  String get emptyCollectionsWarning =>
+      'Du musst zuerst mindestens eine Sammlung erstellen.';
+
+  @override
+  String get selectAll => 'Alle auswählen';
+
+  @override
+  String get deselectAll => 'Auswahl aufheben';
+
+  @override
+  String get selectToStart => 'Zum Starten auswählen';
+
+  @override
+  String get emptySelectionWarning => 'Ausgewählte Sammlungen sind leer!';
+
+  @override
+  String get quizSetupTitle => 'QUIZ SETUP';
+
+  @override
+  String get selectQuizMode => 'QUIZ-MODUS AUSWÄHLEN';
+
+  @override
+  String get selectDirection => 'QUIZ-RICHTUNG';
+
+  @override
+  String get start => 'START';
+
+  @override
+  String get choiceMode => 'Multiple Choice';
+
+  @override
+  String get choiceSubtitle => 'Wähle aus 4 Optionen';
+
+  @override
+  String get inputMode => 'Schreiben';
+
+  @override
+  String get inputSubtitle => 'Tippe die Antwort selbst ein';
+
+  @override
+  String get flashcardMode => 'Lernkarte';
+
+  @override
+  String get flashcardSubtitle => 'Klassische Wiederholung';
+
+  @override
+  String get matchingMode => 'Zuordnung';
+
+  @override
+  String get matchingSubtitle => 'Finde die Paare';
+
+  @override
+  String get originalToTranslation => 'Original -> Übersetzung';
+
+  @override
+  String get translationToOriginal => 'Übersetzung -> Original';
+
+  @override
+  String get randomDirection => 'Gemischt (Zufall)';
+
+  @override
+  String get originalToTranslationSubtitle => 'Beispiel: Englisch -> Usbekisch';
+
+  @override
+  String get translationToOriginalSubtitle => 'Beispiel: Usbekisch -> Englisch';
+
+  @override
+  String get randomDirectionSubtitle => 'Zufällig abwechseln';
+
+  @override
+  String correctAnswerLabel(String answer) {
+    return 'Richtige Antwort: $answer';
+  }
+
+  @override
+  String get typeTranslationHint => 'Übersetzung eingeben...';
+
+  @override
+  String get summaryTitle => 'QUIZ-ZUSAMMENFASSUNG';
+
+  @override
+  String scoreLabel(int score) {
+    return 'DEIN ERGEBNIS: $score';
+  }
+
+  @override
+  String correctCountLabel(Object count) {
+    return 'Richtig: $count';
+  }
+
+  @override
+  String incorrectCountLabel(Object count) {
+    return 'Falsch: $count';
+  }
+
+  @override
+  String get finish => 'BEENDEN';
+
+  @override
+  String get tryAgain => 'ERNEUT VERSUCHEN';
+
+  @override
+  String learnedWordsCount(Object count) {
+    return 'Du hast $count Wörter in dieser Sitzung gemeistert!';
+  }
+
+  @override
+  String get flashcardLabel => 'LERNKARTE';
+
+  @override
+  String get knowWord => 'ICH WEISS ES';
+
+  @override
+  String get dontKnowWord => 'ICH WEISS ES NICHT';
+
+  @override
+  String get matchingGameTitle => 'ZUORDNUNGSSPIEL';
+
+  @override
+  String get findPairsLabel => 'FINDE DIE PAARE';
+
+  @override
+  String stageLabel(int count) {
+    return 'Stufe $count';
+  }
+
+  @override
+  String get gameOverTitle => 'SPIEL VORBEI!';
+
+  @override
+  String get createSetTitle => 'NEUE SAMMLUNG';
+
+  @override
+  String get collectionNameLabel => 'Name der Sammlung';
+
+  @override
+  String get collectionNameHint => 'z.B. Reisen, Familie...';
+
+  @override
+  String get nameRequiredError => 'Bitte einen Namen eingeben';
+
+  @override
+  String get languageLabel => 'Lernsprache';
+
+  @override
+  String get englishLang => 'Englisch';
+
+  @override
+  String get arabicLang => 'Arabisch';
+
+  @override
+  String get russianLang => 'Russisch';
+
+  @override
+  String get uzbekLang => 'Usbekisch (TTS aus)';
+
+  @override
+  String get germanLang => 'Deutsch';
+
+  @override
+  String get koreanLang => 'Koreanisch';
+
+  @override
+  String get wordPlaceholder => 'Wort';
+
+  @override
+  String get translationPlaceholder => 'Übersetzung';
+
+  @override
+  String get addRowButton => 'ZEILE HINZUFÜGEN';
+
+  @override
+  String get atLeastOneWordWarning => 'Gib mindestens ein Wort ein';
+
+  @override
+  String get setNotFound => 'Sammlung nicht gefunden.';
+
+  @override
+  String get deleteSetTitle => 'SAMMLUNG LÖSCHEN';
+
+  @override
+  String deleteSetConfirmation(String title) {
+    return 'Bist du sicher, dass du \"$title\" löschen möchtest?';
+  }
+
+  @override
+  String get delete => 'LÖSCHEN';
+
+  @override
+  String get addWord => 'WORT HINZUFÜGEN';
+
+  @override
+  String get emptySetWarning => 'Diese Sammlung ist leer.';
+
+  @override
+  String wordsFoundCount(int count) {
+    return '$count Wörter verfügbar';
+  }
+
+  @override
+  String get masteryExplanation =>
+      'Ein Wort gilt nach 1 richtigen Antwort als gemeistert';
+
+  @override
+  String get progressLabel => 'FORTSCHRITT';
+
+  @override
+  String get selectSetsTitle => 'SAMMLUNGEN AUSWÄHLEN';
+
+  @override
+  String get selectAtLeastOneSet => 'Bitte wähle mindestens eine Sammlung aus.';
+
+  @override
+  String get exportSuccess => 'Export erfolgreich abgeschlossen!';
+
+  @override
+  String exportError(String error) {
+    return 'Exportfehler: $error';
+  }
+
+  @override
+  String wordsCountLabel(int count) {
+    return '$count Wörter';
+  }
+
+  @override
+  String exportAction(Object count) {
+    return 'EXPORTIEREN ($count)';
+  }
+
+  @override
+  String get onboardingWelcome => 'WILLKOMMEN BEI NAYZA VOCAB';
+
+  @override
+  String get onboardingPage1Title => 'Meistere deinen Wortschatz';
+
+  @override
+  String get onboardingPage1Subtitle =>
+      'Der effektivste Weg, neue Wörter mit wissenschaftlich fundierten Methoden zu lernen.';
+
+  @override
+  String get onboardingPage2Title => 'Lernkarten & Spiele';
+
+  @override
+  String get onboardingPage2Subtitle =>
+      'Interaktive Quizze und Zuordnungsspiele, die das Lernen süchtig machen.';
+
+  @override
+  String get onboardingPage3Title => 'Verfolge deinen Fortschritt';
+
+  @override
+  String get onboardingPage3Subtitle =>
+      'Sieh dir deine Verbesserungen im Laufe der Zeit an und konzentriere dich auf schwierige Wörter.';
+
+  @override
+  String get onboardingGetStarted => 'LOSLEGEN';
+}

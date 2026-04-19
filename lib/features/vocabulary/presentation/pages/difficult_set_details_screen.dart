@@ -57,7 +57,7 @@ class DifficultSetDetailsScreen extends StatelessWidget {
                     trailing: IconButton(
                       icon: const Icon(LucideIcons.trash2, color: Colors.redAccent, size: 18),
                       tooltip: l10n.removeFromDifficult,
-                      onPressed: () => provider.resetWordDifficultStatus(word.id),
+                      onPressed: () => provider.resetWordDifficultStatus(word),
                     ),
                   ),
                 ),

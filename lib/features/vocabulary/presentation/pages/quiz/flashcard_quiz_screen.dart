@@ -52,11 +52,11 @@ class _FlashcardQuizScreenState extends State<FlashcardQuizScreen> with SingleTi
 
     if (known) {
       quizProvider.markCorrect();
-      context.read<VocabSetProvider>().updateWordStats(word.id, isCorrect: true);
+      context.read<VocabSetProvider>().updateWordStats(word, isCorrect: true);
       _audioHelper.playSuccess();
     } else {
       quizProvider.markIncorrect(word);
-      context.read<VocabSetProvider>().updateWordStats(word.id, isCorrect: false);
+      context.read<VocabSetProvider>().updateWordStats(word, isCorrect: false);
       _audioHelper.playError();
     }
 

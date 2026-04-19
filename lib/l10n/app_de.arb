@@ -1,0 +1,208 @@
+{
+  "appTitle": "Nayza Vocab",
+  "homeTitle": "ÜBERPRÜFE DEIN WISSEN!",
+  "homeSubtitle": "Wähle deine Sammlungen und starte den Test.",
+  "startTest": "TEST STARTEN",
+  "matchingGame": "ZUORDNUNGSSPIEL",
+  "manageCollections": "SAMMLUNGEN VERWALTEN",
+  "settings": "Einstellungen",
+  "history": "Verlauf",
+  "collections": "Sammlungen",
+  "difficultWordsTitle": "SCHWIERIGE WÖRTER",
+  "difficultWordsSubtitle": "Du hast {count} schwierige Wörter",
+  "difficultSetTitle": "Schwierige Wörter #{number}",
+  "@difficultSetTitle": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "removeFromDifficult": "Aus der Liste schwieriger Wörter entfernen",
+  "noDifficultWords": "Noch keine schwierigen Wörter. Übe weiter!",
+  "myCollectionsHeader": "MEINE SAMMLUNGEN",
+  "difficultCollectionsHeader": "SCHWIERIGE SAMMLUNGEN",
+  "@difficultWordsSubtitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "muteOn": "Stummschaltung aufheben",
+  "muteOff": "Stummschalten",
+  "dataManagement": "DATENVERWALTUNG",
+  "export": "Exportieren (Backup)",
+  "exportSubtitle": "Sammlungen auswählen und sichern",
+  "import": "Importieren (Wiederherstellen)",
+  "importSubtitle": "Sammlungen aus JSON-Datei laden",
+  "notifications": "BENACHRICHTIGUNGEN",
+  "dailyReminder": "Tägliche Erinnerung",
+  "reminderSubtitle": "Täglich um {time} erinnern",
+  "@reminderSubtitle": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "reminderDefault": "Täglich an schwierige Wörter erinnern",
+  "reminderSetSuccess": "Tägliche Erinnerung für {time} eingestellt",
+  "appInfo": "APP INFO",
+  "appVersion": "Nayza Vocab v1.0.0\nErstellt für Nayzadorlar 🔱",
+  "language": "Sprache",
+  "uzbek": "Usbekisch",
+  "russian": "Russisch",
+  "english": "Englisch",
+  "importSuccess": "Erfolgreich {count} Sammlungen importiert",
+  "importError": "Importfehler: {error}",
+  "historyTitle": "MEINE SAMMLUNGEN",
+  "searchHint": "Sammlung oder Wort suchen...",
+  "noResults": "Keine Ergebnisse gefunden",
+  "noCollections": "Noch keine Sammlungen",
+  "collectionsLabel": "SAMMLUNGEN",
+  "foundWordsLabel": "GEFUNDENE WÖRTER",
+  "editWord": "WORT BEARBEITEN",
+  "originalWord": "Originalwort",
+  "translationWord": "Übersetzung",
+  "cancel": "ABBRECHEN",
+  "save": "SPEICHERN",
+  "wordUpdated": "Wort aktualisiert",
+  "wordCountLabel": "{count} Wörter",
+  "@wordCountLabel": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "selectCollectionsTitle": "SAMMLUNGEN AUSWÄHLEN",
+  "emptyCollectionsWarning": "Du musst zuerst mindestens eine Sammlung erstellen.",
+  "selectAll": "Alle auswählen",
+  "deselectAll": "Auswahl aufheben",
+  "selectToStart": "Zum Starten auswählen",
+  "emptySelectionWarning": "Ausgewählte Sammlungen sind leer!",
+  "quizSetupTitle": "QUIZ SETUP",
+  "selectQuizMode": "QUIZ-MODUS AUSWÄHLEN",
+  "selectDirection": "QUIZ-RICHTUNG",
+  "start": "START",
+  "choiceMode": "Multiple Choice",
+  "choiceSubtitle": "Wähle aus 4 Optionen",
+  "inputMode": "Schreiben",
+  "inputSubtitle": "Tippe die Antwort selbst ein",
+  "flashcardMode": "Lernkarte",
+  "flashcardSubtitle": "Klassische Wiederholung",
+  "matchingMode": "Zuordnung",
+  "matchingSubtitle": "Finde die Paare",
+  "originalToTranslation": "Original -> Übersetzung",
+  "translationToOriginal": "Übersetzung -> Original",
+  "randomDirection": "Gemischt (Zufall)",
+  "originalToTranslationSubtitle": "Beispiel: Englisch -> Usbekisch",
+  "translationToOriginalSubtitle": "Beispiel: Usbekisch -> Englisch",
+  "randomDirectionSubtitle": "Zufällig abwechseln",
+  "correctAnswerLabel": "Richtige Antwort: {answer}",
+  "@correctAnswerLabel": {
+    "placeholders": {
+      "answer": {
+        "type": "String"
+      }
+    }
+  },
+  "typeTranslationHint": "Übersetzung eingeben...",
+  "summaryTitle": "QUIZ-ZUSAMMENFASSUNG",
+  "scoreLabel": "DEIN ERGEBNIS: {score}",
+  "@scoreLabel": {
+    "placeholders": {
+      "score": {
+        "type": "int"
+      }
+    }
+  },
+  "correctCountLabel": "Richtig: {count}",
+  "incorrectCountLabel": "Falsch: {count}",
+  "finish": "BEENDEN",
+  "tryAgain": "ERNEUT VERSUCHEN",
+  "learnedWordsCount": "Du hast {count} Wörter in dieser Sitzung gemeistert!",
+  "flashcardLabel": "LERNKARTE",
+  "knowWord": "ICH WEISS ES",
+  "dontKnowWord": "ICH WEISS ES NICHT",
+  "matchingGameTitle": "ZUORDNUNGSSPIEL",
+  "findPairsLabel": "FINDE DIE PAARE",
+  "stageLabel": "Stufe {count}",
+  "@stageLabel": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "gameOverTitle": "SPIEL VORBEI!",
+  "createSetTitle": "NEUE SAMMLUNG",
+  "collectionNameLabel": "Name der Sammlung",
+  "collectionNameHint": "z.B. Reisen, Familie...",
+  "nameRequiredError": "Bitte einen Namen eingeben",
+  "languageLabel": "Lernsprache",
+  "englishLang": "Englisch",
+  "arabicLang": "Arabisch",
+  "russianLang": "Russisch",
+  "uzbekLang": "Usbekisch (TTS aus)",
+  "germanLang": "Deutsch",
+  "koreanLang": "Koreanisch",
+  "wordPlaceholder": "Wort",
+  "translationPlaceholder": "Übersetzung",
+  "addRowButton": "ZEILE HINZUFÜGEN",
+  "atLeastOneWordWarning": "Gib mindestens ein Wort ein",
+  "setNotFound": "Sammlung nicht gefunden.",
+  "deleteSetTitle": "SAMMLUNG LÖSCHEN",
+  "deleteSetConfirmation": "Bist du sicher, dass du \"{title}\" löschen möchtest?",
+  "@deleteSetConfirmation": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "cancel": "ABBRECHEN",
+  "delete": "LÖSCHEN",
+  "addWord": "WORT HINZUFÜGEN",
+  "editWord": "WORT BEARBEITEN",
+  "emptySetWarning": "Diese Sammlung ist leer.",
+  "wordsFoundCount": "{count} Wörter verfügbar",
+  "@wordsFoundCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "masteryExplanation": "Ein Wort gilt nach 1 richtigen Antwort als gemeistert",
+  "progressLabel": "FORTSCHRITT",
+  "selectSetsTitle": "SAMMLUNGEN AUSWÄHLEN",
+  "selectAtLeastOneSet": "Bitte wähle mindestens eine Sammlung aus.",
+  "exportSuccess": "Export erfolgreich abgeschlossen!",
+  "exportError": "Exportfehler: {error}",
+  "@exportError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "wordsCountLabel": "{count} Wörter",
+  "@wordsCountLabel": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "exportAction": "EXPORTIEREN ({count})",
+  "onboardingWelcome": "WILLKOMMEN BEI NAYZA VOCAB",
+  "onboardingPage1Title": "Meistere deinen Wortschatz",
+  "onboardingPage1Subtitle": "Der effektivste Weg, neue Wörter mit wissenschaftlich fundierten Methoden zu lernen.",
+  "onboardingPage2Title": "Lernkarten & Spiele",
+  "onboardingPage2Subtitle": "Interaktive Quizze und Zuordnungsspiele, die das Lernen süchtig machen.",
+  "onboardingPage3Title": "Verfolge deinen Fortschritt",
+  "onboardingPage3Subtitle": "Sieh dir deine Verbesserungen im Laufe der Zeit an und konzentriere dich auf schwierige Wörter.",
+  "onboardingGetStarted": "LOSLEGEN"
+}

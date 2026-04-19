@@ -330,7 +330,13 @@ class AppLocalizationsRu extends AppLocalizations {
   String get russianLang => 'Русский';
 
   @override
-  String get uzbekLang => 'Узбекский (без озвучки)';
+  String get uzbekLang => 'Узбекский (Без озвучки)';
+
+  @override
+  String get germanLang => 'Немецкий';
+
+  @override
+  String get koreanLang => 'Корейский';
 
   @override
   String get wordPlaceholder => 'Слово';

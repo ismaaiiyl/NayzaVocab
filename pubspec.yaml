@@ -36,6 +36,7 @@ dependencies:
   dartz: ^0.10.1
   flutter_localizations:
     sdk: flutter
+  csv: ^8.0.0
 
 dev_dependencies:
   flutter_test:
