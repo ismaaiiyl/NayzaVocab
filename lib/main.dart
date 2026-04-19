@@ -23,6 +23,10 @@ void main() async {
   // Initialize Notifications
   await NotificationService().init();
 
+  // ✅ FALLBACK: Har ochilishda missed reminder tekshir + alarm yo'qolgan bo'lsa tiklash
+  // OEM (Xiaomi, Samsung) app o'ldirganda alarm ketadi — bu recovery mexanizmi
+  await NotificationService().checkAndRescheduleOnLaunch();
+
   // Initialize SharedPreferences
   final prefs = await SharedPreferences.getInstance();
 
@@ -50,7 +54,7 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             theme: AppTheme.darkTheme,
             locale: Locale(settings.languageCode),
-            routerConfig: AppRouter.router,
+            routerConfig: AppRouter.getRouter(settings),
             localizationsDelegates: const [
               AppLocalizations.delegate,
               GlobalMaterialLocalizations.delegate,

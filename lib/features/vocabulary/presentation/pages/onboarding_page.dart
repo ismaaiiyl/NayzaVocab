@@ -6,6 +6,7 @@ import 'package:nayza_vocab/features/settings/presentation/provider/settings_pro
 import 'package:provider/provider.dart';
 import 'package:nayza_vocab/l10n/generated/app_localizations.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+import 'package:nayza_vocab/core/services/notification_service.dart';
 
 class OnboardingPage extends StatefulWidget {
   const OnboardingPage({super.key});
@@ -96,6 +97,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                     text: l10n.onboardingGetStarted,
                     onPressed: () {
                       context.read<SettingsProvider>().completeOnboarding();
+                      NotificationService().requestPermissions();
                       context.goNamed('home');
                     },
                   )
@@ -105,15 +107,18 @@ class _OnboardingPageState extends State<OnboardingPage> {
                     children: [
                       TextButton(
                         onPressed: () {
-                          _pageController.animateToPage(
-                            contents.length - 1,
-                            duration: const Duration(milliseconds: 600),
-                            curve: Curves.easeInOutBack,
-                          );
+                          // Senior: Skip should take user directly to app
+                          context.read<SettingsProvider>().completeOnboarding();
+                          NotificationService().requestPermissions();
+                          context.goNamed('home');
                         },
-                        child: Text(
+                        child: const Text(
                           'SKIP',
-                          style: TextStyle(color: AppTheme.textDim.withValues(alpha: 0.5), letterSpacing: 1.2),
+                          style: TextStyle(
+                            color: Colors.redAccent, 
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 1.2,
+                          ),
                         ),
                       ),
                       IconButton.filled(

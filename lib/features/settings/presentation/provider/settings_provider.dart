@@ -44,12 +44,8 @@ class SettingsProvider with ChangeNotifier {
   }
 
   Future<void> saveReminderTime(int hour, int minute) async {
-    await _prefs.setInt('reminder_hour', hour);
-    await _prefs.setInt('reminder_minute', minute);
-    
-    // Reschedule in NotificationService
+    // NotificationService.scheduleDailyReminder() prefs ni o'zi saqlaydi
     await NotificationService().scheduleDailyReminder(hour: hour, minute: minute);
-    
     notifyListeners();
   }
   String? getReminderTimeStr() {
@@ -60,8 +56,7 @@ class SettingsProvider with ChangeNotifier {
   }
 
   Future<void> cancelReminder() async {
-    await _prefs.remove('reminder_hour');
-    await _prefs.remove('reminder_minute');
+    // NotificationService.cancelAll() prefs ni ham tozalaydi
     await NotificationService().cancelAll();
     notifyListeners();
   }

@@ -21,10 +21,13 @@ import 'package:nayza_vocab/features/navigation/presentation/main_screen.dart';
 import 'package:provider/provider.dart';
 
 class AppRouter {
-  static final router = GoRouter(
-    initialLocation: '/',
+  static GoRouter? _router;
+
+  static GoRouter getRouter(SettingsProvider settings) {
+    _router ??= GoRouter(
+      initialLocation: '/',
+      refreshListenable: settings,
     redirect: (context, state) {
-      final settings = context.read<SettingsProvider>();
       final bool onOnboarding = state.matchedLocation == '/onboarding';
 
       if (!settings.hasSeenOnboarding && !onOnboarding) {
@@ -161,7 +164,9 @@ class AppRouter {
         ],
       ),
     ],
-  );
+    );
+    return _router!;
+  }
 
   static CustomTransitionPage<void> _customPageTransition(Widget child) {
     return CustomTransitionPage(

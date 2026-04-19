@@ -68,8 +68,10 @@ class _MatchingGameScreenState extends State<MatchingGameScreen> {
 
     items.shuffle();
     setState(() {
-      _currentItems = items;
-      _firstSelection = null;
+      if (mounted) {
+        _currentItems = items;
+        _firstSelection = null;
+      }
     });
   }
 
@@ -284,5 +286,11 @@ class _MatchingGameScreenState extends State<MatchingGameScreen> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _audioHelper.stopAll();
+    super.dispose();
   }
 }

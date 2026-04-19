@@ -13,6 +13,10 @@ class VocabSetProvider with ChangeNotifier {
   List<VocabSetModel> _vocabSets = [];
   final Uuid _uuid = const Uuid();
 
+  // Senior: Cache for performance to avoid O(N) calculations in build methods
+  List<WordModel>? _cachedDifficultWords;
+  List<VocabSetModel>? _cachedDifficultVirtualSets;
+
   VocabSetProvider(this._vocabSetBox) {
     _loadVocabSets();
   }
@@ -24,7 +28,13 @@ class VocabSetProvider with ChangeNotifier {
   void _loadVocabSets() {
     _vocabSets = _vocabSetBox.values.toList();
     _vocabSets.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+    _clearCache();
     notifyListeners();
+  }
+
+  void _clearCache() {
+    _cachedDifficultWords = null;
+    _cachedDifficultVirtualSets = null;
   }
 
   // ─── CRUD Operations ───────────────────────────────────────────────────────
@@ -114,6 +124,7 @@ class VocabSetProvider with ChangeNotifier {
     if (setIndex != -1) {
       _vocabSets[setIndex] = updatedSet;
     }
+    _clearCache();
     notifyListeners();
   }
 
@@ -132,7 +143,7 @@ class VocabSetProvider with ChangeNotifier {
   }
 
   List<WordModel> getDifficultWords() {
-    return _vocabSets
+    return _cachedDifficultWords ??= _vocabSets
         .expand((s) => s.words)
         .where((w) => w.isDifficult)
         .toList();
@@ -140,6 +151,8 @@ class VocabSetProvider with ChangeNotifier {
 
   /// Groups all difficult words into virtual sets of 15 words each.
   List<VocabSetModel> getDifficultVirtualSets() {
+    if (_cachedDifficultVirtualSets != null) return _cachedDifficultVirtualSets!;
+
     final allDifficult = getDifficultWords();
     if (allDifficult.isEmpty) return [];
 
@@ -152,13 +165,13 @@ class VocabSetProvider with ChangeNotifier {
       
       virtualSets.add(VocabSetModel(
         id: 'difficult-group-${i ~/ groupSize}',
-        title: '', // Localized title is handled in HistoryScreen via l10n.difficultSetTitle
+        title: '', 
         words: group,
         createdAt: DateTime.now(),
       ));
     }
 
-    return virtualSets;
+    return _cachedDifficultVirtualSets = virtualSets;
   }
 
   Future<void> clearAllData() async {

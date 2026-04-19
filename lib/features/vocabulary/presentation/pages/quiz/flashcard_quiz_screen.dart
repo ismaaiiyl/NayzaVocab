@@ -67,7 +67,7 @@ class _FlashcardQuizScreenState extends State<FlashcardQuizScreen> with SingleTi
     }
 
     if (_currentIndex < quizProvider.trainingList.length - 1) {
-      setState(() => _currentIndex++);
+      if (mounted) setState(() => _currentIndex++);
     } else {
       _showSummary();
     }
@@ -253,6 +253,7 @@ class _FlashcardQuizScreenState extends State<FlashcardQuizScreen> with SingleTi
   @override
   void dispose() {
     _flipController.dispose();
+    _audioHelper.stopAll();
     super.dispose();
   }
 }

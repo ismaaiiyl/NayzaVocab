@@ -11,6 +11,10 @@ class AudioHelper {
   bool _isPlayerInitialized = false;
   bool _isTtsInitialized = false;
   
+  // Senior: Prevent rapid fire TTS calls that lag the UI
+  Timer? _debounceTimer;
+  String? _lastSpokenText;
+  
   static final AudioHelper _instance = AudioHelper._internal();
   factory AudioHelper() => _instance;
   
@@ -42,7 +46,7 @@ class AudioHelper {
       _isPlayerInitialized = true;
       
       await _tts.setVolume(1.0);
-      await _tts.setSpeechRate(0.52);
+      await _tts.setSpeechRate(0.45); // Senior: 0.45 is more stable across engines
       await _tts.setPitch(1.0);
       await _tts.awaitSpeakCompletion(true);
       
@@ -71,40 +75,54 @@ class AudioHelper {
   }
 
   Future<void> speak(String text, {String? langCode}) async {
-    if (isMuted) return;
-
-    try {
-      if (!_isTtsInitialized) await _initHelper();
-      
-      String locale = _normalizeLocale(langCode);
-      
-      // Senior-level check: Verify if the selected language is actually supported by the device
-      final dynamic avail = await _tts.isLanguageAvailable(locale);
-      final bool isAvailable = avail is bool ? avail : false;
-      if (!isAvailable) {
-        debugPrint('🔊 [AudioHelper] Language $locale not available, falling back to en-US');
-        locale = 'en-US';
-      }
-
-      await _tts.stop(); // Stop current speech before starting new one
-      
-      if (isMuted) return;
-
-      await _tts.setLanguage(locale);
-      await _tts.speak(text);
-      debugPrint('🔊 [AudioHelper] Speaking: $text in $locale');
-    } catch (e) {
-      debugPrint('🔊 [AudioHelper] TTS Exception: $e');
+    if (isMuted || text.isEmpty) return;
+    
+    // Prevent duplicate calls in rapid succession
+    if (_debounceTimer?.isActive ?? false) {
+      if (_lastSpokenText == text) return; 
+      _debounceTimer?.cancel();
     }
+    
+    _lastSpokenText = text;
+    _debounceTimer = Timer(const Duration(milliseconds: 300), () async {
+      try {
+        if (!_isTtsInitialized) await _initHelper();
+        
+        // Advanced Locale Detection: If langCode is wrong, try to guess from text
+        String locale = _normalizeLocale(langCode, text);
+        
+        final dynamic avail = await _tts.isLanguageAvailable(locale);
+        final bool isAvailable = avail is bool ? avail : false;
+        if (!isAvailable) {
+          locale = 'en-US';
+        }
+
+        await _tts.stop(); 
+        await _tts.setLanguage(locale);
+        await _tts.setVolume(1.0); // Boost volume
+        await _tts.setPitch(1.0);
+        await _tts.setSpeechRate(0.5);
+        await _tts.speak(text);
+        debugPrint('🔊 [AudioHelper] Speaking: $text in $locale');
+      } catch (e) {
+        debugPrint('🔊 [AudioHelper] TTS Exception: $e');
+      }
+    });
   }
 
-  String _normalizeLocale(String? code) {
-    if (code == null) return 'en-US';
-    final c = code.toLowerCase();
-    if (c.contains('uz') || c.contains('uzb')) return 'uz-UZ';
-    if (c.contains('ru')) return 'ru-RU';
-    if (c.contains('tr')) return 'tr-TR';
-    if (c.contains('ar')) return 'ar-SA';
+  String _normalizeLocale(String? code, String text) {
+    // If code is provided, trust it but check for common mismatches
+    if (code != null) {
+      final c = code.toLowerCase();
+      if (c.contains('uz')) return 'uz-UZ';
+      if (c.contains('ru')) return 'ru-RU';
+      if (c.contains('en')) return 'en-US';
+    }
+
+    // Heuristic: Check characters if code is missing or generic
+    final ruRegex = RegExp(r'[а-яА-ЯёЁ]');
+    if (ruRegex.hasMatch(text)) return 'ru-RU';
+    
     return 'en-US';
   }
 

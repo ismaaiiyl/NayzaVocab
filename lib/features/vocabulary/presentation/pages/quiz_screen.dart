@@ -65,10 +65,13 @@ class _QuizScreenState extends State<QuizScreen> {
     final quizProvider = context.read<QuizProvider>();
     final vocabSetProvider = context.read<VocabSetProvider>();
     final trainingList = quizProvider.trainingList;
+    
+    // Senior Optimization: Pre-calculate pools ONCE to avoid O(N^2) inside the loop
     final allWords = vocabSetProvider.vocabSets.expand((s) => s.words).toList();
-
+    final List<String> globalOriginals = allWords.map((w) => w.original).toList()..shuffle();
+    final List<String> globalTranslations = allWords.map((w) => w.translation).toList()..shuffle();
+    
     _questions = trainingList.asMap().entries.map((entry) {
-       final index = entry.key;
        final word = entry.value;
 
        final bool isReversed;
@@ -82,7 +85,13 @@ class _QuizScreenState extends State<QuizScreen> {
        final correctAnswer = isReversed ? word.original : word.translation;
        final displayLangCode = isReversed ? 'uz-UZ' : (word.langCode ?? 'en-US');
 
-       final options = _generateOptionsForWord(word, isReversed, trainingList, allWords);
+       // Use pre-calculated pools for better performance
+       final options = _generateOptionsForWord(
+         word, 
+         isReversed, 
+         trainingList, 
+         isReversed ? globalOriginals : globalTranslations
+       );
 
        return QuizQuestion(
          word: word,
@@ -95,7 +104,12 @@ class _QuizScreenState extends State<QuizScreen> {
     }).toList();
   }
 
-  List<String> _generateOptionsForWord(WordModel currentWord, bool isReversed, List<WordModel> trainingWords, List<WordModel> globalWords) {
+  List<String> _generateOptionsForWord(
+    WordModel currentWord, 
+    bool isReversed, 
+    List<WordModel> trainingWords, 
+    List<String> pool
+  ) {
     if (widget.quizMode != QuizMode.choice) return [];
 
     final String correctVal = (isReversed ? currentWord.original : currentWord.translation).trim();
@@ -107,21 +121,21 @@ class _QuizScreenState extends State<QuizScreen> {
     void addUnique(String t) {
       final trimmed = t.trim();
       final lowered = trimmed.toLowerCase();
-      if (!normalizedSet.contains(lowered)) {
+      if (trimmed.isNotEmpty && !normalizedSet.contains(lowered)) {
         uniqueOptions.add(trimmed);
         normalizedSet.add(lowered);
       }
     }
 
-    final pool = trainingWords.map((w) => isReversed ? w.original : w.translation).toList()..shuffle();
-    for (var t in pool) {
+    // First try from training list (contextual distractors)
+    for (var w in trainingWords) {
       if (uniqueOptions.length >= 4) break;
-      addUnique(t);
+      addUnique(isReversed ? w.original : w.translation);
     }
 
+    // Fill remaining from the pre-shuffled global pool
     if (uniqueOptions.length < 4) {
-      final globalPool = globalWords.map((w) => isReversed ? w.original : w.translation).toList()..shuffle();
-      for (var t in globalPool) {
+      for (var t in pool) {
         if (uniqueOptions.length >= 4) break;
         addUnique(t);
       }
@@ -153,7 +167,7 @@ class _QuizScreenState extends State<QuizScreen> {
     }
 
     try {
-      Future<void>.delayed(const Duration(milliseconds: 1500), () {
+      Future<void>.delayed(const Duration(milliseconds: 1000), () {
         if (mounted) {
           _nextQuestion();
         }
@@ -220,31 +234,39 @@ class _QuizScreenState extends State<QuizScreen> {
         itemCount: _questions.length,
         itemBuilder: (context, index) {
           final question = _questions[index];
-          return Padding(
-            padding: const EdgeInsets.all(24.0),
-            child: Column(
-              children: [
-                Hero(
-                  tag: 'quiz_progress_bar',
-                  child: NayzaProgressBar(
-                    current: _currentIndex + 1,
-                    total: _questions.length,
-                  ),
+          return SingleChildScrollView(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                minHeight: MediaQuery.of(context).size.height - AppBar().preferredSize.height - MediaQuery.of(context).padding.top - 48,
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(24.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Hero(
+                      tag: 'quiz_progress_bar',
+                      child: NayzaProgressBar(
+                        current: _currentIndex + 1,
+                        total: _questions.length,
+                      ),
+                    ),
+                    const SizedBox(height: 32),
+                    Text(
+                      question.displayWord,
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.displayLarge,
+                    ),
+                    IconButton(
+                      onPressed: () => _audioHelper.speak(question.displayWord, langCode: question.displayLangCode),
+                      icon: const Icon(LucideIcons.volume2, color: AppTheme.electricGold, size: 32),
+                    ),
+                    const SizedBox(height: 48),
+                    _buildResponseArea(question, l10n),
+                    const SizedBox(height: 32),
+                  ],
                 ),
-                const Spacer(),
-                Text(
-                  question.displayWord,
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.displayLarge,
-                ),
-                IconButton(
-                  onPressed: () => _audioHelper.speak(question.displayWord, langCode: question.displayLangCode),
-                  icon: const Icon(LucideIcons.volume2, color: AppTheme.electricGold, size: 32),
-                ),
-                const SizedBox(height: 48),
-                _buildResponseArea(question, l10n),
-                const Spacer(),
-              ],
+              ),
             ),
           );
         },
@@ -254,52 +276,55 @@ class _QuizScreenState extends State<QuizScreen> {
 
   Widget _buildResponseArea(QuizQuestion question, AppLocalizations l10n) {
     if (widget.quizMode == QuizMode.choice) {
-      return GridView.count(
-        shrinkWrap: true,
-        crossAxisCount: 2,
-        crossAxisSpacing: 16,
-        mainAxisSpacing: 16,
-        childAspectRatio: 1.5,
-        children: question.options.map((opt) {
-          Color cardColor = AppTheme.surfaceNavy;
-          Color borderColor = AppTheme.borderNavy;
-          
-          if (_isAnswered) {
-            if (opt == question.correctAnswer) {
-              cardColor = Colors.greenAccent.withValues(alpha: 0.4);
-              borderColor = Colors.greenAccent;
-            } else if (opt == _selectedAnswer) {
-              cardColor = Colors.redAccent.withValues(alpha: 0.3);
-              borderColor = Colors.redAccent;
+      return SizedBox(
+        height: 280, // Fixed height is much more performant than shrinkWrap
+        child: GridView.count(
+          physics: const NeverScrollableScrollPhysics(),
+          crossAxisCount: 2,
+          crossAxisSpacing: 16,
+          mainAxisSpacing: 16,
+          childAspectRatio: 1.5,
+          children: question.options.map((opt) {
+            Color cardColor = AppTheme.surfaceNavy;
+            Color borderColor = AppTheme.borderNavy;
+            
+            if (_isAnswered) {
+              if (opt == question.correctAnswer) {
+                cardColor = Colors.greenAccent.withValues(alpha: 0.4);
+                borderColor = Colors.greenAccent;
+              } else if (opt == _selectedAnswer) {
+                cardColor = Colors.redAccent.withValues(alpha: 0.3);
+                borderColor = Colors.redAccent;
+              }
             }
-          }
 
-          return GestureDetector(
-            onTap: () => _handleAnswer(opt),
-            child: AnimatedContainer(
-              duration: const Duration(milliseconds: 300),
-              decoration: BoxDecoration(
-                color: cardColor,
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: borderColor, width: 2),
-                boxShadow: _isAnswered && opt == question.correctAnswer ? [
-                  BoxShadow(color: Colors.greenAccent.withValues(alpha: 0.3), blurRadius: 15)
-                ] : [],
-              ),
-              child: Center(
-                child: Text(
-                  opt,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                    color: _isAnswered && opt == question.correctAnswer ? Colors.greenAccent : AppTheme.textMain,
+            return GestureDetector(
+              onTap: () => _handleAnswer(opt),
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
+                decoration: BoxDecoration(
+                  color: cardColor,
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(color: borderColor, width: 2),
+                  boxShadow: _isAnswered && opt == question.correctAnswer ? [
+                    BoxShadow(color: Colors.greenAccent.withValues(alpha: 0.3), blurRadius: 15)
+                  ] : [],
+                ),
+                child: Center(
+                  child: Text(
+                    opt,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: _isAnswered && opt == question.correctAnswer ? Colors.greenAccent : AppTheme.textMain,
+                    ),
                   ),
                 ),
               ),
-            ),
-          );
-        }).toList(),
+            );
+          }).toList(),
+        ),
       );
     } else {
       return Column(
