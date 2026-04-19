@@ -808,6 +808,24 @@ abstract class AppLocalizations {
   /// **'Set shared successfully!'**
   String get shareSuccess;
 
+  /// No description provided for @shareSubject.
+  ///
+  /// In en, this message translates to:
+  /// **'NayzaVocab: {title}'**
+  String shareSubject(Object title);
+
+  /// No description provided for @shareMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'📚 Nayza Vocab Set: {title}\n🌐 Language: {lang}\n📝 Words: {count}\n\nImport this file into Nayza Vocab to learn together!'**
+  String shareMessage(Object count, Object lang, Object title);
+
+  /// No description provided for @importedSuffix.
+  ///
+  /// In en, this message translates to:
+  /// **'(Imported)'**
+  String get importedSuffix;
+
   /// No description provided for @exportError.
   ///
   /// In en, this message translates to:

@@ -182,6 +182,9 @@
   "selectAtLeastOneSet": "Kamida bitta to'plamni tanlang.",
   "exportSuccess": "Eksport muvaffaqiyatli yakunlandi!",
   "shareSuccess": "To'plam muvaffaqiyatli ulashildi!",
+  "shareSubject": "NayzaVocab: {title}",
+  "shareMessage": "📚 Nayza Vocab To'plami: {title}\n🌐 Tili: {lang}\n📝 So'zlar soni: {count} ta\n\nUshbu faylni Nayza Vocab amaliyotiga Import qiling va lug'at boyligingizni oshiring!",
+  "importedSuffix": "(Import qilingan)",
   "exportError": "Eksportda xatolik: {error}",
   "@exportError": {
     "placeholders": {

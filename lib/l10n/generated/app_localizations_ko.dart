@@ -387,7 +387,20 @@ class AppLocalizationsKo extends AppLocalizations {
   String get exportSuccess => '내보내기가 성공적으로 완료되었습니다!';
 
   @override
-  String get shareSuccess => 'Set shared successfully!';
+  String get shareSuccess => '성공적으로 공유되었습니다!';
+
+  @override
+  String shareSubject(Object title) {
+    return 'NayzaVocab: $title';
+  }
+
+  @override
+  String shareMessage(Object count, Object lang, Object title) {
+    return '📚 Nayza Vocab 컬렉션: $title\n🌐 언어: $lang\n📝 단어 수: $count\n\n함께 학습하려면 이 파일을 Nayza Vocab으로 가져오세요!';
+  }
+
+  @override
+  String get importedSuffix => '(가져옴)';
 
   @override
   String exportError(String error) {

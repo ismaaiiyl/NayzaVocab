@@ -204,5 +204,9 @@
   "onboardingPage2Subtitle": "Interaktive Quizze und Zuordnungsspiele, die das Lernen süchtig machen.",
   "onboardingPage3Title": "Verfolge deinen Fortschritt",
   "onboardingPage3Subtitle": "Sieh dir deine Verbesserungen im Laufe der Zeit an und konzentriere dich auf schwierige Wörter.",
-  "onboardingGetStarted": "LOSLEGEN"
+  "onboardingGetStarted": "LOSLEGEN",
+  "shareSuccess": "Erfolgreich geteilt!",
+  "shareSubject": "NayzaVocab: {title}",
+  "shareMessage": "📚 Nayza Vocab Sammlung: {title}\n🌐 Sprache: {lang}\n📝 Wörter: {count}\n\nImportiere diese Datei in Nayza Vocab, um gemeinsam zu lernen!",
+  "importedSuffix": "(Importiert)"
 }

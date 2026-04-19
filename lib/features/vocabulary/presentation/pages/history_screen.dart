@@ -84,12 +84,47 @@ class _HistoryScreenState extends State<HistoryScreen> {
     );
   }
 
+  void _showEditTitleDialog(BuildContext context, VocabSetModel set) {
+    final l10n = AppLocalizations.of(context)!;
+    final titleController = TextEditingController(text: set.title);
+    
+    showDialog<void>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: AppTheme.surfaceNavy,
+        title: Text(l10n.editWord, style: const TextStyle(color: AppTheme.electricGold)), // Using editWord for title edit
+        content: TextField(
+          controller: titleController,
+          decoration: InputDecoration(labelText: l10n.collectionNameLabel),
+          autofocus: true,
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: Text(l10n.cancel, style: const TextStyle(color: AppTheme.textDim)),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              if (titleController.text.trim().isNotEmpty) {
+                final provider = context.read<VocabSetProvider>();
+                provider.updateVocabSet(set.copyWith(title: titleController.text.trim()));
+                Navigator.pop(ctx);
+              }
+            },
+            child: Text(l10n.save),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildDifficultSetCard(BuildContext context, VocabSetModel set, ThemeData theme, AppLocalizations l10n, int number) {
+    final title = l10n.difficultSetTitle(number);
     return Padding(
       padding: const EdgeInsets.only(bottom: 12.0),
       child: Card(
         child: InkWell(
-          onTap: () => context.pushNamed('difficult-set-details', extra: set.copyWith(title: l10n.difficultSetTitle(number))),
+          onTap: () => context.pushNamed('difficult-set-details', extra: set.copyWith(title: title)),
           borderRadius: BorderRadius.circular(16),
           child: Padding(
             padding: const EdgeInsets.all(20.0),
@@ -109,9 +144,11 @@ class _HistoryScreenState extends State<HistoryScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        l10n.difficultSetTitle(number), 
-                        style: theme.textTheme.titleLarge?.copyWith(color: AppTheme.electricGold, fontSize: 18),
-                        overflow: TextOverflow.ellipsis,
+                        title, 
+                        style: theme.textTheme.titleLarge?.copyWith(
+                          color: AppTheme.electricGold, 
+                          fontSize: title.length > 25 ? 16 : 18,
+                        ),
                       ),
                       const SizedBox(height: 4),
                       Text(
@@ -133,6 +170,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
   Widget _buildSetCard(BuildContext context, VocabSetModel set, ThemeData theme) {
     final progress = set.progressPercentage;
     final l10n = AppLocalizations.of(context)!;
+    final double titleFontSize = set.title.length > 20 ? 16 : 20;
+
     return Padding(
       padding: const EdgeInsets.only(bottom: 12.0),
       child: Hero(
@@ -153,34 +192,50 @@ class _HistoryScreenState extends State<HistoryScreen> {
                       children: [
                         // ─── LEFT STATUS INDICATOR ───────────────────────
                         Padding(
-                          padding: const EdgeInsets.only(right: 12.0, top: 2.0),
+                          padding: const EdgeInsets.only(right: 12.0, top: 4.0),
                           child: _buildSetStatusIndicator(set),
                         ),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                set.title, 
-                                style: theme.textTheme.titleLarge?.copyWith(color: AppTheme.electricGold, fontSize: 20),
-                                overflow: TextOverflow.ellipsis,
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      set.title, 
+                                      style: theme.textTheme.titleLarge?.copyWith(
+                                        color: AppTheme.electricGold, 
+                                        fontSize: titleFontSize,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                  IconButton(
+                                    icon: const Icon(LucideIcons.edit2, size: 16, color: AppTheme.textDim),
+                                    onPressed: () => _showEditTitleDialog(context, set),
+                                    padding: EdgeInsets.zero,
+                                    constraints: const BoxConstraints(),
+                                  ),
+                                ],
                               ),
                               const SizedBox(height: 8),
                               Row(
                                 children: [
                                   const Icon(LucideIcons.layers, size: 14, color: AppTheme.textDim),
                                   const SizedBox(width: 4),
-                                  Text(l10n.wordCountLabel(set.words.length), style: const TextStyle(color: AppTheme.textDim)),
+                                  Text(l10n.wordCountLabel(set.words.length), style: const TextStyle(color: AppTheme.textDim, fontSize: 12)),
                                   const SizedBox(width: 12),
                                   const Icon(LucideIcons.calendar, size: 14, color: AppTheme.textDim),
                                   const SizedBox(width: 4),
-                                  Text(DateFormat.yMMMd().format(set.createdAt), style: const TextStyle(color: AppTheme.textDim)),
+                                  Text(DateFormat.yMMMd().format(set.createdAt), style: const TextStyle(color: AppTheme.textDim, fontSize: 12)),
                                 ],
                               ),
                             ],
                           ),
                         ),
-                        const SizedBox(width: 8),
+                        const SizedBox(width: 12),
                         Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [

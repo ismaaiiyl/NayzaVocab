@@ -62,9 +62,13 @@ class _CreateSetScreenState extends State<CreateSetScreen> {
 
   void _removeRow(int index) {
     if (_rowControllers.length > 1) {
+      final controllers = _rowControllers[index];
       setState(() {
-        _rowControllers[index].dispose();
         _rowControllers.removeAt(index);
+      });
+      // Senior fix: Dispose after the frame to avoid FocusNode disposed error during rebuild
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        controllers.dispose();
       });
     }
   }

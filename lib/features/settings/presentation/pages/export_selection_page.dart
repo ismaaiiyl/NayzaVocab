@@ -67,7 +67,13 @@ class _ExportSelectionPageState extends State<ExportSelectionPage> {
 
       if (selectedSets.length == 1) {
         // Smart Share for single set (CSV + Beautiful Text)
-        await DataService.shareSingleSet(selectedSets.first);
+        final set = selectedSets.first;
+        final lang = set.words.isNotEmpty ? (set.words.first.langCode?.toUpperCase() ?? 'N/A') : 'N/A';
+        await DataService.shareSingleSet(
+          set,
+          subject: l10n.shareSubject(set.title),
+          message: l10n.shareMessage(set.title, lang, set.words.length.toString()),
+        );
       } else {
         // Regular Backup for multiple sets (JSON)
         await DataService.exportSets(selectedSets);

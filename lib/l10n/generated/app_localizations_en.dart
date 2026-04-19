@@ -392,6 +392,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get shareSuccess => 'Set shared successfully!';
 
   @override
+  String shareSubject(Object title) {
+    return 'NayzaVocab: $title';
+  }
+
+  @override
+  String shareMessage(Object count, Object lang, Object title) {
+    return '📚 Nayza Vocab Set: $title\n🌐 Language: $lang\n📝 Words: $count\n\nImport this file into Nayza Vocab to learn together!';
+  }
+
+  @override
+  String get importedSuffix => '(Imported)';
+
+  @override
   String exportError(String error) {
     return 'Export error: $error';
   }

@@ -389,7 +389,20 @@ class AppLocalizationsAr extends AppLocalizations {
   String get exportSuccess => 'اكتمل التصدير بنجاح!';
 
   @override
-  String get shareSuccess => 'Set shared successfully!';
+  String get shareSuccess => 'تمت المشاركة بنجاح!';
+
+  @override
+  String shareSubject(Object title) {
+    return 'NayzaVocab: $title';
+  }
+
+  @override
+  String shareMessage(Object count, Object lang, Object title) {
+    return '📚 مجموعة Nayza Vocab: $title\n🌐 اللغة: $lang\n📝 الكلمات: $count\n\nقم باستيراد هذا الملف إلى Nayza Vocab للتعلم معاً!';
+  }
+
+  @override
+  String get importedSuffix => '(مستورد)';
 
   @override
   String exportError(String error) {

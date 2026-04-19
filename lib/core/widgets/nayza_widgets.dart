@@ -71,6 +71,10 @@ class _NayzaTextFieldState extends State<NayzaTextField> {
   @override
   void initState() {
     super.initState();
+    _initFocusNode();
+  }
+
+  void _initFocusNode() {
     _internalFocusNode = widget.focusNode ?? FocusNode();
     _internalFocusNode.addListener(_onFocusChange);
   }
@@ -80,11 +84,28 @@ class _NayzaTextFieldState extends State<NayzaTextField> {
   }
 
   @override
+  void didUpdateWidget(NayzaTextField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.focusNode != oldWidget.focusNode) {
+      // Clean up old listener
+      _internalFocusNode.removeListener(_onFocusChange);
+      
+      // If we created the old focus node, dispose it
+      if (oldWidget.focusNode == null) {
+        _internalFocusNode.dispose();
+      }
+      
+      // Initialize new one
+      _initFocusNode();
+    }
+  }
+
+  @override
   void dispose() {
+    _internalFocusNode.removeListener(_onFocusChange);
+    // Only dispose if we created it internally
     if (widget.focusNode == null) {
       _internalFocusNode.dispose();
-    } else {
-      _internalFocusNode.removeListener(_onFocusChange);
     }
     super.dispose();
   }

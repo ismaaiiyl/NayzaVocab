@@ -205,5 +205,9 @@
   "onboardingPage2Subtitle": "Интерактивные тесты и игры в пары, разработанные для того, чтобы сделать обучение увлекательным.",
   "onboardingPage3Title": "Отслеживайте Свой Прогресс",
   "onboardingPage3Subtitle": "Следите за своим ростом с течением времени и сосредоточьтесь на трудных словах.",
-  "onboardingGetStarted": "НАЧАТЬ"
+  "onboardingGetStarted": "НАЧАТЬ",
+  "shareSuccess": "Успешно отправлено!",
+  "shareSubject": "NayzaVocab: {title}",
+  "shareMessage": "📚 Коллекция Nayza Vocab: {title}\n🌐 Язык: {lang}\n📝 Слов: {count}\n\nИмпортируйте этот файл в Nayza Vocab, чтобы учиться вместе!",
+  "importedSuffix": "(Импортировано)"
 }

@@ -393,6 +393,19 @@ class AppLocalizationsUz extends AppLocalizations {
   String get shareSuccess => 'To\'plam muvaffaqiyatli ulashildi!';
 
   @override
+  String shareSubject(Object title) {
+    return 'NayzaVocab: $title';
+  }
+
+  @override
+  String shareMessage(Object count, Object lang, Object title) {
+    return '📚 Nayza Vocab To\'plami: $title\n🌐 Tili: $lang\n📝 So\'zlar soni: $count ta\n\nUshbu faylni Nayza Vocab amaliyotiga Import qiling va lug\'at boyligingizni oshiring!';
+  }
+
+  @override
+  String get importedSuffix => '(Import qilingan)';
+
+  @override
   String exportError(String error) {
     return 'Eksportda xatolik: $error';
   }

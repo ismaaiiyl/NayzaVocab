@@ -196,7 +196,7 @@ class SettingsPage extends StatelessWidget {
     final messenger = ScaffoldMessenger.of(context);
     final l10n = AppLocalizations.of(context)!;
     try {
-      final importedSets = await DataService.importSets();
+      final importedSets = await DataService.importSets(importedSuffix: l10n.importedSuffix);
       if (importedSets.isEmpty) return;
 
       if (!context.mounted) return;

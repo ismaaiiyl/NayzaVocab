@@ -42,6 +42,40 @@ class _SetDetailsScreenState extends State<SetDetailsScreen> {
     }
   }
 
+  void _showEditTitleDialog(VocabSetModel set) {
+    final l10n = AppLocalizations.of(context)!;
+    final titleController = TextEditingController(text: set.title);
+    
+    showDialog<void>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: AppTheme.surfaceNavy,
+        title: Text(l10n.editWord, style: const TextStyle(color: AppTheme.electricGold)),
+        content: TextField(
+          controller: titleController,
+          decoration: InputDecoration(labelText: l10n.collectionNameLabel),
+          autofocus: true,
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: Text(l10n.cancel, style: const TextStyle(color: AppTheme.textDim)),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              if (titleController.text.trim().isNotEmpty) {
+                final provider = context.read<VocabSetProvider>();
+                provider.updateVocabSet(set.copyWith(title: titleController.text.trim()));
+                Navigator.pop(ctx);
+              }
+            },
+            child: Text(l10n.save),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -57,10 +91,19 @@ class _SetDetailsScreenState extends State<SetDetailsScreen> {
             title: Text(set.title.toUpperCase()),
             actions: [
               IconButton(
+                icon: const Icon(LucideIcons.edit3, color: AppTheme.electricGold, size: 20),
+                onPressed: () => _showEditTitleDialog(set),
+              ),
+              IconButton(
                 icon: const Icon(LucideIcons.share2, color: AppTheme.electricGold, size: 20),
                 onPressed: () async {
                   try {
-                    await DataService.shareSingleSet(set);
+                    final lang = set.words.isNotEmpty ? (set.words.first.langCode?.toUpperCase() ?? 'N/A') : 'N/A';
+                    await DataService.shareSingleSet(
+                      set,
+                      subject: l10n.shareSubject(set.title),
+                      message: l10n.shareMessage(set.title, lang, set.words.length.toString()),
+                    );
                   } catch (e) {
                     if (mounted) {
                       ScaffoldMessenger.of(context).showSnackBar(

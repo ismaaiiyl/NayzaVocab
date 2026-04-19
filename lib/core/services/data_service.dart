@@ -40,7 +40,7 @@ class DataService {
   }
 
   /// Bitta to'plamni ulashish uchun (Smart Share) CSV ko'rinishida yuboradi
-  static Future<void> shareSingleSet(VocabSetModel set) async {
+  static Future<void> shareSingleSet(VocabSetModel set, {required String subject, required String message}) async {
     try {
       // 1. CSV uchun ma'lumotlarni tayyorlaymiz (Katalog sarlavhalari bilan)
       List<List<dynamic>> csvData = [
@@ -53,16 +53,6 @@ class DataService {
 
       final String csvString = csv.encode(csvData);
       
-      // 2. Chiroyli xabar tayyorlaymiz
-      final String subject = 'NayzaVocab: ${set.title}';
-      final String message = '''
-📚 Nayza Vocab To'plami: ${set.title}
-🌐 Tili: ${set.words.isNotEmpty ? (set.words.first.langCode?.toUpperCase() ?? 'N/A') : 'N/A'}
-📝 So'zlar soni: ${set.words.length} ta.
-
-Ushbu faylni Nayza Vocab amaliyotiga Import qiling va lug'at boyligingizni oshiring!
-''';
-
       // Bo'sh joylarni tozalab chiroyli fayl nomi yaratamiz
       final safeTitle = set.title.replaceAll(RegExp(r'[^a-zA-Z0-9_\-]'), '_');
       final fileName = 'nayza_${safeTitle}.csv';
@@ -78,7 +68,7 @@ Ushbu faylni Nayza Vocab amaliyotiga Import qiling va lug'at boyligingizni oshir
   }
 
   /// Opens a file picker and parses JSON or CSV.
-  static Future<List<VocabSetModel>> importSets() async {
+  static Future<List<VocabSetModel>> importSets({required String importedSuffix}) async {
     try {
       final result = await fp.FilePicker.platform.pickFiles(
         type: fp.FileType.custom,
@@ -146,7 +136,7 @@ Ushbu faylni Nayza Vocab amaliyotiga Import qiling va lug'at boyligingizni oshir
 
         importedSets.add(VocabSetModel(
           id: uuid.v4(),
-          title: '$title (Imported)',
+          title: '$title $importedSuffix',
           createdAt: DateTime.now(),
           words: words,
         ));
@@ -168,7 +158,7 @@ Ushbu faylni Nayza Vocab amaliyotiga Import qiling va lug'at boyligingizni oshir
           
           final freshSet = VocabSetModel(
             id: uuid.v4(),
-            title: '${baseSet.title} (Imported)',
+            title: '${baseSet.title} $importedSuffix',
             createdAt: DateTime.now(),
             words: baseSet.words.map((w) => w.copyWith(id: uuid.v4())).toList(),
           );

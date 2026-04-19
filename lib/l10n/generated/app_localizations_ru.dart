@@ -392,7 +392,20 @@ class AppLocalizationsRu extends AppLocalizations {
   String get exportSuccess => 'Экспорт успешно завершен!';
 
   @override
-  String get shareSuccess => 'Set shared successfully!';
+  String get shareSuccess => 'Успешно отправлено!';
+
+  @override
+  String shareSubject(Object title) {
+    return 'NayzaVocab: $title';
+  }
+
+  @override
+  String shareMessage(Object count, Object lang, Object title) {
+    return '📚 Коллекция Nayza Vocab: $title\n🌐 Язык: $lang\n📝 Слов: $count\n\nИмпортируйте этот файл в Nayza Vocab, чтобы учиться вместе!';
+  }
+
+  @override
+  String get importedSuffix => '(Импортировано)';
 
   @override
   String exportError(String error) {

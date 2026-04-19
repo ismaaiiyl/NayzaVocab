@@ -204,5 +204,9 @@
   "onboardingPage2Subtitle": "اختبارات تفاعلية وألعاب مطابقة مصممة لجعل التعلم إدماناً.",
   "onboardingPage3Title": "تتبع تقدمك",
   "onboardingPage3Subtitle": "شاهد تحسنك بمرور الوقت وركز على الكلمات الصعبة.",
-  "onboardingGetStarted": "البدء"
+  "onboardingGetStarted": "البدء",
+  "shareSuccess": "تمت المشاركة بنجاح!",
+  "shareSubject": "NayzaVocab: {title}",
+  "shareMessage": "📚 مجموعة Nayza Vocab: {title}\n🌐 اللغة: {lang}\n📝 الكلمات: {count}\n\nقم باستيراد هذا الملف إلى Nayza Vocab للتعلم معاً!",
+  "importedSuffix": "(مستورد)"
 }

@@ -90,6 +90,7 @@ class _SelectCollectionsScreenState extends State<SelectCollectionsScreen> {
                     itemBuilder: (context, index) {
                       final set = allSets[index];
                       final isSelected = _selectedSetIds.contains(set.id);
+                      final double titleFontSize = set.title.length > 25 ? 14 : 16;
 
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 8.0),
@@ -97,8 +98,15 @@ class _SelectCollectionsScreenState extends State<SelectCollectionsScreen> {
                           color: isSelected ? AppTheme.cardDark : AppTheme.surfaceNavy,
                           child: ListTile(
                             onTap: () => _toggleSetSelection(set.id),
-                            title: Text(set.title, style: TextStyle(color: isSelected ? AppTheme.electricGold : AppTheme.textMain, fontWeight: FontWeight.bold)),
-                            subtitle: Text(l10n.wordCountLabel(set.words.length), style: const TextStyle(color: AppTheme.textDim)),
+                            title: Text(
+                              set.title, 
+                              style: TextStyle(
+                                color: isSelected ? AppTheme.electricGold : AppTheme.textMain, 
+                                fontWeight: FontWeight.bold,
+                                fontSize: titleFontSize,
+                              ),
+                            ),
+                            subtitle: Text(l10n.wordCountLabel(set.words.length), style: const TextStyle(color: AppTheme.textDim, fontSize: 12)),
                             trailing: Checkbox(
                               value: isSelected,
                               onChanged: (value) => _toggleSetSelection(set.id),
