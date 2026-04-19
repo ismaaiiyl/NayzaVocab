@@ -180,6 +180,7 @@
   "selectSetsTitle": "SELECT COLLECTIONS",
   "selectAtLeastOneSet": "Please select at least one collection.",
   "exportSuccess": "Export completed successfully!",
+  "shareSuccess": "Set shared successfully!",
   "exportError": "Export error: {error}",
   "@exportError": {
     "placeholders": {

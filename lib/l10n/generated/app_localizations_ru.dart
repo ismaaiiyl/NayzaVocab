@@ -392,6 +392,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get exportSuccess => 'Экспорт успешно завершен!';
 
   @override
+  String get shareSuccess => 'Set shared successfully!';
+
+  @override
   String exportError(String error) {
     return 'Ошибка экспорта: $error';
   }

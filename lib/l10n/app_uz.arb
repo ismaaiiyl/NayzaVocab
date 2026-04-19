@@ -181,6 +181,7 @@
   "selectSetsTitle": "TO'PLAMLARNI TANLASH",
   "selectAtLeastOneSet": "Kamida bitta to'plamni tanlang.",
   "exportSuccess": "Eksport muvaffaqiyatli yakunlandi!",
+  "shareSuccess": "To'plam muvaffaqiyatli ulashildi!",
   "exportError": "Eksportda xatolik: {error}",
   "@exportError": {
     "placeholders": {

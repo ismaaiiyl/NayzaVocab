@@ -65,12 +65,21 @@ class _ExportSelectionPageState extends State<ExportSelectionPage> {
         builder: (_) => const Center(child: CircularProgressIndicator(color: AppTheme.electricGold)),
       );
 
-      await DataService.exportSets(selectedSets);
+      if (selectedSets.length == 1) {
+        // Smart Share for single set (CSV + Beautiful Text)
+        await DataService.shareSingleSet(selectedSets.first);
+      } else {
+        // Regular Backup for multiple sets (JSON)
+        await DataService.exportSets(selectedSets);
+      }
       
       if (mounted) {
         context.pop(); // Close loading
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(l10n.exportSuccess)),
+          SnackBar(
+            content: Text(selectedSets.length == 1 ? l10n.shareSuccess : l10n.exportSuccess),
+            backgroundColor: Colors.greenAccent.withValues(alpha: 0.8),
+          ),
         );
         context.pop(); // Return to settings
       }

@@ -389,6 +389,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get exportSuccess => 'اكتمل التصدير بنجاح!';
 
   @override
+  String get shareSuccess => 'Set shared successfully!';
+
+  @override
   String exportError(String error) {
     return 'خطأ في التصدير: $error';
   }

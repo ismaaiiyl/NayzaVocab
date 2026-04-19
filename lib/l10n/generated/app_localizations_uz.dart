@@ -390,6 +390,9 @@ class AppLocalizationsUz extends AppLocalizations {
   String get exportSuccess => 'Eksport muvaffaqiyatli yakunlandi!';
 
   @override
+  String get shareSuccess => 'To\'plam muvaffaqiyatli ulashildi!';
+
+  @override
   String exportError(String error) {
     return 'Eksportda xatolik: $error';
   }

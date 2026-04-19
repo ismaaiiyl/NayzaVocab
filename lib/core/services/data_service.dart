@@ -51,16 +51,16 @@ class DataService {
         csvData.add([word.original, word.translation]);
       }
 
-      final String csvString = const ListToCsvConverter().convert(csvData);
+      final String csvString = csv.encode(csvData);
       
       // 2. Chiroyli xabar tayyorlaymiz
       final String subject = 'NayzaVocab: ${set.title}';
       final String message = '''
 📚 Nayza Vocab To'plami: ${set.title}
-🌐 Tili: ${set.words.isNotEmpty ? set.words.first.langCode.toUpperCase() : 'N/A'}
+🌐 Tili: ${set.words.isNotEmpty ? (set.words.first.langCode?.toUpperCase() ?? 'N/A') : 'N/A'}
 📝 So'zlar soni: ${set.words.length} ta.
 
-Ushbu faylni Nayza Vocab dasturiga Import qiling va lug'at boyligingizni oshiring!
+Ushbu faylni Nayza Vocab amaliyotiga Import qiling va lug'at boyligingizni oshiring!
 ''';
 
       // Bo'sh joylarni tozalab chiroyli fayl nomi yaratamiz
@@ -105,7 +105,7 @@ Ushbu faylni Nayza Vocab dasturiga Import qiling va lug'at boyligingizni oshirin
 
       if (fileExt == 'csv') {
         // --- CSV IMPORT LIGIC ---
-        final List<List<dynamic>> csvTable = const CsvToListConverter().convert(content);
+        final List<List<dynamic>> csvTable = csv.decode(content);
         if (csvTable.isEmpty) throw Exception("CSV fayli bo'sh.");
 
         // Fayl nomini title sifatida olamiz (extensiyonsiz)

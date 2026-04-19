@@ -389,6 +389,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get exportSuccess => 'Export completed successfully!';
 
   @override
+  String get shareSuccess => 'Set shared successfully!';
+
+  @override
   String exportError(String error) {
     return 'Export error: $error';
   }

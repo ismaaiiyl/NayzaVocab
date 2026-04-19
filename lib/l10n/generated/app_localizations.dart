@@ -802,6 +802,12 @@ abstract class AppLocalizations {
   /// **'Export completed successfully!'**
   String get exportSuccess;
 
+  /// No description provided for @shareSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Set shared successfully!'**
+  String get shareSuccess;
+
   /// No description provided for @exportError.
   ///
   /// In en, this message translates to:

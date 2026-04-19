@@ -387,6 +387,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get exportSuccess => '내보내기가 성공적으로 완료되었습니다!';
 
   @override
+  String get shareSuccess => 'Set shared successfully!';
+
+  @override
   String exportError(String error) {
     return '내보내기 오류: $error';
   }

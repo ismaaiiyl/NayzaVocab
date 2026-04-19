@@ -14,6 +14,7 @@ import 'package:nayza_vocab/features/vocabulary/presentation/pages/onboarding_pa
 import 'package:nayza_vocab/features/vocabulary/presentation/pages/quiz/quiz_summary_screen.dart';
 import 'package:nayza_vocab/features/vocabulary/presentation/pages/difficult_words_screen.dart';
 import 'package:nayza_vocab/features/vocabulary/presentation/pages/difficult_set_details_screen.dart';
+import 'package:nayza_vocab/features/settings/presentation/pages/export_selection_page.dart';
 import 'package:nayza_vocab/features/vocabulary/data/models/vocab_set_model.dart';
 import 'package:nayza_vocab/features/settings/presentation/provider/settings_provider.dart';
 import 'package:provider/provider.dart';
@@ -126,6 +127,11 @@ class AppRouter {
               final set = state.extra as VocabSetModel;
               return _customPageTransition(DifficultSetDetailsScreen(virtualSet: set));
             },
+          ),
+          GoRoute(
+            path: 'export-selection',
+            name: 'export-selection',
+            pageBuilder: (context, state) => _customPageTransition(const ExportSelectionPage()),
           ),
         ],
       ),
