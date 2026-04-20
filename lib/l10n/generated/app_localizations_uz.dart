@@ -471,4 +471,27 @@ class AppLocalizationsUz extends AppLocalizations {
 
   @override
   String get deleteSetConfirm => 'Ushbu to\'plamni o\'chirishni xohlaysizmi?';
+
+  @override
+  String get communityAndUpdates => 'HAMJAMIYAT VA YANGILANISHLAR';
+
+  @override
+  String get telegramChannel => 'Telegram Kanalimiz';
+
+  @override
+  String get telegramSubtitle => 'Maslahatlar va yangiliklar uchun qo\'shiling';
+
+  @override
+  String get checkForUpdates => 'Yangilanishlarni tekshirish';
+
+  @override
+  String get checkForUpdatesSubtitle =>
+      'Nayza Vocab\'ning so\'nggi versiyasini oling';
+
+  @override
+  String get onboardingPage4Title => 'Qanday ishlaydi?';
+
+  @override
+  String get onboardingPage4Subtitle =>
+      'Tizimli takrorlash orqali so\'zlarni o\'zlashtiring. Qiyin so\'zlar siz ularni to\'liq yod olguningizcha tez-tez takrorlanib turadi.';
 }

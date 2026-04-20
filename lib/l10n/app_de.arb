@@ -214,5 +214,12 @@
   "cancelReminder": "Erinnerung abbrechen",
   "resetAllData": "Alle Daten zurücksetzen",
   "resetAllDataConfirm": "Dadurch werden alle deine Sammlungen und Fortschritte dauerhaft gelöscht. Bist du sicher?",
-  "deleteSetConfirm": "Sind Sie sicher, dass Sie diese Sammlung löschen möchten?"
+  "deleteSetConfirm": "Sind Sie sicher, dass Sie diese Sammlung löschen möchten?",
+  "communityAndUpdates": "COMMUNITY & UPDATES",
+  "telegramChannel": "Telegram Kanal",
+  "telegramSubtitle": "Tritt bei für Tipps und Updates",
+  "checkForUpdates": "Auf Updates prüfen",
+  "checkForUpdatesSubtitle": "Hol dir die neueste Version von Nayza Vocab",
+  "onboardingPage4Title": "Wie funktioniert es?",
+  "onboardingPage4Subtitle": "Meistere Wörter durch systematische Wiederholung. Schwierige Wörter kommen öfter vor, bis du sie auswendig kennst."
 }

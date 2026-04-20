@@ -48,6 +48,12 @@ class _OnboardingPageState extends State<OnboardingPage> {
         icon: LucideIcons.trendingUp,
         color: Colors.greenAccent,
       ),
+      OnboardingContent(
+        title: l10n.onboardingPage4Title,
+        subtitle: l10n.onboardingPage4Subtitle,
+        icon: LucideIcons.graduationCap,
+        color: Colors.orangeAccent,
+      ),
     ];
 
     return Scaffold(

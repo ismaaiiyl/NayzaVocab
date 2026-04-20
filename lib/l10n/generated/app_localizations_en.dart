@@ -466,9 +466,30 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get resetAllDataConfirm =>
-      'This will permanently delete all your collections and progress. Are you sure?';
+      'This will permanently delete all your sets and progress. Are you sure?';
 
   @override
-  String get deleteSetConfirm =>
-      'Are you sure you want to delete this collection?';
+  String get deleteSetConfirm => 'Do you want to delete this set?';
+
+  @override
+  String get communityAndUpdates => 'COMMUNITY & UPDATES';
+
+  @override
+  String get telegramChannel => 'Telegram Channel';
+
+  @override
+  String get telegramSubtitle => 'Join for tips, updates and resources';
+
+  @override
+  String get checkForUpdates => 'Check for Updates';
+
+  @override
+  String get checkForUpdatesSubtitle => 'Get the latest version of Nayza Vocab';
+
+  @override
+  String get onboardingPage4Title => 'How it works?';
+
+  @override
+  String get onboardingPage4Subtitle =>
+      'Master words through systematic repetition. Hard words come back more often until you know them by heart.';
 }

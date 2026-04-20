@@ -6,11 +6,20 @@ import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nayza_vocab/l10n/generated/app_localizations.dart';
 
+import 'package:url_launcher/url_launcher.dart';
+
 import 'package:nayza_vocab/features/vocabulary/presentation/provider/vocab_set_provider.dart';
 import 'package:nayza_vocab/features/settings/presentation/provider/settings_provider.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
+
+  Future<void> _launchURL(String url) async {
+    final Uri uri = Uri.parse(url);
+    if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
+      throw Exception('Could not launch $url');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,6 +88,24 @@ class SettingsPage extends StatelessWidget {
           _buildSettingsHeader(l10n.language.toUpperCase()),
           const SizedBox(height: 12),
           _buildLanguageSelector(context, settings, l10n),
+          const SizedBox(height: 32),
+          _buildSettingsHeader(l10n.communityAndUpdates),
+          const SizedBox(height: 12),
+          _buildSettingsCard(
+            context,
+            title: l10n.telegramChannel,
+            subtitle: l10n.telegramSubtitle,
+            icon: LucideIcons.send,
+            onTap: () => _launchURL('https://t.me/nayza_vocab'),
+          ),
+          const SizedBox(height: 16),
+          _buildSettingsCard(
+            context,
+            title: l10n.checkForUpdates,
+            subtitle: l10n.checkForUpdatesSubtitle,
+            icon: LucideIcons.refreshCw,
+            onTap: () => _launchURL('https://t.me/nayza_vocab'),
+          ),
           const SizedBox(height: 48),
           _buildSettingsHeader(l10n.appInfo),
           const SizedBox(height: 12),

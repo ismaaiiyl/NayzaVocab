@@ -474,4 +474,26 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get deleteSetConfirm =>
       'Вы уверены, что хотите удалить эту коллекцию?';
+
+  @override
+  String get communityAndUpdates => 'СООБЩЕСТВО И ОБНОВЛЕНИЯ';
+
+  @override
+  String get telegramChannel => 'Telegram канал';
+
+  @override
+  String get telegramSubtitle => 'Присоединяйтесь для советов и новостей';
+
+  @override
+  String get checkForUpdates => 'Проверить обновления';
+
+  @override
+  String get checkForUpdatesSubtitle => 'Получите последнюю версию Nayza Vocab';
+
+  @override
+  String get onboardingPage4Title => 'Как это работает?';
+
+  @override
+  String get onboardingPage4Subtitle =>
+      'Осваивайте слова через систему повторений. Сложные слова возвращаются чаще, пока вы их не запомните.';
 }

@@ -213,6 +213,13 @@
   "collectionsPageTitle": "COLLECTIONS",
   "cancelReminder": "Cancel Reminder",
   "resetAllData": "Reset All Data",
-  "resetAllDataConfirm": "This will permanently delete all your collections and progress. Are you sure?",
-  "deleteSetConfirm": "Are you sure you want to delete this collection?"
+  "resetAllDataConfirm": "This will permanently delete all your sets and progress. Are you sure?",
+  "deleteSetConfirm": "Do you want to delete this set?",
+  "communityAndUpdates": "COMMUNITY & UPDATES",
+  "telegramChannel": "Telegram Channel",
+  "telegramSubtitle": "Join for tips, updates and resources",
+  "checkForUpdates": "Check for Updates",
+  "checkForUpdatesSubtitle": "Get the latest version of Nayza Vocab",
+  "onboardingPage4Title": "How it works?",
+  "onboardingPage4Subtitle": "Master words through systematic repetition. Hard words come back more often until you know them by heart."
 }

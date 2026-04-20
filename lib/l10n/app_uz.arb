@@ -214,5 +214,12 @@
   "cancelReminder": "Eslatmani bekor qilish",
   "resetAllData": "Barcha ma'lumotlarni o'chirish",
   "resetAllDataConfirm": "Bu barcha to'plamlar va progressingizni butunlay o'chirib tashlaydi. Ishonchingiz komilmi?",
-  "deleteSetConfirm": "Ushbu to'plamni o'chirishni xohlaysizmi?"
+  "deleteSetConfirm": "Ushbu to'plamni o'chirishni xohlaysizmi?",
+  "communityAndUpdates": "HAMJAMIYAT VA YANGILANISHLAR",
+  "telegramChannel": "Telegram Kanalimiz",
+  "telegramSubtitle": "Maslahatlar va yangiliklar uchun qo'shiling",
+  "checkForUpdates": "Yangilanishlarni tekshirish",
+  "checkForUpdatesSubtitle": "Nayza Vocab'ning so'nggi versiyasini oling",
+  "onboardingPage4Title": "Qanday ishlaydi?",
+  "onboardingPage4Subtitle": "Tizimli takrorlash orqali so'zlarni o'zlashtiring. Qiyin so'zlar siz ularni to'liq yod olguningizcha tez-tez takrorlanib turadi."
 }

@@ -214,5 +214,12 @@
   "cancelReminder": "إلغاء التذكير",
   "resetAllData": "إعادة تعيين جميع البيانات",
   "resetAllDataConfirm": "سيؤدي هذا إلى حذف جميع مجموعاتك وتقدمك نهائياً. هل أنت متأكد؟",
-  "deleteSetConfirm": "هل أنت متأكد أنك تريد حذف هذه المجموعة؟"
+  "deleteSetConfirm": "هل أنت متأكد أنك تريد حذف هذه المجموعة؟",
+  "communityAndUpdates": "المجتمع والتحديثات",
+  "telegramChannel": "قناة تلغرام",
+  "telegramSubtitle": "انضم للحصول على نصائح وتحديثات",
+  "checkForUpdates": "التحقق من التحديثات",
+  "checkForUpdatesSubtitle": "احصل على أحدث إصدار من Nayza Vocab",
+  "onboardingPage4Title": "كيف يعمل؟",
+  "onboardingPage4Subtitle": "أتقن الكلمات من خلال التكرار المنهجي. تعود الكلمات الصعبة بشكل متكرر حتى تحفظها عن ظهر قلب."
 }

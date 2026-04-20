@@ -466,4 +466,26 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get deleteSetConfirm => '이 컬렉션을 삭제하시겠습니까?';
+
+  @override
+  String get communityAndUpdates => '커뮤니티 및 업데이트';
+
+  @override
+  String get telegramChannel => '텔레그램 채널';
+
+  @override
+  String get telegramSubtitle => '팁과 업데이트를 위해 가입하세요';
+
+  @override
+  String get checkForUpdates => '업데이트 확인';
+
+  @override
+  String get checkForUpdatesSubtitle => 'Nayza Vocab의 최신 버전을 받으세요';
+
+  @override
+  String get onboardingPage4Title => '어떻게 작동하나요?';
+
+  @override
+  String get onboardingPage4Subtitle =>
+      '체계적인 반복을 통해 단어를 마스터하세요. 어려운 단어는 완전히 외울 때까지 더 자주 나타납니다.';
 }

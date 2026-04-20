@@ -931,14 +931,56 @@ abstract class AppLocalizations {
   /// No description provided for @resetAllDataConfirm.
   ///
   /// In en, this message translates to:
-  /// **'This will permanently delete all your collections and progress. Are you sure?'**
+  /// **'This will permanently delete all your sets and progress. Are you sure?'**
   String get resetAllDataConfirm;
 
   /// No description provided for @deleteSetConfirm.
   ///
   /// In en, this message translates to:
-  /// **'Are you sure you want to delete this collection?'**
+  /// **'Do you want to delete this set?'**
   String get deleteSetConfirm;
+
+  /// No description provided for @communityAndUpdates.
+  ///
+  /// In en, this message translates to:
+  /// **'COMMUNITY & UPDATES'**
+  String get communityAndUpdates;
+
+  /// No description provided for @telegramChannel.
+  ///
+  /// In en, this message translates to:
+  /// **'Telegram Channel'**
+  String get telegramChannel;
+
+  /// No description provided for @telegramSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Join for tips, updates and resources'**
+  String get telegramSubtitle;
+
+  /// No description provided for @checkForUpdates.
+  ///
+  /// In en, this message translates to:
+  /// **'Check for Updates'**
+  String get checkForUpdates;
+
+  /// No description provided for @checkForUpdatesSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Get the latest version of Nayza Vocab'**
+  String get checkForUpdatesSubtitle;
+
+  /// No description provided for @onboardingPage4Title.
+  ///
+  /// In en, this message translates to:
+  /// **'How it works?'**
+  String get onboardingPage4Title;
+
+  /// No description provided for @onboardingPage4Subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Master words through systematic repetition. Hard words come back more often until you know them by heart.'**
+  String get onboardingPage4Subtitle;
 }
 
 class _AppLocalizationsDelegate

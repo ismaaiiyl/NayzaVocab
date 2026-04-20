@@ -470,4 +470,26 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get deleteSetConfirm => 'هل أنت متأكد أنك تريد حذف هذه المجموعة؟';
+
+  @override
+  String get communityAndUpdates => 'المجتمع والتحديثات';
+
+  @override
+  String get telegramChannel => 'قناة تلغرام';
+
+  @override
+  String get telegramSubtitle => 'انضم للحصول على نصائح وتحديثات';
+
+  @override
+  String get checkForUpdates => 'التحقق من التحديثات';
+
+  @override
+  String get checkForUpdatesSubtitle => 'احصل على أحدث إصدار من Nayza Vocab';
+
+  @override
+  String get onboardingPage4Title => 'كيف يعمل؟';
+
+  @override
+  String get onboardingPage4Subtitle =>
+      'أتقن الكلمات من خلال التكرار المنهجي. تعود الكلمات الصعبة بشكل متكرر حتى تحفظها عن ظهر قلب.';
 }

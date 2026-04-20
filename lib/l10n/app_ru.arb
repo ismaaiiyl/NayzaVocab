@@ -214,5 +214,12 @@
   "shareSubject": "NayzaVocab: {title}",
   "shareMessage": "📚 Коллекция Nayza Vocab: {title}\n🌐 Язык: {lang}\n📝 Слов: {count}\n\nИмпортируйте этот файл в Nayza Vocab, чтобы учиться вместе!",
   "importedSuffix": "(Импортировано)",
-  "deleteSetConfirm": "Вы уверены, что хотите удалить эту коллекцию?"
+  "deleteSetConfirm": "Вы уверены, что хотите удалить эту коллекцию?",
+  "communityAndUpdates": "СООБЩЕСТВО И ОБНОВЛЕНИЯ",
+  "telegramChannel": "Telegram канал",
+  "telegramSubtitle": "Присоединяйтесь для советов и новостей",
+  "checkForUpdates": "Проверить обновления",
+  "checkForUpdatesSubtitle": "Получите последнюю версию Nayza Vocab",
+  "onboardingPage4Title": "Как это работает?",
+  "onboardingPage4Subtitle": "Осваивайте слова через систему повторений. Сложные слова возвращаются чаще, пока вы их не запомните."
 }

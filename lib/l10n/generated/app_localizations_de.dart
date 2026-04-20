@@ -472,4 +472,27 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get deleteSetConfirm =>
       'Sind Sie sicher, dass Sie diese Sammlung löschen möchten?';
+
+  @override
+  String get communityAndUpdates => 'COMMUNITY & UPDATES';
+
+  @override
+  String get telegramChannel => 'Telegram Kanal';
+
+  @override
+  String get telegramSubtitle => 'Tritt bei für Tipps und Updates';
+
+  @override
+  String get checkForUpdates => 'Auf Updates prüfen';
+
+  @override
+  String get checkForUpdatesSubtitle =>
+      'Hol dir die neueste Version von Nayza Vocab';
+
+  @override
+  String get onboardingPage4Title => 'Wie funktioniert es?';
+
+  @override
+  String get onboardingPage4Subtitle =>
+      'Meistere Wörter durch systematische Wiederholung. Schwierige Wörter kommen öfter vor, bis du sie auswendig kennst.';
 }

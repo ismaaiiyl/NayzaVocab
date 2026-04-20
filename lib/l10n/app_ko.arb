@@ -214,5 +214,12 @@
   "cancelReminder": "알림 취소",
   "resetAllData": "모든 데이터 초기화",
   "resetAllDataConfirm": "이렇게 하면 모든 컬렉션과 진행 상황이 영구적으로 삭제됩니다. 확실합니까?",
-  "deleteSetConfirm": "이 컬렉션을 삭제하시겠습니까?"
+  "deleteSetConfirm": "이 컬렉션을 삭제하시겠습니까?",
+  "communityAndUpdates": "커뮤니티 및 업데이트",
+  "telegramChannel": "텔레그램 채널",
+  "telegramSubtitle": "팁과 업데이트를 위해 가입하세요",
+  "checkForUpdates": "업데이트 확인",
+  "checkForUpdatesSubtitle": "Nayza Vocab의 최신 버전을 받으세요",
+  "onboardingPage4Title": "어떻게 작동하나요?",
+  "onboardingPage4Subtitle": "체계적인 반복을 통해 단어를 마스터하세요. 어려운 단어는 완전히 외울 때까지 더 자주 나타납니다."
 }
