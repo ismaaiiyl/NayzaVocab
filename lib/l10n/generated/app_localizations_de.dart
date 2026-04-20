@@ -71,16 +71,16 @@ class AppLocalizationsDe extends AppLocalizations {
   String get dataManagement => 'DATENVERWALTUNG';
 
   @override
-  String get export => 'Exportieren (Backup)';
+  String get export => 'Teilen oder Backup';
 
   @override
-  String get exportSubtitle => 'Sammlungen auswählen und sichern';
+  String get exportSubtitle => 'Sammlungen zum Teilen oder Sichern auswählen';
 
   @override
-  String get import => 'Importieren (Wiederherstellen)';
+  String get import => 'Wörter hinzufügen oder wiederherstellen';
 
   @override
-  String get importSubtitle => 'Sammlungen aus JSON-Datei laden';
+  String get importSubtitle => 'Sammlungen aus einer Backup-Datei (JSON) laden';
 
   @override
   String get notifications => 'BENACHRICHTIGUNGEN';
@@ -170,7 +170,24 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String wordCountLabel(int count) {
-    return '$count Wörter';
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count Wörter',
+      one: '1 Wort',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String setsCountLabel(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count Sets',
+      one: '1 Set',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -495,4 +512,33 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get onboardingPage4Subtitle =>
       'Meistere Wörter durch systematische Wiederholung. Schwierige Wörter kommen öfter vor, bis du sie auswendig kennst.';
+
+  @override
+  String get library => 'BIBLIOTHEK';
+
+  @override
+  String get createFolder => 'Neuer Ordner';
+
+  @override
+  String get folderName => 'Ordnername';
+
+  @override
+  String get create => 'ERSTELLEN';
+
+  @override
+  String get enterFolderName => 'Ordnernamen eingeben';
+
+  @override
+  String get noFolder => 'Außerhalb des Ordners (Haupt)';
+
+  @override
+  String get uncategorized => 'NICHT KATEGORISIERT';
+
+  @override
+  String get dangerZone => 'GEFAHRENZONE';
+
+  @override
+  String shareError(Object error) {
+    return 'Error sharing: $error';
+  }
 }

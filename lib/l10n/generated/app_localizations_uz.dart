@@ -71,16 +71,17 @@ class AppLocalizationsUz extends AppLocalizations {
   String get dataManagement => 'MA\'LUMOTLARNI BOSHQARISH';
 
   @override
-  String get export => 'Export (Zaxiralash)';
+  String get export => 'Ulashish yoki zaxiralash';
 
   @override
-  String get exportSubtitle => 'To\'plamlarni tanlab zaxira qilish';
+  String get exportSubtitle =>
+      'To\'plamlarni tanlab ulashish yoki zaxira nusxa olish';
 
   @override
-  String get import => 'Import (Tiklash)';
+  String get import => 'So\'zlarni qo\'shish yoki tiklash';
 
   @override
-  String get importSubtitle => 'JSON fayldan to\'plamlarni yuklash';
+  String get importSubtitle => 'Zaxira faylidan (JSON) to\'plamlarni yuklash';
 
   @override
   String get notifications => 'BILDIRISHNOMALAR';
@@ -170,7 +171,22 @@ class AppLocalizationsUz extends AppLocalizations {
 
   @override
   String wordCountLabel(int count) {
-    return '$count so\'z';
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ta so\'z',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String setsCountLabel(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ta to\'plam',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -355,7 +371,7 @@ class AppLocalizationsUz extends AppLocalizations {
   String get setNotFound => 'To\'plam topilmadi.';
 
   @override
-  String get deleteSetTitle => 'TO\'PLAMNI O\'CHIRISH';
+  String get deleteSetTitle => 'TO\'PLAMLARNI O\'CHIRISH';
 
   @override
   String deleteSetConfirmation(String title) {
@@ -457,7 +473,7 @@ class AppLocalizationsUz extends AppLocalizations {
   String get submitAnswer => 'TASDIQLASH';
 
   @override
-  String get collectionsPageTitle => 'TO\'PLAMLAR';
+  String get collectionsPageTitle => 'KUTUBXONA';
 
   @override
   String get cancelReminder => 'Eslatmani bekor qilish';
@@ -494,4 +510,33 @@ class AppLocalizationsUz extends AppLocalizations {
   @override
   String get onboardingPage4Subtitle =>
       'Tizimli takrorlash orqali so\'zlarni o\'zlashtiring. Qiyin so\'zlar siz ularni to\'liq yod olguningizcha tez-tez takrorlanib turadi.';
+
+  @override
+  String get library => 'KUTUBXONA';
+
+  @override
+  String get createFolder => 'Yangi papka';
+
+  @override
+  String get folderName => 'Papka nomi';
+
+  @override
+  String get create => 'YARATISH';
+
+  @override
+  String get enterFolderName => 'Papka nomini kiriting';
+
+  @override
+  String get noFolder => 'Papkadan tashqarida (Asosiy)';
+
+  @override
+  String get uncategorized => 'PAPKASIZ';
+
+  @override
+  String get dangerZone => 'XAVFLI HUDUD';
+
+  @override
+  String shareError(Object error) {
+    return 'Ulashishda xatolik: $error';
+  }
 }

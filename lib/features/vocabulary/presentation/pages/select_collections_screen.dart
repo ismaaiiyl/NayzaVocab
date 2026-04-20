@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nayza_vocab/l10n/generated/app_localizations.dart';
 
+import 'package:nayza_vocab/features/vocabulary/data/models/folder_model.dart';
+import 'package:nayza_vocab/features/vocabulary/data/models/vocab_set_model.dart';
 import 'package:nayza_vocab/features/vocabulary/presentation/provider/vocab_set_provider.dart';
 import 'package:nayza_vocab/features/vocabulary/presentation/provider/quiz_provider.dart';
 import 'package:nayza_vocab/features/vocabulary/presentation/pages/quiz_screen.dart';
@@ -42,19 +44,88 @@ class _SelectCollectionsScreenState extends State<SelectCollectionsScreen> {
     });
   }
 
+  Widget _buildFolderSection(BuildContext context, String folderId, String title, List<VocabSetModel> sets) {
+    if (sets.isEmpty) return const SizedBox.shrink();
+    final l10n = AppLocalizations.of(context)!;
+    
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+          child: Row(
+            children: [
+              Icon(
+                folderId == 'difficult' ? LucideIcons.flame : LucideIcons.folder, 
+                size: 18, 
+                color: folderId == 'difficult' ? Colors.redAccent : AppTheme.electricGold
+              ),
+              const SizedBox(width: 8),
+              Text(
+                title.toUpperCase(),
+                style: TextStyle(
+                  color: folderId == 'difficult' ? Colors.redAccent : AppTheme.textDim,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12,
+                  letterSpacing: 1.1,
+                ),
+              ),
+            ],
+          ),
+        ),
+        ...sets.map((set) {
+          final isSelected = _selectedSetIds.contains(set.id);
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+            child: Card(
+              color: isSelected ? AppTheme.cardDark : AppTheme.surfaceNavy,
+              child: ListTile(
+                onTap: () => _toggleSetSelection(set.id),
+                title: Text(
+                  set.title,
+                  style: TextStyle(
+                    color: isSelected ? AppTheme.electricGold : AppTheme.textMain,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                subtitle: Text(l10n.wordCountLabel(set.words.length), style: const TextStyle(color: AppTheme.textDim, fontSize: 12)),
+                trailing: Checkbox(
+                  value: isSelected,
+                  onChanged: (value) => _toggleSetSelection(set.id),
+                  activeColor: AppTheme.electricGold,
+                  checkColor: AppTheme.darkNavy,
+                ),
+              ),
+            ),
+          );
+        }),
+        const SizedBox(height: 16),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final vocabSetProvider = context.watch<VocabSetProvider>();
     final l10n = AppLocalizations.of(context)!;
-    final allSets = vocabSetProvider.vocabSets;
-    final allSetIds = allSets.map((set) => set.id).toList();
-    final allSelected = _selectedSetIds.length == allSets.length && allSets.isNotEmpty;
+    
+    // Grouping
+    final difficultSets = vocabSetProvider.getDifficultVirtualSets();
+    final uncategorizedSets = vocabSetProvider.getSetsByFolder(null);
+    final userFolders = vocabSetProvider.folders;
+
+    final allSetsCount = vocabSetProvider.vocabSets.length + difficultSets.length;
+    final allSetIds = [
+      ...vocabSetProvider.vocabSets.map((s) => s.id),
+      ...difficultSets.map((s) => s.id)
+    ];
+    final allSelected = _selectedSetIds.length == allSetIds.length && allSetIds.isNotEmpty;
 
     return Scaffold(
       appBar: AppBar(
         title: Text(l10n.selectCollectionsTitle),
       ),
-      body: allSets.isEmpty
+      body: allSetIds.isEmpty
           ? Center(
               child: Text(
                 l10n.emptyCollectionsWarning,
@@ -84,39 +155,18 @@ class _SelectCollectionsScreenState extends State<SelectCollectionsScreen> {
                 ),
                 const Divider(color: AppTheme.borderNavy),
                 Expanded(
-                  child: ListView.builder(
-                    padding: const EdgeInsets.all(16),
-                    itemCount: allSets.length,
-                    itemBuilder: (context, index) {
-                      final set = allSets[index];
-                      final isSelected = _selectedSetIds.contains(set.id);
-                      final double titleFontSize = set.title.length > 25 ? 14 : 16;
-
-                      return Padding(
-                        padding: const EdgeInsets.only(bottom: 8.0),
-                        child: Card(
-                          color: isSelected ? AppTheme.cardDark : AppTheme.surfaceNavy,
-                          child: ListTile(
-                            onTap: () => _toggleSetSelection(set.id),
-                            title: Text(
-                              set.title, 
-                              style: TextStyle(
-                                color: isSelected ? AppTheme.electricGold : AppTheme.textMain, 
-                                fontWeight: FontWeight.bold,
-                                fontSize: titleFontSize,
-                              ),
-                            ),
-                            subtitle: Text(l10n.wordCountLabel(set.words.length), style: const TextStyle(color: AppTheme.textDim, fontSize: 12)),
-                            trailing: Checkbox(
-                              value: isSelected,
-                              onChanged: (value) => _toggleSetSelection(set.id),
-                              activeColor: AppTheme.electricGold,
-                              checkColor: AppTheme.darkNavy,
-                            ),
-                          ),
-                        ),
-                      );
-                    },
+                  child: ListView(
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    children: [
+                      _buildFolderSection(context, 'difficult', l10n.difficultCollectionsHeader, difficultSets),
+                      _buildFolderSection(context, 'uncategorized', l10n.noFolder, uncategorizedSets),
+                      ...userFolders.map((folder) => _buildFolderSection(
+                        context, 
+                        folder.id, 
+                        folder.title, 
+                        vocabSetProvider.getSetsByFolder(folder.id)
+                      )),
+                    ],
                   ),
                 ),
                 if (_selectedSetIds.isNotEmpty)
@@ -128,11 +178,17 @@ class _SelectCollectionsScreenState extends State<SelectCollectionsScreen> {
                         text: l10n.startTest,
                         icon: LucideIcons.play,
                         onPressed: () {
-                          final vocabSets = vocabSetProvider.vocabSets
+                          // Merge real sets and difficult virtual sets for selection
+                          final allAvailableSets = [
+                            ...vocabSetProvider.vocabSets,
+                            ...vocabSetProvider.getDifficultVirtualSets()
+                          ];
+
+                          final selectedSets = allAvailableSets
                               .where((s) => _selectedSetIds.contains(s.id))
                               .toList();
                           
-                          final allWords = vocabSets.expand((s) => s.words).toList();
+                          final allWords = selectedSets.expand((s) => s.words).toList();
 
                           if (allWords.isEmpty) {
                             ScaffoldMessenger.of(context).showSnackBar(

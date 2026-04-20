@@ -13,14 +13,15 @@ class DataService {
   static const String _appIdentifier = 'NayzaVocab_Backup';
   static const int _currentVersion = 1;
 
-  /// Exports the provided sets as JSON.
-  static Future<void> exportSets(List<VocabSetModel> sets) async {
+  /// Exports the provided sets and optional folders as JSON.
+  static Future<void> exportSets(List<VocabSetModel> sets, {List<dynamic>? folders}) async {
     try {
       final exportData = {
         'app': _appIdentifier,
         'version': _currentVersion,
         'exportedAt': DateTime.now().toIso8601String(),
         'sets': sets.map((s) => s.toMap()).toList(),
+        'folders': folders, // Optional: folders mapping
       };
 
       final jsonString = jsonEncode(exportData);
@@ -62,7 +63,8 @@ class DataService {
   }
 
   /// Opens a file picker and parses JSON backup files.
-  static Future<List<VocabSetModel>> importSets({required String importedSuffix}) async {
+  /// Returns a Map with 'sets' and optionally 'folders'.
+  static Future<Map<String, dynamic>> importData({required String importedSuffix}) async {
     try {
       final result = await fp.FilePicker.platform.pickFiles(
         type: fp.FileType.custom,
@@ -70,7 +72,7 @@ class DataService {
         withData: kIsWeb,
       );
 
-      if (result == null || result.files.isEmpty) return [];
+      if (result == null || result.files.isEmpty) return {};
 
       String content;
       if (kIsWeb) {
@@ -82,9 +84,7 @@ class DataService {
         content = await file.readAsString();
       }
 
-      final List<VocabSetModel> importedSets = [];
       final uuid = const Uuid();
-
       final dynamic decoded = jsonDecode(content);
       if (decoded is! Map<String, dynamic>) throw Exception('Noto\'g\'ri format.');
       
@@ -95,22 +95,45 @@ class DataService {
       }
 
       final List<dynamic> setsJson = (data['sets'] as List<dynamic>?) ?? [];
+      final List<dynamic> foldersJson = (data['folders'] as List<dynamic>?) ?? [];
+      
+      final List<VocabSetModel> importedSets = [];
+      final Map<String, String> folderIdMapping = {}; // Old ID -> New ID
 
+      // 1. Process Folders first
+      for (var fJson in foldersJson) {
+        final Map<String, dynamic> fMap = Map<String, dynamic>.from(fJson as Map<dynamic, dynamic>);
+        final oldId = fMap['id'] as String;
+        final newId = uuid.v4();
+        folderIdMapping[oldId] = newId;
+        
+        fMap['id'] = newId;
+        fMap['title'] = '${fMap['title']} $importedSuffix';
+      }
+
+      // 2. Process Sets
       for (var sJson in setsJson) {
         final Map<String, dynamic> setMap = Map<String, dynamic>.from(sJson as Map<dynamic, dynamic>);
         final baseSet = VocabSetModel.fromMap(setMap);
         
+        final oldFolderId = setMap['folderId'] as String?;
+        final newFolderId = oldFolderId != null ? folderIdMapping[oldFolderId] : null;
+
         final freshSet = VocabSetModel(
           id: uuid.v4(),
           title: '${baseSet.title} $importedSuffix',
           createdAt: DateTime.now(),
           words: baseSet.words.map((w) => w.copyWith(id: uuid.v4())).toList(),
+          folderId: newFolderId,
         );
         
         importedSets.add(freshSet);
       }
 
-      return importedSets;
+      return {
+        'sets': importedSets,
+        'folders': foldersJson, // These now have new IDs and titles
+      };
     } catch (e) {
       debugPrint('DataService: Import Error: $e');
       rethrow;

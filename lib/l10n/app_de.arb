@@ -32,10 +32,10 @@
   "muteOn": "Stummschaltung aufheben",
   "muteOff": "Stummschalten",
   "dataManagement": "DATENVERWALTUNG",
-  "export": "Exportieren (Backup)",
-  "exportSubtitle": "Sammlungen auswählen und sichern",
-  "import": "Importieren (Wiederherstellen)",
-  "importSubtitle": "Sammlungen aus JSON-Datei laden",
+  "export": "Teilen oder Backup",
+  "exportSubtitle": "Sammlungen zum Teilen oder Sichern auswählen",
+  "import": "Wörter hinzufügen oder wiederherstellen",
+  "importSubtitle": "Sammlungen aus einer Backup-Datei (JSON) laden",
   "notifications": "BENACHRICHTIGUNGEN",
   "dailyReminder": "Tägliche Erinnerung",
   "reminderSubtitle": "Täglich um {time} erinnern",
@@ -63,13 +63,22 @@
   "collectionsLabel": "SAMMLUNGEN",
   "foundWordsLabel": "GEFUNDENE WÖRTER",
   "editWord": "WORT BEARBEITEN",
+  "editSetTitle": "SAMMLUNG UMBENENNEN",
   "originalWord": "Originalwort",
   "translationWord": "Übersetzung",
   "cancel": "ABBRECHEN",
   "save": "SPEICHERN",
   "wordUpdated": "Wort aktualisiert",
-  "wordCountLabel": "{count} Wörter",
+  "wordCountLabel": "{count, plural, =1{1 Wort} other{{count} Wörter}}",
+  "setsCountLabel": "{count, plural, =1{1 Set} other{{count} Sets}}",
   "@wordCountLabel": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@setsCountLabel": {
     "placeholders": {
       "count": {
         "type": "int"
@@ -178,6 +187,10 @@
   "selectSetsTitle": "SAMMLUNGEN AUSWÄHLEN",
   "selectAtLeastOneSet": "Bitte wähle mindestens eine Sammlung aus.",
   "exportSuccess": "Export erfolgreich abgeschlossen!",
+  "shareSuccess": "Erfolgreich geteilt!",
+  "shareSubject": "NayzaVocab: {title}",
+  "shareMessage": "📚 Nayza Vocab Sammlung: {title}\n🌐 Sprache: {lang}\n📝 Wörter: {count}\n\nImportiere diese Datei in Nayza Vocab, um gemeinsam zu lernen!",
+  "importedSuffix": "(Importiert)",
   "exportError": "Exportfehler: {error}",
   "@exportError": {
     "placeholders": {
@@ -203,11 +216,6 @@
   "onboardingPage3Title": "Verfolge deinen Fortschritt",
   "onboardingPage3Subtitle": "Sieh dir deine Verbesserungen im Laufe der Zeit an und konzentriere dich auf schwierige Wörter.",
   "onboardingGetStarted": "LOSLEGEN",
-  "shareSuccess": "Erfolgreich geteilt!",
-  "shareSubject": "NayzaVocab: {title}",
-  "shareMessage": "📚 Nayza Vocab Sammlung: {title}\n🌐 Sprache: {lang}\n📝 Wörter: {count}\n\nImportiere diese Datei in Nayza Vocab, um gemeinsam zu lernen!",
-  "importedSuffix": "(Importiert)",
-  "editSetTitle": "SAMMLUNG UMBENENNEN",
   "skip": "ÜBERSPRINGEN",
   "submitAnswer": "BESTÄTIGEN",
   "collectionsPageTitle": "SAMMLUNGEN",
@@ -221,5 +229,14 @@
   "checkForUpdates": "Auf Updates prüfen",
   "checkForUpdatesSubtitle": "Hol dir die neueste Version von Nayza Vocab",
   "onboardingPage4Title": "Wie funktioniert es?",
-  "onboardingPage4Subtitle": "Meistere Wörter durch systematische Wiederholung. Schwierige Wörter kommen öfter vor, bis du sie auswendig kennst."
+  "onboardingPage4Subtitle": "Meistere Wörter durch systematische Wiederholung. Schwierige Wörter kommen öfter vor, bis du sie auswendig kennst.",
+  "library": "BIBLIOTHEK",
+  "createFolder": "Neuer Ordner",
+  "folderName": "Ordnername",
+  "create": "ERSTELLEN",
+  "enterFolderName": "Ordnernamen eingeben",
+  "noFolder": "Außerhalb des Ordners (Haupt)",
+  "uncategorized": "NICHT KATEGORISIERT",
+  "dangerZone": "GEFAHRENZONE",
+  "shareError": "Error sharing: {error}"
 }

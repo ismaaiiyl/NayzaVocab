@@ -72,6 +72,7 @@ class _SetDetailsScreenState extends State<SetDetailsScreen> {
               IconButton(
                 icon: const Icon(LucideIcons.share2, color: AppTheme.electricGold, size: 20),
                 onPressed: () async {
+                  final messenger = ScaffoldMessenger.of(context);
                   try {
                     final lang = set.words.isNotEmpty ? (set.words.first.langCode?.toUpperCase() ?? 'N/A') : 'N/A';
                     await DataService.shareSingleSet(
@@ -81,8 +82,8 @@ class _SetDetailsScreenState extends State<SetDetailsScreen> {
                     );
                   } catch (e) {
                     if (mounted) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Ulashishda xatolik: $e')),
+                      messenger.showSnackBar(
+                        SnackBar(content: Text(l10n.shareError(e.toString()))),
                       );
                     }
                   }
@@ -252,11 +253,13 @@ class _EditTitleDialog extends StatefulWidget {
 
 class _EditTitleDialogState extends State<_EditTitleDialog> {
   late final TextEditingController _titleController;
+  String? _selectedFolderId;
 
   @override
   void initState() {
     super.initState();
     _titleController = TextEditingController(text: widget.set.title);
+    _selectedFolderId = widget.set.folderId;
   }
 
   @override
@@ -269,7 +272,10 @@ class _EditTitleDialogState extends State<_EditTitleDialog> {
     final newTitle = _titleController.text.trim();
     if (newTitle.isEmpty) return;
     context.read<VocabSetProvider>().updateVocabSet(
-          widget.set.copyWith(title: newTitle),
+          widget.set.copyWith(
+            title: newTitle,
+            folderId: _selectedFolderId,
+          ),
         );
     Navigator.of(context).pop();
   }
@@ -283,12 +289,35 @@ class _EditTitleDialogState extends State<_EditTitleDialog> {
         l10n.editSetTitle,
         style: const TextStyle(color: AppTheme.electricGold),
       ),
-      content: TextField(
-        controller: _titleController,
-        autofocus: true,
-        decoration: InputDecoration(labelText: l10n.collectionNameLabel),
-        textInputAction: TextInputAction.done,
-        onSubmitted: (_) => _save(),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          TextField(
+            controller: _titleController,
+            autofocus: true,
+            decoration: InputDecoration(labelText: l10n.collectionNameLabel),
+            textInputAction: TextInputAction.next,
+          ),
+          const SizedBox(height: 16),
+          Consumer<VocabSetProvider>(
+            builder: (context, provider, child) {
+              final folders = provider.folders;
+              return DropdownButtonFormField<String?>(
+                value: _selectedFolderId,
+                decoration: InputDecoration(
+                  labelText: l10n.folderName,
+                  prefixIcon: const Icon(LucideIcons.folder, size: 20, color: AppTheme.electricGold),
+                ),
+                dropdownColor: AppTheme.surfaceNavy,
+                items: [
+                  DropdownMenuItem(value: null, child: Text(l10n.noFolder)),
+                  ...folders.map((f) => DropdownMenuItem(value: f.id, child: Text(f.title))),
+                ],
+                onChanged: (v) => setState(() => _selectedFolderId = v),
+              );
+            },
+          ),
+        ],
       ),
       actions: [
         TextButton(

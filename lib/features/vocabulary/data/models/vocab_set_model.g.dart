@@ -21,13 +21,14 @@ class VocabSetModelAdapter extends TypeAdapter<VocabSetModel> {
       title: fields[1] as String,
       words: (fields[2] as List).cast<WordModel>(),
       createdAt: fields[3] as DateTime,
+      folderId: fields[4] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, VocabSetModel obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(5)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -35,7 +36,9 @@ class VocabSetModelAdapter extends TypeAdapter<VocabSetModel> {
       ..writeByte(2)
       ..write(obj.words)
       ..writeByte(3)
-      ..write(obj.createdAt);
+      ..write(obj.createdAt)
+      ..writeByte(4)
+      ..write(obj.folderId);
   }
 
   @override

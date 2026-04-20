@@ -17,11 +17,15 @@ class VocabSetModel extends HiveObject {
   @HiveField(3)
   final DateTime createdAt;
 
+  @HiveField(4)
+  final String? folderId;
+
   VocabSetModel({
     required this.id,
     required this.title,
     required this.words,
     required this.createdAt,
+    this.folderId,
   });
 
   Map<String, dynamic> toMap() {
@@ -30,6 +34,7 @@ class VocabSetModel extends HiveObject {
       'title': title,
       'createdAt': createdAt.toIso8601String(),
       'words': words.map((w) => w.toMap()).toList(),
+      'folderId': folderId,
     };
   }
 
@@ -38,12 +43,14 @@ class VocabSetModel extends HiveObject {
     String? title,
     List<WordModel>? words,
     DateTime? createdAt,
+    String? folderId,
   }) {
     return VocabSetModel(
       id: id ?? this.id,
       title: title ?? this.title,
       words: words ?? this.words,
       createdAt: createdAt ?? this.createdAt,
+      folderId: folderId ?? this.folderId,
     );
   }
 
@@ -51,6 +58,7 @@ class VocabSetModel extends HiveObject {
     return VocabSetModel(
       id: map['id'] as String? ?? '',
       title: map['title'] as String? ?? 'Untitled Set',
+      folderId: map['folderId'] as String?,
       createdAt: map['createdAt'] != null 
           ? DateTime.parse(map['createdAt'] as String) 
           : DateTime.now(),

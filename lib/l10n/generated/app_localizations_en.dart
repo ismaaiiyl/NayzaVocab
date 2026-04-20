@@ -70,16 +70,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get dataManagement => 'DATA MANAGEMENT';
 
   @override
-  String get export => 'Export (Backup)';
+  String get export => 'Share or Backup';
 
   @override
-  String get exportSubtitle => 'Select and backup collections';
+  String get exportSubtitle => 'Select collections to share or create a backup';
 
   @override
-  String get import => 'Import (Restore)';
+  String get import => 'Add Words or Restore';
 
   @override
-  String get importSubtitle => 'Load collections from JSON file';
+  String get importSubtitle => 'Load collections from a backup file (JSON)';
 
   @override
   String get notifications => 'NOTIFICATIONS';
@@ -169,7 +169,24 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String wordCountLabel(int count) {
-    return '$count words';
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count words',
+      one: '1 word',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String setsCountLabel(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count sets',
+      one: '1 set',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -492,4 +509,33 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get onboardingPage4Subtitle =>
       'Master words through systematic repetition. Hard words come back more often until you know them by heart.';
+
+  @override
+  String get library => 'LIBRARY';
+
+  @override
+  String get createFolder => 'New Folder';
+
+  @override
+  String get folderName => 'Folder Name';
+
+  @override
+  String get create => 'CREATE';
+
+  @override
+  String get enterFolderName => 'Enter folder name';
+
+  @override
+  String get noFolder => 'Outside Folder (Main)';
+
+  @override
+  String get uncategorized => 'UNCATEGORIZED';
+
+  @override
+  String get dangerZone => 'DANGER ZONE';
+
+  @override
+  String shareError(Object error) {
+    return 'Error sharing: $error';
+  }
 }

@@ -9,6 +9,7 @@ import 'package:nayza_vocab/l10n/generated/app_localizations.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:nayza_vocab/features/vocabulary/presentation/provider/vocab_set_provider.dart';
+import 'package:nayza_vocab/features/vocabulary/data/models/vocab_set_model.dart';
 import 'package:nayza_vocab/features/settings/presentation/provider/settings_provider.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -33,7 +34,7 @@ class SettingsPage extends StatelessWidget {
         automaticallyImplyLeading: false,
       ),
       body: ListView(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
         children: [
           _buildSettingsHeader(l10n.dataManagement),
           const SizedBox(height: 12),
@@ -51,15 +52,6 @@ class SettingsPage extends StatelessWidget {
             subtitle: l10n.importSubtitle,
             icon: LucideIcons.upload,
             onTap: () => _handleImport(context),
-          ),
-          const SizedBox(height: 16),
-          _buildSettingsCard(
-            context,
-            title: l10n.resetAllData,
-            subtitle: l10n.resetAllDataConfirm,
-            icon: LucideIcons.trash2,
-            iconColor: Colors.redAccent,
-            onTap: () => _handleResetAllData(context),
           ),
           const SizedBox(height: 32),
           _buildSettingsHeader(l10n.notifications),
@@ -87,7 +79,13 @@ class SettingsPage extends StatelessWidget {
           const SizedBox(height: 32),
           _buildSettingsHeader(l10n.language.toUpperCase()),
           const SizedBox(height: 12),
-          _buildLanguageSelector(context, settings, l10n),
+          _buildSettingsCard(
+            context,
+            title: l10n.language,
+            subtitle: _getLanguageName(settings.languageCode, l10n),
+            icon: LucideIcons.languages,
+            onTap: () => _showLanguagePicker(context, settings, l10n),
+          ),
           const SizedBox(height: 32),
           _buildSettingsHeader(l10n.communityAndUpdates),
           const SizedBox(height: 12),
@@ -105,6 +103,17 @@ class SettingsPage extends StatelessWidget {
             subtitle: l10n.checkForUpdatesSubtitle,
             icon: LucideIcons.refreshCw,
             onTap: () => _launchURL('https://t.me/nayza_vocab'),
+          ),
+          const SizedBox(height: 32),
+          _buildSettingsHeader(l10n.dangerZone, color: Colors.redAccent),
+          const SizedBox(height: 12),
+          _buildSettingsCard(
+            context,
+            title: l10n.resetAllData,
+            subtitle: l10n.resetAllDataConfirm,
+            icon: LucideIcons.trash2,
+            iconColor: Colors.redAccent,
+            onTap: () => _handleResetAllData(context),
           ),
           const SizedBox(height: 48),
           _buildSettingsHeader(l10n.appInfo),
@@ -124,13 +133,13 @@ class SettingsPage extends StatelessWidget {
     );
   }
 
-  Widget _buildSettingsHeader(String title) {
+  Widget _buildSettingsHeader(String title, {Color? color}) {
     return Padding(
       padding: const EdgeInsets.only(left: 4, bottom: 8),
       child: Text(
         title,
         style: TextStyle(
-          color: AppTheme.electricGold.withValues(alpha: 0.8),
+          color: (color ?? AppTheme.electricGold).withValues(alpha: 0.8),
           fontSize: 12,
           fontWeight: FontWeight.bold,
           letterSpacing: 1.2,
@@ -250,17 +259,17 @@ class SettingsPage extends StatelessWidget {
     final messenger = ScaffoldMessenger.of(context);
     final l10n = AppLocalizations.of(context)!;
     try {
-      final importedSets = await DataService.importSets(importedSuffix: l10n.importedSuffix);
-      if (importedSets.isEmpty) return;
+      final data = await DataService.importData(importedSuffix: l10n.importedSuffix);
+      if (data.isEmpty) return;
+
+      final List<VocabSetModel> sets = data['sets'] as List<VocabSetModel>;
+      final List<dynamic> folders = data['folders'] as List<dynamic>;
 
       if (!context.mounted) return;
-      final provider = context.read<VocabSetProvider>();
-      for (var set in importedSets) {
-        await provider.addSet(set);
-      }
+      await context.read<VocabSetProvider>().importData(sets, folders);
       
       messenger.showSnackBar(
-        SnackBar(content: Text(l10n.importSuccess(importedSets.length))),
+        SnackBar(content: Text(l10n.importSuccess(sets.length))),
       );
     } catch (e) {
       if (!context.mounted) return;
@@ -305,37 +314,86 @@ class SettingsPage extends StatelessWidget {
     }
   }
 
-  Widget _buildLanguageSelector(BuildContext context, SettingsProvider settings, AppLocalizations l10n) {
-    return Container(
-      decoration: BoxDecoration(
-        color: AppTheme.surfaceNavy.withValues(alpha: 0.5),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppTheme.borderNavy),
+  String _getLanguageName(String code, AppLocalizations l10n) {
+    switch (code) {
+      case 'uz': return '${l10n.uzbek} 🇺🇿';
+      case 'ru': return '${l10n.russian} 🇷🇺';
+      case 'en': return '${l10n.english} 🇬🇧';
+      case 'ar': return '${l10n.arabicLang} 🇸🇦';
+      case 'de': return '${l10n.germanLang} 🇩🇪';
+      case 'ko': return '${l10n.koreanLang} 🇰🇷';
+      default: return code;
+    }
+  }
+
+  void _showLanguagePicker(BuildContext context, SettingsProvider settings, AppLocalizations l10n) {
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: AppTheme.darkNavy,
+      barrierColor: Colors.black.withValues(alpha: 0.6),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
       ),
-      child: Column(
-        children: [
-          _buildLanguageOption(context, settings, 'uz', '${l10n.uzbek} 🇺🇿'),
-          const Divider(color: AppTheme.borderNavy, height: 1),
-          _buildLanguageOption(context, settings, 'ru', '${l10n.russian} 🇷🇺'),
-          const Divider(color: AppTheme.borderNavy, height: 1),
-          _buildLanguageOption(context, settings, 'en', '${l10n.english} 🇬🇧'),
-          const Divider(color: AppTheme.borderNavy, height: 1),
-          _buildLanguageOption(context, settings, 'ar', '${l10n.arabicLang} 🇸🇦'),
-          const Divider(color: AppTheme.borderNavy, height: 1),
-          _buildLanguageOption(context, settings, 'de', '${l10n.germanLang} 🇩🇪'),
-          const Divider(color: AppTheme.borderNavy, height: 1),
-          _buildLanguageOption(context, settings, 'ko', '${l10n.koreanLang} 🇰🇷'),
-        ],
-      ),
+      builder: (context) {
+        return SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const SizedBox(height: 12),
+              // Sexy Handle
+              Container(
+                width: 40,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: AppTheme.textDim.withValues(alpha: 0.3),
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+              const SizedBox(height: 24),
+              Text(
+                l10n.language.toUpperCase(),
+                style: const TextStyle(
+                  color: AppTheme.electricGold,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 2.0,
+                  fontSize: 14,
+                ),
+              ),
+              const SizedBox(height: 24),
+              _buildLanguageOption(context, settings, 'uz', '${l10n.uzbek} 🇺🇿'),
+              _buildLanguageOption(context, settings, 'ru', '${l10n.russian} 🇷🇺'),
+              _buildLanguageOption(context, settings, 'en', '${l10n.english} 🇬🇧'),
+              _buildLanguageOption(context, settings, 'ar', '${l10n.arabicLang} 🇸🇦'),
+              _buildLanguageOption(context, settings, 'de', '${l10n.germanLang} 🇩🇪'),
+              _buildLanguageOption(context, settings, 'ko', '${l10n.koreanLang} 🇰🇷'),
+              const SizedBox(height: 24),
+            ],
+          ),
+        );
+      },
     );
   }
 
   Widget _buildLanguageOption(BuildContext context, SettingsProvider settings, String code, String label) {
     final isSelected = settings.languageCode == code;
     return ListTile(
-      onTap: () => settings.setLanguage(code),
-      title: Text(label, style: TextStyle(color: isSelected ? AppTheme.electricGold : AppTheme.textMain, fontWeight: isSelected ? FontWeight.bold : FontWeight.normal)),
-      trailing: isSelected ? const Icon(LucideIcons.check, color: AppTheme.electricGold, size: 18) : null,
+      onTap: () {
+        settings.setLanguage(code);
+        Navigator.pop(context);
+      },
+      contentPadding: const EdgeInsets.symmetric(horizontal: 32),
+      title: Text(
+        label, 
+        style: TextStyle(
+          color: isSelected ? AppTheme.electricGold : AppTheme.textMain, 
+          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+          fontSize: 18,
+        )
+      ),
+      trailing: isSelected 
+          ? const Icon(LucideIcons.check, color: AppTheme.electricGold, size: 20) 
+          : null,
     );
   }
 }

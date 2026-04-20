@@ -223,25 +223,25 @@ abstract class AppLocalizations {
   /// No description provided for @export.
   ///
   /// In en, this message translates to:
-  /// **'Export (Backup)'**
+  /// **'Share or Backup'**
   String get export;
 
   /// No description provided for @exportSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Select and backup collections'**
+  /// **'Select collections to share or create a backup'**
   String get exportSubtitle;
 
   /// No description provided for @import.
   ///
   /// In en, this message translates to:
-  /// **'Import (Restore)'**
+  /// **'Add Words or Restore'**
   String get import;
 
   /// No description provided for @importSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Load collections from JSON file'**
+  /// **'Load collections from a backup file (JSON)'**
   String get importSubtitle;
 
   /// No description provided for @notifications.
@@ -403,8 +403,14 @@ abstract class AppLocalizations {
   /// No description provided for @wordCountLabel.
   ///
   /// In en, this message translates to:
-  /// **'{count} words'**
+  /// **'{count, plural, =1{1 word} other{{count} words}}'**
   String wordCountLabel(int count);
+
+  /// No description provided for @setsCountLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 set} other{{count} sets}}'**
+  String setsCountLabel(int count);
 
   /// No description provided for @selectCollectionsTitle.
   ///
@@ -981,6 +987,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Master words through systematic repetition. Hard words come back more often until you know them by heart.'**
   String get onboardingPage4Subtitle;
+
+  /// No description provided for @library.
+  ///
+  /// In en, this message translates to:
+  /// **'LIBRARY'**
+  String get library;
+
+  /// No description provided for @createFolder.
+  ///
+  /// In en, this message translates to:
+  /// **'New Folder'**
+  String get createFolder;
+
+  /// No description provided for @folderName.
+  ///
+  /// In en, this message translates to:
+  /// **'Folder Name'**
+  String get folderName;
+
+  /// No description provided for @create.
+  ///
+  /// In en, this message translates to:
+  /// **'CREATE'**
+  String get create;
+
+  /// No description provided for @enterFolderName.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter folder name'**
+  String get enterFolderName;
+
+  /// No description provided for @noFolder.
+  ///
+  /// In en, this message translates to:
+  /// **'Outside Folder (Main)'**
+  String get noFolder;
+
+  /// No description provided for @uncategorized.
+  ///
+  /// In en, this message translates to:
+  /// **'UNCATEGORIZED'**
+  String get uncategorized;
+
+  /// No description provided for @dangerZone.
+  ///
+  /// In en, this message translates to:
+  /// **'DANGER ZONE'**
+  String get dangerZone;
+
+  /// No description provided for @shareError.
+  ///
+  /// In en, this message translates to:
+  /// **'Error sharing: {error}'**
+  String shareError(Object error);
 }
 
 class _AppLocalizationsDelegate

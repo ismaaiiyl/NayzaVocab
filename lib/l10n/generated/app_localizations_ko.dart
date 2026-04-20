@@ -70,16 +70,16 @@ class AppLocalizationsKo extends AppLocalizations {
   String get dataManagement => '데이터 관리';
 
   @override
-  String get export => '내보내기 (백업)';
+  String get export => '공유 또는 백업';
 
   @override
-  String get exportSubtitle => '컬렉션 선택 및 백업';
+  String get exportSubtitle => '공유 또는 백업할 컬렉션 선택';
 
   @override
-  String get import => '가져오기 (복원)';
+  String get import => '단어 추가 또는 복원';
 
   @override
-  String get importSubtitle => 'JSON 파일에서 컬렉션 로드';
+  String get importSubtitle => '백업 파일(JSON)에서 컬렉션 로드';
 
   @override
   String get notifications => '알림';
@@ -169,7 +169,12 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String wordCountLabel(int count) {
-    return '$count 단어';
+    return '$count개 단어';
+  }
+
+  @override
+  String setsCountLabel(int count) {
+    return '$count개 세트';
   }
 
   @override
@@ -488,4 +493,33 @@ class AppLocalizationsKo extends AppLocalizations {
   @override
   String get onboardingPage4Subtitle =>
       '체계적인 반복을 통해 단어를 마스터하세요. 어려운 단어는 완전히 외울 때까지 더 자주 나타납니다.';
+
+  @override
+  String get library => '라이브러리';
+
+  @override
+  String get createFolder => '새 폴더';
+
+  @override
+  String get folderName => '폴더 이름';
+
+  @override
+  String get create => '만들기';
+
+  @override
+  String get enterFolderName => '폴더 이름 입력';
+
+  @override
+  String get noFolder => '폴더 외부 (기본)';
+
+  @override
+  String get uncategorized => '미분류';
+
+  @override
+  String get dangerZone => '위험 구역';
+
+  @override
+  String shareError(Object error) {
+    return 'Error sharing: $error';
+  }
 }

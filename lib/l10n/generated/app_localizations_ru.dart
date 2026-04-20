@@ -71,16 +71,18 @@ class AppLocalizationsRu extends AppLocalizations {
   String get dataManagement => 'УПРАВЛЕНИЕ ДАННЫМИ';
 
   @override
-  String get export => 'Экспорт (Бэкап)';
+  String get export => 'Поделиться или бэкап';
 
   @override
-  String get exportSubtitle => 'Выбрать и сохранить коллекции';
+  String get exportSubtitle =>
+      'Выберите коллекции для передачи или создания резервной копии';
 
   @override
-  String get import => 'Импорт (Восстановление)';
+  String get import => 'Добавить слова или восстановить';
 
   @override
-  String get importSubtitle => 'Загрузить коллекции из JSON';
+  String get importSubtitle =>
+      'Загрузить коллекции из файла резервной копии (JSON)';
 
   @override
   String get notifications => 'УВЕДОМЛЕНИЯ';
@@ -170,7 +172,26 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String wordCountLabel(int count) {
-    return 'слов: $count';
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count слов',
+      few: '$count слова',
+      one: '$count слово',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String setsCountLabel(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count наборов',
+      few: '$count набора',
+      one: '$count набор',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -496,4 +517,33 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get onboardingPage4Subtitle =>
       'Осваивайте слова через систему повторений. Сложные слова возвращаются чаще, пока вы их не запомните.';
+
+  @override
+  String get library => 'БИБЛИОТЕКА';
+
+  @override
+  String get createFolder => 'Новая папка';
+
+  @override
+  String get folderName => 'Название папки';
+
+  @override
+  String get create => 'СОЗДАТЬ';
+
+  @override
+  String get enterFolderName => 'Введите название папки';
+
+  @override
+  String get noFolder => 'Вне папки (Главная)';
+
+  @override
+  String get uncategorized => 'БЕЗ КАТЕГОРИИ';
+
+  @override
+  String get dangerZone => 'ОПАСНАЯ ЗОНА';
+
+  @override
+  String shareError(Object error) {
+    return 'Error sharing: $error';
+  }
 }

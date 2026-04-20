@@ -7,6 +7,8 @@ import 'package:nayza_vocab/features/vocabulary/presentation/provider/vocab_set_
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nayza_vocab/l10n/generated/app_localizations.dart';
+import 'package:nayza_vocab/features/vocabulary/data/models/vocab_set_model.dart';
+import 'package:nayza_vocab/features/vocabulary/data/models/folder_model.dart';
 
 class ExportSelectionPage extends StatefulWidget {
   const ExportSelectionPage({super.key});
@@ -76,7 +78,9 @@ class _ExportSelectionPageState extends State<ExportSelectionPage> {
         );
       } else {
         // Regular Backup for multiple sets (JSON)
-        await DataService.exportSets(selectedSets);
+        final usedFolderIds = selectedSets.map((s) => s.folderId).whereType<String>().toSet();
+        final selectedFolders = provider.folders.where((f) => usedFolderIds.contains(f.id)).map((f) => f.toMap()).toList();
+        await DataService.exportSets(selectedSets, folders: selectedFolders);
       }
       
       if (mounted) {
@@ -102,8 +106,11 @@ class _ExportSelectionPageState extends State<ExportSelectionPage> {
 
   @override
   Widget build(BuildContext context) {
-    final vocabSets = Provider.of<VocabSetProvider>(context).vocabSets;
+    final provider = Provider.of<VocabSetProvider>(context);
+    final vocabSets = provider.vocabSets;
+    final folders = provider.folders;
     final l10n = AppLocalizations.of(context)!;
+    
     final allIds = vocabSets.map((s) => s.id).toList();
     final allSelected = _selectedSetIds.length == vocabSets.length && vocabSets.isNotEmpty;
 
@@ -138,36 +145,42 @@ class _ExportSelectionPageState extends State<ExportSelectionPage> {
                 ? Center(
                     child: Text(l10n.noCollections, style: const TextStyle(color: AppTheme.textDim)),
                   )
-                : ListView.builder(
+                : ListView(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
-                    itemCount: vocabSets.length,
-                    itemBuilder: (context, index) {
-                      final set = vocabSets[index];
-                      final isSelected = _selectedSetIds.contains(set.id);
-                      return Padding(
-                        padding: const EdgeInsets.only(bottom: 8.0),
-                        child: Card(
-                          color: isSelected ? AppTheme.cardDark : AppTheme.surfaceNavy,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            side: BorderSide(
-                              color: isSelected ? AppTheme.electricGold.withValues(alpha: 0.5) : Colors.transparent,
-                              width: 1,
+                    children: [
+                      // 1. Folders and their sets
+                      ...folders.map((folder) {
+                        final setsInFolder = provider.getSetsByFolder(folder.id);
+                        if (setsInFolder.isEmpty) return const SizedBox.shrink();
+                        
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4),
+                              child: Text(
+                                folder.title.toUpperCase(),
+                                style: const TextStyle(color: AppTheme.electricGold, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1.2),
+                              ),
                             ),
-                          ),
-                          child: CheckboxListTile(
-                            value: isSelected,
-                            onChanged: (_) => _toggleSet(set.id),
-                            title: Text(set.title, style: TextStyle(color: isSelected ? AppTheme.electricGold : AppTheme.textMain, fontWeight: FontWeight.bold)),
-                            subtitle: Text(l10n.wordsCountLabel(set.words.length), style: const TextStyle(color: AppTheme.textDim, fontSize: 13)),
-                            activeColor: AppTheme.electricGold,
-                            checkColor: AppTheme.darkNavy,
-                            secondary: Icon(LucideIcons.library, color: isSelected ? AppTheme.electricGold : AppTheme.textDim),
-                            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                            ...setsInFolder.map((set) => _buildSetCard(set, l10n)),
+                            const SizedBox(height: 16),
+                          ],
+                        );
+                      }),
+                      
+                      if (provider.getSetsByFolder('uncategorized').isNotEmpty) ...[
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4),
+                          child: Text(
+                            l10n.uncategorized,
+                            style: const TextStyle(color: AppTheme.textDim, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1.2),
                           ),
                         ),
-                      );
-                    },
+                        ...provider.getSetsByFolder('uncategorized').map((set) => _buildSetCard(set, l10n)),
+                        const SizedBox(height: 16),
+                      ],
+                    ],
                   ),
           ),
           Padding(
@@ -179,6 +192,33 @@ class _ExportSelectionPageState extends State<ExportSelectionPage> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildSetCard(VocabSetModel set, AppLocalizations l10n) {
+    final isSelected = _selectedSetIds.contains(set.id);
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8.0),
+      child: Card(
+        color: isSelected ? AppTheme.cardDark : AppTheme.surfaceNavy,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+          side: BorderSide(
+            color: isSelected ? AppTheme.electricGold.withValues(alpha: 0.5) : Colors.transparent,
+            width: 1,
+          ),
+        ),
+        child: CheckboxListTile(
+          value: isSelected,
+          onChanged: (_) => _toggleSet(set.id),
+          title: Text(set.title, style: TextStyle(color: isSelected ? AppTheme.electricGold : AppTheme.textMain, fontWeight: FontWeight.bold)),
+          subtitle: Text(l10n.wordsCountLabel(set.words.length), style: const TextStyle(color: AppTheme.textDim, fontSize: 13)),
+          activeColor: AppTheme.electricGold,
+          checkColor: AppTheme.darkNavy,
+          secondary: Icon(LucideIcons.library, color: isSelected ? AppTheme.electricGold : AppTheme.textDim),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+        ),
       ),
     );
   }

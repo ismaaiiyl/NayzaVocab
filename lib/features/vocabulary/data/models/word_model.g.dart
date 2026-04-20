@@ -1,5 +1,4 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: type=lint
 
 part of 'word_model.dart';
 
@@ -26,15 +25,14 @@ class WordModelAdapter extends TypeAdapter<WordModel> {
       wrongAttempts: fields[5] as int,
       correctAnswersCount: fields[6] as int,
       lastTestedAt: fields[7] as DateTime?,
-      // Field 8 is new — existing records without it default to ''
-      setId: fields[8] as String? ?? '',
+      setId: fields[8] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, WordModel obj) {
     writer
-      ..writeByte(9) // Total field count = 9
+      ..writeByte(9)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)

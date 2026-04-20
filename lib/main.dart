@@ -3,6 +3,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:nayza_vocab/core/theme/app_theme.dart';
 import 'package:nayza_vocab/features/vocabulary/data/models/vocab_set_model.dart';
 import 'package:nayza_vocab/features/vocabulary/data/models/word_model.dart';
+import 'package:nayza_vocab/features/vocabulary/data/models/folder_model.dart';
 import 'package:nayza_vocab/features/vocabulary/presentation/provider/vocab_set_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:nayza_vocab/core/services/notification_service.dart';
@@ -18,7 +19,9 @@ void main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(VocabSetModelAdapter());
   Hive.registerAdapter(WordModelAdapter());
+  Hive.registerAdapter(FolderModelAdapter());
   final vocabSetBox = await Hive.openBox<VocabSetModel>('vocab_sets');
+  final folderBox = await Hive.openBox<FolderModel>('folders');
 
   // Initialize Notifications
   await NotificationService().init();
@@ -30,21 +33,22 @@ void main() async {
   // Initialize SharedPreferences
   final prefs = await SharedPreferences.getInstance();
 
-  runApp(MyApp(vocabSetBox: vocabSetBox, prefs: prefs));
+  runApp(MyApp(vocabSetBox: vocabSetBox, folderBox: folderBox, prefs: prefs));
 }
 
 class MyApp extends StatelessWidget {
   final Box<VocabSetModel> vocabSetBox;
+  final Box<FolderModel> folderBox;
   final SharedPreferences prefs;
   
-  const MyApp({super.key, required this.vocabSetBox, required this.prefs});
+  const MyApp({super.key, required this.vocabSetBox, required this.folderBox, required this.prefs});
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => SettingsProvider(prefs)),
-        ChangeNotifierProvider(create: (_) => VocabSetProvider(vocabSetBox)),
+        ChangeNotifierProvider(create: (_) => VocabSetProvider(vocabSetBox, folderBox)),
         ChangeNotifierProvider(create: (_) => QuizProvider()),
       ],
       child: Consumer<SettingsProvider>(

@@ -12,13 +12,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get appTitle => 'Nayza Vocab';
 
   @override
-  String get homeTitle => 'تحقق من معرفتك!';
+  String get homeTitle => 'تأكد من معرفتك!';
 
   @override
   String get homeSubtitle => 'اختر مجموعاتك وابدأ الاختبار.';
 
   @override
-  String get startTest => 'ابدأ الاختبار';
+  String get startTest => 'بدء الاختبار';
 
   @override
   String get matchingGame => 'لعبة المطابقة';
@@ -30,7 +30,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get settings => 'الإعدادات';
 
   @override
-  String get history => 'السجل';
+  String get history => 'المجموعات';
 
   @override
   String get collections => 'المجموعات';
@@ -40,20 +40,19 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String difficultWordsSubtitle(int count) {
-    return 'لديك $count كلمات صعبة';
+    return 'لديك $count كلمات فشلت فيها';
   }
 
   @override
   String difficultSetTitle(int number) {
-    return 'الكلمات الصعبة #$number';
+    return 'كلمات صعبة #$number';
   }
 
   @override
   String get removeFromDifficult => 'إزالة من قائمة الكلمات الصعبة';
 
   @override
-  String get noDifficultWords =>
-      'لا توجد كلمات صعبة حتى الآن. استمر في التدريب!';
+  String get noDifficultWords => 'لا توجد كلمات صعبة بعد. استمر في التدريب!';
 
   @override
   String get myCollectionsHeader => 'مجموعاتي';
@@ -71,16 +70,16 @@ class AppLocalizationsAr extends AppLocalizations {
   String get dataManagement => 'إدارة البيانات';
 
   @override
-  String get export => 'تصدير (نسخة احتياطية)';
+  String get export => 'مشاركة أو نسخة احتياطية';
 
   @override
-  String get exportSubtitle => 'تحديد ونسخ المجموعات احتياطياً';
+  String get exportSubtitle => 'اختر المجموعات للمشاركة أو إنشاء نسخة احتياطية';
 
   @override
-  String get import => 'استيراد (استعادة)';
+  String get import => 'إضافة كلمات أو استعادة';
 
   @override
-  String get importSubtitle => 'تحميل المجموعات من ملف JSON';
+  String get importSubtitle => 'تحميل المجموعات من ملف نسخة احتياطية (JSON)';
 
   @override
   String get notifications => 'الإشعارات';
@@ -105,7 +104,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get appInfo => 'معلومات التطبيق';
 
   @override
-  String get appVersion => 'Nayza Vocab v1.0.0\nتم الإنشاء لـ Nayzadorlar 🔱';
+  String get appVersion => 'Nayza Vocab v1.0.1\nCreated for Nayzadorlar 🔱';
 
   @override
   String get language => 'اللغة';
@@ -121,7 +120,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String importSuccess(Object count) {
-    return 'تم استيراد $count مجموعة بنجاح';
+    return 'تم استيراد $count مجموعات بنجاح';
   }
 
   @override
@@ -133,13 +132,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get historyTitle => 'مجموعاتي';
 
   @override
-  String get searchHint => 'ابحث عن مجموعة أو كلمة...';
+  String get searchHint => 'البحث عن مجموعة أو كلمة...';
 
   @override
   String get noResults => 'لم يتم العثور على نتائج';
 
   @override
-  String get noCollections => 'لا توجد مجموعات حتى الآن';
+  String get noCollections => 'لا توجد مجموعات بعد';
 
   @override
   String get collectionsLabel => 'المجموعات';
@@ -170,11 +169,28 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String wordCountLabel(int count) {
-    return '$count كلمات';
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count كلمات',
+      one: 'كلمة واحدة',
+    );
+    return '$_temp0';
   }
 
   @override
-  String get selectCollectionsTitle => 'تحديد المجموعات';
+  String setsCountLabel(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count مجموعات',
+      one: 'مجموعة واحدة',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get selectCollectionsTitle => 'اختر المجموعات';
 
   @override
   String get emptyCollectionsWarning =>
@@ -187,28 +203,28 @@ class AppLocalizationsAr extends AppLocalizations {
   String get deselectAll => 'إلغاء تحديد الكل';
 
   @override
-  String get selectToStart => 'حدد للبدء';
+  String get selectToStart => 'اختر للبدء';
 
   @override
-  String get emptySelectionWarning => 'المجموعات المحددة فارغة!';
+  String get emptySelectionWarning => 'المجموعات المختارة فارغة!';
 
   @override
   String get quizSetupTitle => 'إعداد الاختبار';
 
   @override
-  String get selectQuizMode => 'حدد وضع الاختبار';
+  String get selectQuizMode => 'اختر وضع الاختبار';
 
   @override
   String get selectDirection => 'اتجاه الاختبار';
 
   @override
-  String get start => 'ابدأ';
+  String get start => 'بدء';
 
   @override
   String get choiceMode => 'اختيار من متعدد';
 
   @override
-  String get choiceSubtitle => 'اختر من 4 خيارات';
+  String get choiceSubtitle => 'اختر من بين 4 خيارات';
 
   @override
   String get inputMode => 'كتابة';
@@ -226,13 +242,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get matchingMode => 'مطابقة';
 
   @override
-  String get matchingSubtitle => 'ابحث عن الأزواج';
+  String get matchingSubtitle => 'جد الأزواج';
 
   @override
-  String get originalToTranslation => 'الأصلي -> الترجمة';
+  String get originalToTranslation => 'الأصل -> الترجمة';
 
   @override
-  String get translationToOriginal => 'الترجمة -> الأصلي';
+  String get translationToOriginal => 'الترجمة -> الأصل';
 
   @override
   String get randomDirection => 'مختلط (عشوائي)';
@@ -244,7 +260,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get translationToOriginalSubtitle => 'مثال: الأوزبكية -> الإنجليزية';
 
   @override
-  String get randomDirectionSubtitle => 'تغيير عشوائي';
+  String get randomDirectionSubtitle => 'التبديل عشوائياً';
 
   @override
   String correctAnswerLabel(String answer) {
@@ -259,7 +275,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String scoreLabel(int score) {
-    return 'نتيجتك: $score';
+    return 'درجتك: $score';
   }
 
   @override
@@ -269,7 +285,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String incorrectCountLabel(Object count) {
-    return 'غير صحيح: $count';
+    return 'خطأ: $count';
   }
 
   @override
@@ -280,7 +296,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String learnedWordsCount(Object count) {
-    return 'لقد أتقنت $count كلمة في هذه الجلسة!';
+    return 'لقد أتقنت $count كلمات في هذه الجلسة!';
   }
 
   @override
@@ -296,7 +312,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get matchingGameTitle => 'لعبة المطابقة';
 
   @override
-  String get findPairsLabel => 'ابحث عن الأزواج';
+  String get findPairsLabel => 'جد الأزواج';
 
   @override
   String stageLabel(int count) {
@@ -313,7 +329,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get collectionNameLabel => 'اسم المجموعة';
 
   @override
-  String get collectionNameHint => 'مثل: السفر، العائلة...';
+  String get collectionNameHint => 'مثال: السفر، العائلة...';
 
   @override
   String get nameRequiredError => 'يرجى إدخال اسم';
@@ -331,7 +347,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get russianLang => 'الروسية';
 
   @override
-  String get uzbekLang => 'الأوزبكية (بدون نطق)';
+  String get uzbekLang => 'الأوزبكية (تحويل النص إلى كلام معطل)';
 
   @override
   String get germanLang => 'الألمانية';
@@ -373,26 +389,26 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String wordsFoundCount(int count) {
-    return 'متوفر $count كلمات';
+    return '$count كلمات متاحة';
   }
 
   @override
-  String get masteryExplanation => 'تعتبر الكلمة متقنة بعد إجابة واحدة صحيحة';
+  String get masteryExplanation => 'تعتبر الكلمة متقنة بعد إجابة صحيحة واحدة';
 
   @override
   String get progressLabel => 'التقدم';
 
   @override
-  String get selectSetsTitle => 'تحديد المجموعات';
+  String get selectSetsTitle => 'اختر المجموعات';
 
   @override
-  String get selectAtLeastOneSet => 'يرجى تحديد مجموعة واحدة على الأقل.';
+  String get selectAtLeastOneSet => 'يرجى اختيار مجموعة واحدة على الأقل.';
 
   @override
-  String get exportSuccess => 'اكتمل التصدير بنجاح!';
+  String get exportSuccess => 'تم التصدير بنجاح!';
 
   @override
-  String get shareSuccess => 'تمت المشاركة بنجاح!';
+  String get shareSuccess => 'تمت مشاركة المجموعة بنجاح!';
 
   @override
   String shareSubject(Object title) {
@@ -401,7 +417,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String shareMessage(Object count, Object lang, Object title) {
-    return '📚 مجموعة Nayza Vocab: $title\n🌐 اللغة: $lang\n📝 الكلمات: $count\n\nقم باستيراد هذا الملف إلى Nayza Vocab للتعلم معاً!';
+    return '📚 مجموعة Nayza Vocab: $title\n🌐 اللغة: $lang\n📝 الكلمات: $count\n\nاستورد هذا الملف في Nayza Vocab للتعلم معاً!';
   }
 
   @override
@@ -423,21 +439,21 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String get onboardingWelcome => 'مرحباً بكم في NAYZA VOCAB';
+  String get onboardingWelcome => 'مرحباً بك في NAYZA VOCAB';
 
   @override
   String get onboardingPage1Title => 'أتقن مفرداتك';
 
   @override
   String get onboardingPage1Subtitle =>
-      'أقوى طريقة لتعلم وتذكر الكلمات الجديدة بأساليب مدعومة علمياً.';
+      'أقوى طريقة لتعلم وتذكر الكلمات الجديدة بطرق مدعومة علمياً.';
 
   @override
   String get onboardingPage2Title => 'بطاقات تعليمية وألعاب';
 
   @override
   String get onboardingPage2Subtitle =>
-      'اختبارات تفاعلية وألعاب مطابقة مصممة لجعل التعلم إدماناً.';
+      'اختبارات تفاعلية وألعاب مطابقة مصممة لجعل التعلم ممتعاً.';
 
   @override
   String get onboardingPage3Title => 'تتبع تقدمك';
@@ -447,13 +463,13 @@ class AppLocalizationsAr extends AppLocalizations {
       'شاهد تحسنك بمرور الوقت وركز على الكلمات الصعبة.';
 
   @override
-  String get onboardingGetStarted => 'البدء';
+  String get onboardingGetStarted => 'ابدأ الآن';
 
   @override
   String get skip => 'تخطي';
 
   @override
-  String get submitAnswer => 'تأكيد';
+  String get submitAnswer => 'إرسال';
 
   @override
   String get collectionsPageTitle => 'المجموعات';
@@ -462,23 +478,23 @@ class AppLocalizationsAr extends AppLocalizations {
   String get cancelReminder => 'إلغاء التذكير';
 
   @override
-  String get resetAllData => 'إعادة تعيين جميع البيانات';
+  String get resetAllData => 'إعادة تعيين كافة البيانات';
 
   @override
   String get resetAllDataConfirm =>
-      'سيؤدي هذا إلى حذف جميع مجموعاتك وتقدمك نهائياً. هل أنت متأكد؟';
+      'سيؤدي هذا إلى حذف جميع مجموعاتك وتقدمك بشكل دائم. هل أنت متأكد؟';
 
   @override
-  String get deleteSetConfirm => 'هل أنت متأكد أنك تريد حذف هذه المجموعة؟';
+  String get deleteSetConfirm => 'هل تريد حذف هذه المجموعة؟';
 
   @override
   String get communityAndUpdates => 'المجتمع والتحديثات';
 
   @override
-  String get telegramChannel => 'قناة تلغرام';
+  String get telegramChannel => 'قناة تيليجرام';
 
   @override
-  String get telegramSubtitle => 'انضم للحصول على نصائح وتحديثات';
+  String get telegramSubtitle => 'انضم للحصول على نصائح وتحديثات وموارد';
 
   @override
   String get checkForUpdates => 'التحقق من التحديثات';
@@ -491,5 +507,34 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get onboardingPage4Subtitle =>
-      'أتقن الكلمات من خلال التكرار المنهجي. تعود الكلمات الصعبة بشكل متكرر حتى تحفظها عن ظهر قلب.';
+      'أتقن الكلمات من خلال التكرار المنتظم. الكلمات الصعبة تعود بشكل متكرر حتى تحفظها عن ظهر قلب.';
+
+  @override
+  String get library => 'المكتبة';
+
+  @override
+  String get createFolder => 'مجلد جديد';
+
+  @override
+  String get folderName => 'اسم المجلد';
+
+  @override
+  String get create => 'إنشاء';
+
+  @override
+  String get enterFolderName => 'أدخل اسم المجلد';
+
+  @override
+  String get noFolder => 'خارج المجلد (الرئيسي)';
+
+  @override
+  String get uncategorized => 'غير مصنف';
+
+  @override
+  String get dangerZone => 'منطقة الخطر';
+
+  @override
+  String shareError(Object error) {
+    return 'Error sharing: $error';
+  }
 }

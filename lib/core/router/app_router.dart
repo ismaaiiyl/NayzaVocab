@@ -14,6 +14,7 @@ import 'package:nayza_vocab/features/vocabulary/presentation/pages/onboarding_pa
 import 'package:nayza_vocab/features/vocabulary/presentation/pages/quiz/quiz_summary_screen.dart';
 import 'package:nayza_vocab/features/vocabulary/presentation/pages/difficult_words_screen.dart';
 import 'package:nayza_vocab/features/vocabulary/presentation/pages/difficult_set_details_screen.dart';
+import 'package:nayza_vocab/features/vocabulary/presentation/pages/folder_details_screen.dart';
 import 'package:nayza_vocab/features/settings/presentation/pages/export_selection_page.dart';
 import 'package:nayza_vocab/features/vocabulary/data/models/vocab_set_model.dart';
 import 'package:nayza_vocab/features/settings/presentation/provider/settings_provider.dart';
@@ -48,7 +49,10 @@ class AppRouter {
       GoRoute(
         path: '/create-set',
         name: 'create-set',
-        pageBuilder: (context, state) => _customPageTransition(const CreateSetScreen()),
+        pageBuilder: (context, state) {
+          final folderId = state.extra as String?;
+          return _customPageTransition(CreateSetScreen(folderId: folderId));
+        },
       ),
       GoRoute(
         path: '/set-details/:id',
@@ -56,6 +60,14 @@ class AppRouter {
         pageBuilder: (context, state) {
           final id = state.pathParameters['id']!;
           return _customPageTransition(SetDetailsScreen(setId: id));
+        },
+      ),
+      GoRoute(
+        path: '/folder-details/:id',
+        name: 'folder-details',
+        pageBuilder: (context, state) {
+          final id = state.pathParameters['id']!;
+          return _customPageTransition(FolderDetailsScreen(folderId: id));
         },
       ),
       GoRoute(

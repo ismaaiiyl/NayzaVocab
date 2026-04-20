@@ -11,7 +11,8 @@ import 'package:go_router/go_router.dart';
 import 'package:nayza_vocab/l10n/generated/app_localizations.dart';
 
 class CreateSetScreen extends StatefulWidget {
-  const CreateSetScreen({super.key});
+  final String? folderId;
+  const CreateSetScreen({super.key, this.folderId});
 
   @override
   State<CreateSetScreen> createState() => _CreateSetScreenState();
@@ -23,11 +24,13 @@ class _CreateSetScreenState extends State<CreateSetScreen> {
   final FocusNode _titleFocusNode = FocusNode();
   final List<WordRowControllers> _rowControllers = [];
   String _selectedLangCode = 'en-US';
+  String? _selectedFolderId;
   final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
+    _selectedFolderId = widget.folderId;
     // Start with 3 empty rows without auto-focus
     for (int i = 0; i < 3; i++) {
       _addRow(shouldFocus: false);
@@ -238,6 +241,7 @@ class _CreateSetScreenState extends State<CreateSetScreen> {
       await context.read<VocabSetProvider>().createVocabSet(
             _titleController.text,
             words,
+            folderId: _selectedFolderId,
           );
 
       if (mounted) {
@@ -304,6 +308,28 @@ class _CreateSetScreenState extends State<CreateSetScreen> {
                 ],
                 onChanged: (v) => setState(() => _selectedLangCode = v!),
               ),
+            ),
+            const SizedBox(height: 16),
+            Consumer<VocabSetProvider>(
+              builder: (context, provider, child) {
+                final folders = provider.folders;
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: DropdownButtonFormField<String?>(
+                    value: _selectedFolderId,
+                    decoration: InputDecoration(
+                      labelText: l10n.folderName,
+                      prefixIcon: const Icon(LucideIcons.folder, size: 20, color: AppTheme.electricGold),
+                    ),
+                    dropdownColor: AppTheme.surfaceNavy,
+                    items: [
+                      DropdownMenuItem(value: null, child: Text(l10n.noFolder)),
+                      ...folders.map((f) => DropdownMenuItem(value: f.id, child: Text(f.title))),
+                    ],
+                    onChanged: (v) => setState(() => _selectedFolderId = v),
+                  ),
+                );
+              },
             ),
             const SizedBox(height: 16),
             Expanded(

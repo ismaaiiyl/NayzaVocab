@@ -7,6 +7,7 @@ import 'package:nayza_vocab/features/vocabulary/presentation/provider/vocab_set_
 import 'package:nayza_vocab/features/vocabulary/presentation/provider/quiz_provider.dart';
 import 'package:nayza_vocab/features/vocabulary/data/models/vocab_set_model.dart';
 import 'package:nayza_vocab/features/vocabulary/data/models/word_model.dart';
+import 'package:nayza_vocab/features/vocabulary/data/models/folder_model.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nayza_vocab/l10n/generated/app_localizations.dart';
@@ -108,15 +109,14 @@ class _HistoryScreenState extends State<HistoryScreen> {
     );
   }
 
-  Widget _buildSetCard(BuildContext context, VocabSetModel set, ThemeData theme) {
-    final progress = set.progressPercentage;
+  Widget _buildFolderCard(BuildContext context, FolderModel folder, ThemeData theme) {
+    final setsCount = context.read<VocabSetProvider>().getSetsByFolder(folder.id).length;
     final l10n = AppLocalizations.of(context)!;
-    final double titleFontSize = set.title.length > 20 ? 16 : 20;
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 12.0),
       child: Dismissible(
-        key: Key('set-dismiss-${set.id}'),
+        key: Key('folder-dismiss-${folder.id}'),
         direction: DismissDirection.endToStart,
         background: Container(
           alignment: Alignment.centerRight,
@@ -128,12 +128,14 @@ class _HistoryScreenState extends State<HistoryScreen> {
           child: const Icon(LucideIcons.trash2, color: Colors.white),
         ),
         confirmDismiss: (direction) async {
+          if (folder.id == 'difficult' || folder.id == 'uncategorized') return false;
+          
           final confirmed = await showDialog<bool>(
             context: context,
             builder: (ctx) => AlertDialog(
               backgroundColor: AppTheme.surfaceNavy,
               title: Text(l10n.deleteSetConfirm, style: const TextStyle(color: Colors.redAccent)),
-              content: Text(set.title),
+              content: Text(folder.title),
               actions: [
                 TextButton(onPressed: () => Navigator.pop(ctx, false), child: Text(l10n.cancel, style: const TextStyle(color: AppTheme.textDim))),
                 ElevatedButton(
@@ -147,121 +149,56 @@ class _HistoryScreenState extends State<HistoryScreen> {
           return confirmed;
         },
         onDismissed: (direction) {
-          final provider = context.read<VocabSetProvider>();
-          provider.deleteVocabSet(set.id);
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('${set.title} deleted'),
-              action: SnackBarAction(
-                label: 'UNDO',
-                onPressed: () => provider.addSet(set),
-              ),
-            ),
-          );
+          context.read<VocabSetProvider>().deleteFolder(folder.id);
         },
-        child: Hero(
-          tag: 'set-${set.id}',
-          child: Material(
-            color: Colors.transparent,
-            child: InkWell(
-              onTap: () => context.pushNamed('set-details', pathParameters: {'id': set.id}),
-              borderRadius: BorderRadius.circular(16),
-              child: Card(
-                margin: EdgeInsets.zero,
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Column(
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // ─── LEFT STATUS INDICATOR ───────────────────────
-                          Padding(
-                            padding: const EdgeInsets.only(right: 12.0, top: 4.0),
-                            child: _buildSetStatusIndicator(set),
-                          ),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Expanded(
-                                      child: Text(
-                                        set.title, 
-                                        style: theme.textTheme.titleLarge?.copyWith(
-                                          color: AppTheme.electricGold, 
-                                          fontSize: titleFontSize,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                    IconButton(
-                                      icon: const Icon(LucideIcons.edit2, size: 16, color: AppTheme.textDim),
-                                      onPressed: () => _showEditTitleDialog(context, set),
-                                      padding: const EdgeInsets.all(12), // Senior fix: Larger tap area
-                                      constraints: const BoxConstraints(),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(height: 8),
-                                Row(
-                                  children: [
-                                    const Icon(LucideIcons.layers, size: 14, color: AppTheme.textDim),
-                                    const SizedBox(width: 4),
-                                    Text(l10n.wordCountLabel(set.words.length), style: const TextStyle(color: AppTheme.textDim, fontSize: 12)),
-                                    const SizedBox(width: 12),
-                                    const Icon(LucideIcons.calendar, size: 14, color: AppTheme.textDim),
-                                    const SizedBox(width: 4),
-                                    Text(DateFormat.yMMMd().format(set.createdAt), style: const TextStyle(color: AppTheme.textDim, fontSize: 12)),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(width: 12),
-                          Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Stack(
-                                alignment: Alignment.center,
-                                children: [
-                                  SizedBox(
-                                    height: 48, width: 48,
-                                    child: CircularProgressIndicator(
-                                      value: progress / 100,
-                                      backgroundColor: AppTheme.cardDark.withValues(alpha: 0.5),
-                                      color: progress == 100 ? Colors.greenAccent : AppTheme.electricGold,
-                                      strokeWidth: 4,
-                                    ),
-                                  ),
-                                  Text('${progress.toInt()}%', style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold)),
-                                ],
-                              ),
-                              const SizedBox(height: 8),
-                              IconButton(
-                                onPressed: () {
-                                  if (set.words.isNotEmpty) {
-                                    context.read<QuizProvider>().prepareSession(set.words);
-                                    context.pushNamed('quiz-setup');
-                                  }
-                                },
-                                padding: const EdgeInsets.all(8), // Larger tap area
-                                icon: const Icon(LucideIcons.playCircle, color: AppTheme.electricGold, size: 32),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 16),
-                      NayzaProgressBar(
-                        current: progress.toInt(),
-                        total: 100,
-                      ),
-                    ],
+        child: Card(
+          child: InkWell(
+            onTap: () {
+              if (folder.id == 'difficult') {
+                context.pushNamed('difficult-words');
+              } else {
+                context.pushNamed('folder-details', pathParameters: {'id': folder.id});
+              }
+            },
+            borderRadius: BorderRadius.circular(16),
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: (folder.id == 'difficult' ? Colors.redAccent : AppTheme.electricGold).withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Icon(
+                      folder.id == 'difficult' ? LucideIcons.flame : LucideIcons.folder, 
+                      color: folder.id == 'difficult' ? Colors.redAccent : AppTheme.electricGold, 
+                      size: 28
+                    ),
                   ),
-                ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          folder.title,
+                          style: theme.textTheme.titleLarge?.copyWith(
+                            color: AppTheme.textMain,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          l10n.setsCountLabel(setsCount),
+                          style: const TextStyle(color: AppTheme.textDim, fontSize: 13),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const Icon(LucideIcons.chevronRight, color: AppTheme.textDim, size: 20),
+                ],
               ),
             ),
           ),
@@ -270,25 +207,31 @@ class _HistoryScreenState extends State<HistoryScreen> {
     );
   }
 
-  Widget _buildSetStatusIndicator(VocabSetModel set) {
-    final progress = set.progressPercentage;
-    if (progress == 100) {
-      return const Icon(LucideIcons.star, color: AppTheme.electricGold, size: 28);
-    } else if (progress > 0) {
-      return Icon(LucideIcons.starHalf, color: AppTheme.electricGold.withValues(alpha: 0.5), size: 28);
-    }
-    return Icon(LucideIcons.star, color: AppTheme.textDim.withValues(alpha: 0.2), size: 28);
-  }
-
-  Widget _buildWordResultCard(BuildContext context, WordModel word, String setId) {
-    return Card(
-      margin: const EdgeInsets.only(bottom: 8),
-      color: AppTheme.cardDark,
-      child: ListTile(
-        title: Text(word.original, style: const TextStyle(fontWeight: FontWeight.bold)),
-        subtitle: Text(word.translation, style: const TextStyle(color: AppTheme.textDim)),
-        trailing: const Icon(LucideIcons.edit3, size: 18, color: AppTheme.electricGold),
-        onTap: () => _showEditWordDialog(context, word, setId),
+  void _showCreateFolderDialog(BuildContext context) {
+    final controller = TextEditingController();
+    final l10n = AppLocalizations.of(context)!;
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: AppTheme.surfaceNavy,
+        title: Text(l10n.createFolder, style: const TextStyle(color: AppTheme.electricGold)),
+        content: TextField(
+          controller: controller,
+          autofocus: true,
+          decoration: InputDecoration(hintText: l10n.enterFolderName),
+        ),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(ctx), child: Text(l10n.cancel, style: const TextStyle(color: AppTheme.textDim))),
+          ElevatedButton(
+            onPressed: () {
+              if (controller.text.trim().isNotEmpty) {
+                context.read<VocabSetProvider>().createFolder(controller.text.trim());
+                Navigator.pop(ctx);
+              }
+            },
+            child: Text(l10n.create),
+          ),
+        ],
       ),
     );
   }
@@ -299,23 +242,10 @@ class _HistoryScreenState extends State<HistoryScreen> {
     final theme = Theme.of(context);
     final l10n = AppLocalizations.of(context)!;
     
-    // Filtered Sets
-    final filteredSets = vocabSetProvider.vocabSets.where((set) {
-      return set.title.toLowerCase().contains(_searchQuery.toLowerCase());
+    // Filtered Folders
+    final filteredFolders = vocabSetProvider.folders.where((f) {
+      return f.title.toLowerCase().contains(_searchQuery.toLowerCase());
     }).toList();
-
-    // Matching Words
-    final matchingWords = <MapEntry<WordModel, String>>[];
-    if (_searchQuery.isNotEmpty) {
-      for (var set in vocabSetProvider.vocabSets) {
-        for (var word in set.words) {
-          if (word.original.toLowerCase().contains(_searchQuery.toLowerCase()) || 
-              word.translation.toLowerCase().contains(_searchQuery.toLowerCase())) {
-            matchingWords.add(MapEntry(word, set.id));
-          }
-        }
-      }
-    }
 
     // Difficult Virtual Sets
     final difficultSets = vocabSetProvider.getDifficultVirtualSets();
@@ -323,7 +253,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(l10n.collectionsPageTitle.toUpperCase()),
-        automaticallyImplyLeading: false, // Cleaner tab look
+        automaticallyImplyLeading: false, 
       ),
       body: Column(
         children: [
@@ -349,12 +279,12 @@ class _HistoryScreenState extends State<HistoryScreen> {
             ),
           ),
           Expanded(
-            child: (filteredSets.isEmpty && difficultSets.isEmpty && matchingWords.isEmpty)
+            child: (filteredFolders.isEmpty && difficultSets.isEmpty && vocabSetProvider.getSetsByFolder(null).isEmpty)
                 ? Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Icon(LucideIcons.searchX, size: 80, color: AppTheme.textDim),
+                        const Icon(LucideIcons.folderSearch, size: 80, color: AppTheme.textDim),
                         const SizedBox(height: 20),
                         Text(
                           _searchQuery.isEmpty ? l10n.noCollections : l10n.noResults,
@@ -366,43 +296,56 @@ class _HistoryScreenState extends State<HistoryScreen> {
                 : ListView(
                     padding: const EdgeInsets.all(16.0),
                     children: [
-                      // ─── DIFFICULT SETS SECTION ───────────────────────
+                      // ─── DIFFICULT SETS SECTION (Virtual Folder) ───────────────────────
                       if (difficultSets.isNotEmpty && _searchQuery.isEmpty) ...[
                         Text(
                           l10n.difficultCollectionsHeader, 
                           style: const TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold, letterSpacing: 1.2, fontSize: 13),
                         ),
                         const SizedBox(height: 12),
-                        ...difficultSets.asMap().entries.map((entry) {
-                           return _buildDifficultSetCard(context, entry.value, theme, l10n, entry.key + 1);
-                        }),
+                        // Treat as a special folder card
+                        _buildFolderCard(
+                          context, 
+                          FolderModel(id: 'difficult', title: l10n.difficultCollectionsHeader, createdAt: DateTime.now()), 
+                          theme
+                        ),
                         const SizedBox(height: 24),
                       ],
 
-                      // ─── MY COLLECTIONS SECTION ───────────────────────
-                      if (filteredSets.isNotEmpty) ...[
+                      // ─── MY FOLDERS SECTION ───────────────────────
+                      if (filteredFolders.isNotEmpty) ...[
                         Text(
                           l10n.myCollectionsHeader, 
                           style: const TextStyle(color: AppTheme.textDim, fontWeight: FontWeight.bold, letterSpacing: 1.2, fontSize: 13),
                         ),
                         const SizedBox(height: 12),
-                        ...filteredSets.map((set) => _buildSetCard(context, set, theme)),
+                        ...filteredFolders.map((folder) => _buildFolderCard(context, folder, theme)),
                       ],
 
-                      // ─── SEARCH RESULTS: WORDS ────────────────────────
-                      if (matchingWords.isNotEmpty) ...[
-                        const SizedBox(height: 24),
-                        Text(
-                          l10n.foundWordsLabel, 
-                          style: const TextStyle(color: AppTheme.textDim, fontWeight: FontWeight.bold, letterSpacing: 1.2, fontSize: 13),
+                      // ─── UNCATEGORIZED SETS (Virtual Folder) ───────────────────────
+                      if (vocabSetProvider.getSetsByFolder(null).isNotEmpty) ...[
+                        if (filteredFolders.isEmpty) ...[
+                           Text(
+                            l10n.myCollectionsHeader, 
+                            style: const TextStyle(color: AppTheme.textDim, fontWeight: FontWeight.bold, letterSpacing: 1.2, fontSize: 13),
+                          ),
+                          const SizedBox(height: 12),
+                        ],
+                        _buildFolderCard(
+                          context, 
+                          FolderModel(id: 'uncategorized', title: l10n.noFolder, createdAt: DateTime.now()), 
+                          theme
                         ),
-                        const SizedBox(height: 12),
-                        ...matchingWords.map((entry) => _buildWordResultCard(context, entry.key, entry.value)),
                       ],
                     ],
                   ),
           ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => _showCreateFolderDialog(context),
+        backgroundColor: AppTheme.electricGold,
+        child: const Icon(LucideIcons.plus, color: AppTheme.darkNavy),
       ),
     );
   }
@@ -524,11 +467,13 @@ class _EditTitleDialog extends StatefulWidget {
 
 class _EditTitleDialogState extends State<_EditTitleDialog> {
   late final TextEditingController _titleController;
+  String? _selectedFolderId;
 
   @override
   void initState() {
     super.initState();
     _titleController = TextEditingController(text: widget.set.title);
+    _selectedFolderId = widget.set.folderId;
   }
 
   @override
@@ -541,7 +486,10 @@ class _EditTitleDialogState extends State<_EditTitleDialog> {
     final newTitle = _titleController.text.trim();
     if (newTitle.isEmpty) return;
     context.read<VocabSetProvider>().updateVocabSet(
-          widget.set.copyWith(title: newTitle),
+          widget.set.copyWith(
+            title: newTitle,
+            folderId: _selectedFolderId,
+          ),
         );
     Navigator.of(context).pop();
   }
@@ -555,12 +503,35 @@ class _EditTitleDialogState extends State<_EditTitleDialog> {
         l10n.editSetTitle,
         style: const TextStyle(color: AppTheme.electricGold),
       ),
-      content: TextField(
-        controller: _titleController,
-        autofocus: true,
-        decoration: InputDecoration(labelText: l10n.collectionNameLabel),
-        textInputAction: TextInputAction.done,
-        onSubmitted: (_) => _save(),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          TextField(
+            controller: _titleController,
+            autofocus: true,
+            decoration: InputDecoration(labelText: l10n.collectionNameLabel),
+            textInputAction: TextInputAction.next,
+          ),
+          const SizedBox(height: 16),
+          Consumer<VocabSetProvider>(
+            builder: (context, provider, child) {
+              final folders = provider.folders;
+              return DropdownButtonFormField<String?>(
+                value: _selectedFolderId,
+                decoration: InputDecoration(
+                  labelText: l10n.folderName,
+                  prefixIcon: const Icon(LucideIcons.folder, size: 20, color: AppTheme.electricGold),
+                ),
+                dropdownColor: AppTheme.surfaceNavy,
+                items: [
+                  DropdownMenuItem(value: null, child: Text(l10n.noFolder)),
+                  ...folders.map((f) => DropdownMenuItem(value: f.id, child: Text(f.title))),
+                ],
+                onChanged: (v) => setState(() => _selectedFolderId = v),
+              );
+            },
+          ),
+        ],
       ),
       actions: [
         TextButton(

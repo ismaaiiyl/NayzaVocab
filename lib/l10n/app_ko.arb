@@ -32,10 +32,10 @@
   "muteOn": "음소거 해제",
   "muteOff": "음소거",
   "dataManagement": "데이터 관리",
-  "export": "내보내기 (백업)",
-  "exportSubtitle": "컬렉션 선택 및 백업",
-  "import": "가져오기 (복원)",
-  "importSubtitle": "JSON 파일에서 컬렉션 로드",
+  "export": "공유 또는 백업",
+  "exportSubtitle": "공유 또는 백업할 컬렉션 선택",
+  "import": "단어 추가 또는 복원",
+  "importSubtitle": "백업 파일(JSON)에서 컬렉션 로드",
   "notifications": "알림",
   "dailyReminder": "일일 알림",
   "reminderSubtitle": "매일 {time}에 알림",
@@ -63,13 +63,22 @@
   "collectionsLabel": "컬렉션",
   "foundWordsLabel": "찾은 단어",
   "editWord": "단어 편집",
+  "editSetTitle": "컬렉션 이름 바꾸기",
   "originalWord": "원래 단어",
   "translationWord": "번역",
   "cancel": "취소",
   "save": "저장",
   "wordUpdated": "단어 업데이트됨",
-  "wordCountLabel": "{count} 단어",
+  "wordCountLabel": "{count}개 단어",
+  "setsCountLabel": "{count}개 세트",
   "@wordCountLabel": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@setsCountLabel": {
     "placeholders": {
       "count": {
         "type": "int"
@@ -178,6 +187,10 @@
   "selectSetsTitle": "컬렉션 선택",
   "selectAtLeastOneSet": "적어도 하나의 컬렉션을 선택하세요.",
   "exportSuccess": "내보내기가 성공적으로 완료되었습니다!",
+  "shareSuccess": "성공적으로 공유되었습니다!",
+  "shareSubject": "NayzaVocab: {title}",
+  "shareMessage": "📚 Nayza Vocab 컬렉션: {title}\n🌐 언어: {lang}\n📝 단어 수: {count}\n\n함께 학습하려면 이 파일을 Nayza Vocab으로 가져오세요!",
+  "importedSuffix": "(가져옴)",
   "exportError": "내보내기 오류: {error}",
   "@exportError": {
     "placeholders": {
@@ -203,11 +216,6 @@
   "onboardingPage3Title": "진행 상황 추적",
   "onboardingPage3Subtitle": "시간이 지남에 따라 향상되는 것을 확인하고 어려운 단어에 집중하세요.",
   "onboardingGetStarted": "시작하기",
-  "shareSuccess": "성공적으로 공유되었습니다!",
-  "shareSubject": "NayzaVocab: {title}",
-  "shareMessage": "📚 Nayza Vocab 컬렉션: {title}\n🌐 언어: {lang}\n📝 단어 수: {count}\n\n함께 학습하려면 이 파일을 Nayza Vocab으로 가져오세요!",
-  "importedSuffix": "(가져옴)",
-  "editSetTitle": "컬렉션 이름 바꾸기",
   "skip": "건너뛰기",
   "submitAnswer": "확인",
   "collectionsPageTitle": "컬렉션",
@@ -221,5 +229,14 @@
   "checkForUpdates": "업데이트 확인",
   "checkForUpdatesSubtitle": "Nayza Vocab의 최신 버전을 받으세요",
   "onboardingPage4Title": "어떻게 작동하나요?",
-  "onboardingPage4Subtitle": "체계적인 반복을 통해 단어를 마스터하세요. 어려운 단어는 완전히 외울 때까지 더 자주 나타납니다."
+  "onboardingPage4Subtitle": "체계적인 반복을 통해 단어를 마스터하세요. 어려운 단어는 완전히 외울 때까지 더 자주 나타납니다.",
+  "library": "라이브러리",
+  "createFolder": "새 폴더",
+  "folderName": "폴더 이름",
+  "create": "만들기",
+  "enterFolderName": "폴더 이름 입력",
+  "noFolder": "폴더 외부 (기본)",
+  "uncategorized": "미분류",
+  "dangerZone": "위험 구역",
+  "shareError": "Error sharing: {error}"
 }

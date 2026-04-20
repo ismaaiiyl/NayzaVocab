@@ -32,10 +32,10 @@
   "muteOn": "Unmute",
   "muteOff": "Mute",
   "dataManagement": "DATA MANAGEMENT",
-  "export": "Export (Backup)",
-  "exportSubtitle": "Select and backup collections",
-  "import": "Import (Restore)",
-  "importSubtitle": "Load collections from JSON file",
+  "export": "Share or Backup",
+  "exportSubtitle": "Select collections to share or create a backup",
+  "import": "Add Words or Restore",
+  "importSubtitle": "Load collections from a backup file (JSON)",
   "notifications": "NOTIFICATIONS",
   "dailyReminder": "Daily Reminder",
   "reminderSubtitle": "Remind daily at {time}",
@@ -69,8 +69,16 @@
   "cancel": "CANCEL",
   "save": "SAVE",
   "wordUpdated": "Word updated",
-  "wordCountLabel": "{count} words",
+  "wordCountLabel": "{count, plural, =1{1 word} other{{count} words}}",
+  "setsCountLabel": "{count, plural, =1{1 set} other{{count} sets}}",
   "@wordCountLabel": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@setsCountLabel": {
     "placeholders": {
       "count": {
         "type": "int"
@@ -221,5 +229,14 @@
   "checkForUpdates": "Check for Updates",
   "checkForUpdatesSubtitle": "Get the latest version of Nayza Vocab",
   "onboardingPage4Title": "How it works?",
-  "onboardingPage4Subtitle": "Master words through systematic repetition. Hard words come back more often until you know them by heart."
+  "onboardingPage4Subtitle": "Master words through systematic repetition. Hard words come back more often until you know them by heart.",
+  "library": "LIBRARY",
+  "createFolder": "New Folder",
+  "folderName": "Folder Name",
+  "create": "CREATE",
+  "enterFolderName": "Enter folder name",
+  "noFolder": "Outside Folder (Main)",
+  "uncategorized": "UNCATEGORIZED",
+  "dangerZone": "DANGER ZONE",
+  "shareError": "Error sharing: {error}"
 }
