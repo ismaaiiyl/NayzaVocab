@@ -1,0 +1,37 @@
+-- 1. Books jadvali
+CREATE TABLE books (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  title TEXT NOT NULL,
+  description TEXT,
+  cover_url TEXT,
+  target_lang TEXT NOT NULL, -- O'rganilayotgan til (masalan: en)
+  base_lang TEXT NOT NULL,   -- Tarjima tili (masalan: uz)
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- 2. Units jadvali
+CREATE TABLE units (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  book_id UUID REFERENCES books(id) ON DELETE CASCADE, -- Kitob o'chirilsa, unitlar ham o'chadi
+  title TEXT NOT NULL,
+  index INTEGER DEFAULT 0, -- Unitlar tartibi (1, 2, 3...)
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- 3. Words jadvali
+CREATE TABLE words (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  unit_id UUID REFERENCES units(id) ON DELETE CASCADE, -- Unit o'chirilsa, so'zlar ham o'chadi
+  original TEXT NOT NULL,    -- Asl so'z
+  translation TEXT NOT NULL, -- Tarjimasi
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Xavfsizlik uchun (RLS): Hozircha hamma o'qiy oladi, faqat Admin yozadi
+ALTER TABLE books ENABLE ROW LEVEL SECURITY;
+ALTER TABLE units ENABLE ROW LEVEL SECURITY;
+ALTER TABLE words ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Public read access" ON books FOR SELECT USING (true);
+CREATE POLICY "Public read access" ON units FOR SELECT USING (true);
+CREATE POLICY "Public read access" ON words FOR SELECT USING (true);

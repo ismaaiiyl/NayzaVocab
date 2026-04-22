@@ -36,20 +36,9 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
     }
   }
 
-  Future<void> _downloadUnit(Map<String, dynamic> unit) async {
-    final l10n = AppLocalizations.of(context)!;
-    final scaffoldMessenger = ScaffoldMessenger.of(context);
-    
-    // Ko'rsatkich (loading) snackbar
-    scaffoldMessenger.showSnackBar(
-      SnackBar(content: Text('${unit['title']} ${l10n.downloading}')),
-    );
-
-    final libraryProvider = context.read<LibraryProvider>();
+  Future<String> _getOrCreateFolder() async {
     final vocabProvider = context.read<VocabSetProvider>();
-
-    // 1. Papkani tekshiramiz yoki yaratamiz
-    String? folderId;
+    final libraryProvider = context.read<LibraryProvider>();
     final bookTitle = libraryProvider.books.firstWhere((b) => b['id'] == widget.bookId)['title'];
     
     final existingFolder = vocabProvider.folders.cast<FolderModel?>().firstWhere(
@@ -58,30 +47,96 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
     );
 
     if (existingFolder != null) {
-      folderId = existingFolder.id;
+      return existingFolder.id;
     } else {
-      // Yangi papka yaratish
       await vocabProvider.createFolder(bookTitle);
-      // Yangi yaratilgan papka ID-sini olamiz
-      folderId = vocabProvider.folders.firstWhere((f) => f.title == bookTitle).id;
+      // Re-fetch to get the new ID
+      final newFolder = vocabProvider.folders.firstWhere((f) => f.title == bookTitle);
+      return newFolder.id;
+    }
+  }
+
+  bool _isUnitAlreadyInstalled(String title) {
+    final vocabProvider = context.read<VocabSetProvider>();
+    return vocabProvider.vocabSets.any((s) => s.title == title);
+  }
+
+  Future<void> _downloadUnit(Map<String, dynamic> unit, {String? targetFolderId, bool silent = false}) async {
+    final l10n = AppLocalizations.of(context)!;
+    final scaffoldMessenger = ScaffoldMessenger.of(context);
+    
+    final unitTitle = unit['title'].toString();
+    if (_isUnitAlreadyInstalled(unitTitle)) {
+      if (!silent) {
+        scaffoldMessenger.showSnackBar(SnackBar(content: Text('$unitTitle ${l10n.installed}')));
+      }
+      return;
     }
 
-    // 2. Unitni yuklash
+    if (!silent) {
+      scaffoldMessenger.showSnackBar(SnackBar(content: Text('$unitTitle ${l10n.downloading}')));
+    }
+
+    final libraryProvider = context.read<LibraryProvider>();
+    final vocabProvider = context.read<VocabSetProvider>();
+
+    // 1. Get folder
+    final folderId = targetFolderId ?? await _getOrCreateFolder();
+
+    // 2. Download unit
     final set = await libraryProvider.downloadUnitAsSet(unit);
     
     if (set != null) {
-      // To'plamni papkaga bog'laymiz
       final setInFolder = set.copyWith(folderId: folderId);
       await vocabProvider.addSet(setInFolder);
       
+      if (!silent) {
+        scaffoldMessenger.clearSnackBars();
+        scaffoldMessenger.showSnackBar(
+          SnackBar(
+            content: Text(l10n.importSuccess(1)),
+            backgroundColor: Colors.greenAccent.withValues(alpha: 0.8),
+          ),
+        );
+      }
+    } else if (!silent) {
+      scaffoldMessenger.showSnackBar(SnackBar(content: Text(l10n.noInternetMessage)));
+    }
+  }
+
+  Future<void> _downloadAll() async {
+    final l10n = AppLocalizations.of(context)!;
+    final scaffoldMessenger = ScaffoldMessenger.of(context);
+    
+    // 1. Filter out already installed units
+    final uninstalledUnits = _units.where((u) => !_isUnitAlreadyInstalled(u['title'])).toList();
+    
+    if (uninstalledUnits.isEmpty) {
+      scaffoldMessenger.showSnackBar(SnackBar(content: Text(l10n.installed)));
+      return;
+    }
+
+    scaffoldMessenger.showSnackBar(
+      SnackBar(content: Text(l10n.downloading), duration: const Duration(seconds: 3)),
+    );
+
+    // 2. Get folder once (Crucial for avoiding multiple folders)
+    final folderId = await _getOrCreateFolder();
+
+    // 3. Download ALL in parallel for maximum speed
+    try {
+      await Future.wait(
+        uninstalledUnits.map((unit) => _downloadUnit(unit, targetFolderId: folderId, silent: true))
+      );
+
       scaffoldMessenger.clearSnackBars();
       scaffoldMessenger.showSnackBar(
         SnackBar(
-          content: Text(l10n.importSuccess(1)),
+          content: Text(l10n.importSuccess(uninstalledUnits.length)),
           backgroundColor: Colors.greenAccent.withValues(alpha: 0.8),
         ),
       );
-    } else {
+    } catch (e) {
       scaffoldMessenger.showSnackBar(
         SnackBar(content: Text(l10n.noInternetMessage)),
       );
@@ -177,12 +232,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton.icon(
-                      onPressed: () {
-                        // Barcha unitlarni yuklash
-                        for (var unit in _units) {
-                          _downloadUnit(unit);
-                        }
-                      },
+                      onPressed: _downloadAll,
                       icon: const Icon(LucideIcons.downloadCloud, size: 18),
                       label: Text(l10n.downloadAll),
                       style: ElevatedButton.styleFrom(
