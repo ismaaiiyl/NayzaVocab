@@ -19,6 +19,8 @@ import 'package:nayza_vocab/features/settings/presentation/pages/export_selectio
 import 'package:nayza_vocab/features/vocabulary/data/models/vocab_set_model.dart';
 import 'package:nayza_vocab/features/settings/presentation/provider/settings_provider.dart';
 import 'package:nayza_vocab/features/navigation/presentation/main_screen.dart';
+import 'package:nayza_vocab/features/vocabulary/presentation/pages/library_screen.dart';
+import 'package:nayza_vocab/features/vocabulary/presentation/pages/library_book_details_screen.dart';
 import 'package:provider/provider.dart';
 
 class AppRouter {
@@ -129,6 +131,21 @@ class AppRouter {
         path: '/export-selection',
         name: 'export-selection',
         pageBuilder: (context, state) => _customPageTransition(const ExportSelectionPage()),
+      ),
+      GoRoute(
+        path: '/online-library',
+        name: 'online-library',
+        pageBuilder: (context, state) => _customPageTransition(const LibraryScreen()),
+        routes: [
+          GoRoute(
+            path: 'book/:id',
+            name: 'book-details',
+            pageBuilder: (context, state) {
+              final id = state.pathParameters['id']!;
+              return _customPageTransition(BookDetailsScreen(bookId: id));
+            },
+          ),
+        ],
       ),
 
       // ─── SHELL FOR MAIN TABS ───────────────────────────────────────────────

@@ -546,4 +546,47 @@ class AppLocalizationsRu extends AppLocalizations {
   String shareError(Object error) {
     return 'Error sharing: $error';
   }
+
+  @override
+  String get rename => 'Rename';
+
+  @override
+  String get onlineLibraryTitle => 'NAYZA CLOUD LIBRARY';
+
+  @override
+  String get allTopics => 'ALL TOPICS';
+
+  @override
+  String wordCountLabel_short(Object count) {
+    return '$count words';
+  }
+
+  @override
+  String get downloadAll => 'DOWNLOAD ALL';
+
+  @override
+  String get installed => 'INSTALLED';
+
+  @override
+  String get downloading => 'Downloading...';
+
+  @override
+  String get deleteFolderConfirm =>
+      'Deleting this folder will also delete all its sets and words. Are you sure?';
+
+  @override
+  String get connectionError => 'CONNECTION ERROR';
+
+  @override
+  String get noInternetMessage =>
+      'Please check your internet connection and try again.';
+
+  @override
+  String get noResultsFound => 'NO RESULTS FOUND';
+
+  @override
+  String get clearFilters => 'CLEAR FILTERS';
+
+  @override
+  String get all => 'ВСЕ';
 }

@@ -238,5 +238,23 @@
   "noFolder": "Papkadan tashqarida (Asosiy)",
   "uncategorized": "PAPKASIZ",
   "dangerZone": "XAVFLI HUDUD",
-  "shareError": "Ulashishda xatolik: {error}"
+  "shareError": "Ulashishda xatolik: {error}",
+  "rename": "Nomini o'zgartirish",
+  "onlineLibraryTitle": "NAYZA CLOUD KUTUBXONASI",
+  "allTopics": "BARCHA MAVZULAR",
+  "wordCountLabel_short": "{count} so'z",
+  "@wordCountLabel_short": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "downloadAll": "BARCHASINI YUKLASH",
+  "installed": "O'RNATILGAN",
+  "downloading": "Yuklanmoqda...",
+  "deleteFolderConfirm": "Papkani o'chirsangiz, uning ichidagi BARCHA to'plamlar va so'zlar ham o'chib ketadi. Rostdan ham o'chirmoqchimisiz?",
+  "connectionError": "ULANISHDA XATOLIK",
+  "noInternetMessage": "Internet ulanishini tekshiring va qaytadan urinib ko'ring.",
+  "noResultsFound": "HECH NIMA TOPILMADI",
+  "clearFilters": "FILTRNI TOZALASH",
+  "all": "BARCHASI"
 }

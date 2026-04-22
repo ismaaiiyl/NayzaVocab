@@ -98,7 +98,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String reminderSetSuccess(Object time) {
-    return 'Tägliche Erinnerung für $time eingestellt';
+    return 'Tägliche Erinnerung for $time eingestellt';
   }
 
   @override
@@ -539,6 +539,49 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String shareError(Object error) {
-    return 'Error sharing: $error';
+    return 'Fehler beim Teilen: $error';
   }
+
+  @override
+  String get rename => 'Umbenennen';
+
+  @override
+  String get onlineLibraryTitle => 'NAYZA CLOUD BIBLIOTHEK';
+
+  @override
+  String get allTopics => 'ALLE THEMEN';
+
+  @override
+  String wordCountLabel_short(Object count) {
+    return '$count Wörter';
+  }
+
+  @override
+  String get downloadAll => 'ALLES HERUNTERLADEN';
+
+  @override
+  String get installed => 'INSTALLIERT';
+
+  @override
+  String get downloading => 'Laden...';
+
+  @override
+  String get deleteFolderConfirm =>
+      'Das Löschen dieses Ordners löscht auch alle darin enthaltenen Sets und Wörter. Sind Sie sicher?';
+
+  @override
+  String get connectionError => 'VERBINDUNGSFEHLER';
+
+  @override
+  String get noInternetMessage =>
+      'Bitte überprüfen Sie Ihre Internetverbindung und versuchen Sie es erneut.';
+
+  @override
+  String get noResultsFound => 'KEINE ERGEBNISSE GEFUNDEN';
+
+  @override
+  String get clearFilters => 'FILTER LÖSCHEN';
+
+  @override
+  String get all => 'ALLE';
 }

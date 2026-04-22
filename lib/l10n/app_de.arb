@@ -47,7 +47,7 @@
     }
   },
   "reminderDefault": "Täglich an schwierige Wörter erinnern",
-  "reminderSetSuccess": "Tägliche Erinnerung für {time} eingestellt",
+  "reminderSetSuccess": "Tägliche Erinnerung for {time} eingestellt",
   "appInfo": "APP INFO",
   "appVersion": "Nayza Vocab v1.0.0\nErstellt für Nayzadorlar 🔱",
   "language": "Sprache",
@@ -238,5 +238,23 @@
   "noFolder": "Außerhalb des Ordners (Haupt)",
   "uncategorized": "NICHT KATEGORISIERT",
   "dangerZone": "GEFAHRENZONE",
-  "shareError": "Error sharing: {error}"
+  "shareError": "Fehler beim Teilen: {error}",
+  "rename": "Umbenennen",
+  "onlineLibraryTitle": "NAYZA CLOUD BIBLIOTHEK",
+  "allTopics": "ALLE THEMEN",
+  "wordCountLabel_short": "{count} Wörter",
+  "@wordCountLabel_short": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "downloadAll": "ALLES HERUNTERLADEN",
+  "installed": "INSTALLIERT",
+  "downloading": "Laden...",
+  "deleteFolderConfirm": "Das Löschen dieses Ordners löscht auch alle darin enthaltenen Sets und Wörter. Sind Sie sicher?",
+  "connectionError": "VERBINDUNGSFEHLER",
+  "noInternetMessage": "Bitte überprüfen Sie Ihre Internetverbindung und versuchen Sie es erneut.",
+  "noResultsFound": "KEINE ERGEBNISSE GEFUNDEN",
+  "clearFilters": "FILTER LÖSCHEN",
+  "all": "ALLE"
 }

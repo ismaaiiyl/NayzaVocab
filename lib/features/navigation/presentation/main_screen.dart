@@ -52,7 +52,7 @@ class _MainScreenState extends State<MainScreen> {
       bottomNavigationBar: NayzaBottomBar(
         currentIndex: widget.navigationShell.currentIndex,
         onTap: _onTap,
-        onCentralTap: () => context.pushNamed('create-set'),
+        onCentralTap: () => context.goNamed('online-library'),
       ),
     );
   }

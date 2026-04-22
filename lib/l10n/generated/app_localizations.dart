@@ -1041,6 +1041,84 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Error sharing: {error}'**
   String shareError(Object error);
+
+  /// No description provided for @rename.
+  ///
+  /// In en, this message translates to:
+  /// **'Rename'**
+  String get rename;
+
+  /// No description provided for @onlineLibraryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'NAYZA CLOUD LIBRARY'**
+  String get onlineLibraryTitle;
+
+  /// No description provided for @allTopics.
+  ///
+  /// In en, this message translates to:
+  /// **'ALL TOPICS'**
+  String get allTopics;
+
+  /// No description provided for @wordCountLabel_short.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} words'**
+  String wordCountLabel_short(Object count);
+
+  /// No description provided for @downloadAll.
+  ///
+  /// In en, this message translates to:
+  /// **'DOWNLOAD ALL'**
+  String get downloadAll;
+
+  /// No description provided for @installed.
+  ///
+  /// In en, this message translates to:
+  /// **'INSTALLED'**
+  String get installed;
+
+  /// No description provided for @downloading.
+  ///
+  /// In en, this message translates to:
+  /// **'Downloading...'**
+  String get downloading;
+
+  /// No description provided for @deleteFolderConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Deleting this folder will also delete all its sets and words. Are you sure?'**
+  String get deleteFolderConfirm;
+
+  /// No description provided for @connectionError.
+  ///
+  /// In en, this message translates to:
+  /// **'CONNECTION ERROR'**
+  String get connectionError;
+
+  /// No description provided for @noInternetMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Please check your internet connection and try again.'**
+  String get noInternetMessage;
+
+  /// No description provided for @noResultsFound.
+  ///
+  /// In en, this message translates to:
+  /// **'NO RESULTS FOUND'**
+  String get noResultsFound;
+
+  /// No description provided for @clearFilters.
+  ///
+  /// In en, this message translates to:
+  /// **'CLEAR FILTERS'**
+  String get clearFilters;
+
+  /// No description provided for @all.
+  ///
+  /// In en, this message translates to:
+  /// **'ALL'**
+  String get all;
 }
 
 class _AppLocalizationsDelegate

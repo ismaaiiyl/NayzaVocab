@@ -110,11 +110,10 @@ class VocabSetProvider with ChangeNotifier {
   }
 
   Future<void> deleteFolder(String id) async {
-    // Senior: Decide whether to delete sets inside or move to null.
-    // Let's move them to null (Default) for safety.
+    // Senior: User specifically wants to delete EVERYTHING inside the folder
     final setsInFolder = getSetsByFolder(id);
     for (var set in setsInFolder) {
-      await updateVocabSet(set.copyWith(folderId: null));
+      await _vocabSetBox.delete(set.id);
     }
     await _folderBox.delete(id);
     _loadData();

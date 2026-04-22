@@ -115,94 +115,147 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 12.0),
-      child: Dismissible(
-        key: Key('folder-dismiss-${folder.id}'),
-        direction: DismissDirection.endToStart,
-        background: Container(
-          alignment: Alignment.centerRight,
-          padding: const EdgeInsets.only(right: 20),
-          decoration: BoxDecoration(
-            color: Colors.redAccent.withValues(alpha: 0.8),
-            borderRadius: BorderRadius.circular(16),
-          ),
-          child: const Icon(LucideIcons.trash2, color: Colors.white),
-        ),
-        confirmDismiss: (direction) async {
-          if (folder.id == 'difficult' || folder.id == 'uncategorized') return false;
-          
-          final confirmed = await showDialog<bool>(
-            context: context,
-            builder: (ctx) => AlertDialog(
-              backgroundColor: AppTheme.surfaceNavy,
-              title: Text(l10n.deleteSetConfirm, style: const TextStyle(color: Colors.redAccent)),
-              content: Text(folder.title),
-              actions: [
-                TextButton(onPressed: () => Navigator.pop(ctx, false), child: Text(l10n.cancel, style: const TextStyle(color: AppTheme.textDim))),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(backgroundColor: Colors.redAccent),
-                  onPressed: () => Navigator.pop(ctx, true), 
-                  child: Text(l10n.delete),
+      child: Card(
+        child: InkWell(
+          onTap: () {
+            if (folder.id == 'difficult') {
+              context.pushNamed('difficult-words');
+            } else {
+              context.pushNamed('folder-details', pathParameters: {'id': folder.id});
+            }
+          },
+          onLongPress: folder.id == 'difficult' ? null : () => _showFolderOptions(context, folder, l10n),
+          borderRadius: BorderRadius.circular(16),
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: (folder.id == 'difficult' ? Colors.redAccent : AppTheme.electricGold).withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Icon(
+                    folder.id == 'difficult' ? LucideIcons.flame : LucideIcons.folder, 
+                    color: folder.id == 'difficult' ? Colors.redAccent : AppTheme.electricGold, 
+                    size: 28
+                  ),
                 ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        folder.title,
+                        style: theme.textTheme.titleLarge?.copyWith(
+                          color: AppTheme.textMain,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        l10n.setsCountLabel(setsCount),
+                        style: const TextStyle(color: AppTheme.textDim, fontSize: 13),
+                      ),
+                    ],
+                  ),
+                ),
+                const Icon(LucideIcons.chevronRight, color: AppTheme.textDim, size: 20),
               ],
             ),
-          );
-          return confirmed;
-        },
-        onDismissed: (direction) {
-          context.read<VocabSetProvider>().deleteFolder(folder.id);
-        },
-        child: Card(
-          child: InkWell(
-            onTap: () {
-              if (folder.id == 'difficult') {
-                context.pushNamed('difficult-words');
-              } else {
-                context.pushNamed('folder-details', pathParameters: {'id': folder.id});
-              }
-            },
-            borderRadius: BorderRadius.circular(16),
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Row(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: (folder.id == 'difficult' ? Colors.redAccent : AppTheme.electricGold).withValues(alpha: 0.1),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Icon(
-                      folder.id == 'difficult' ? LucideIcons.flame : LucideIcons.folder, 
-                      color: folder.id == 'difficult' ? Colors.redAccent : AppTheme.electricGold, 
-                      size: 28
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          folder.title,
-                          style: theme.textTheme.titleLarge?.copyWith(
-                            color: AppTheme.textMain,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          l10n.setsCountLabel(setsCount),
-                          style: const TextStyle(color: AppTheme.textDim, fontSize: 13),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const Icon(LucideIcons.chevronRight, color: AppTheme.textDim, size: 20),
-                ],
-              ),
-            ),
           ),
         ),
+      ),
+    );
+  }
+
+  void _showFolderOptions(BuildContext context, FolderModel folder, AppLocalizations l10n) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: AppTheme.surfaceNavy,
+      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+      builder: (ctx) => Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            margin: const EdgeInsets.only(top: 8),
+            width: 40,
+            height: 4,
+            decoration: BoxDecoration(color: AppTheme.borderNavy, borderRadius: BorderRadius.circular(2)),
+          ),
+          ListTile(
+            leading: const Icon(LucideIcons.edit, color: AppTheme.electricGold),
+            title: Text(l10n.rename, style: const TextStyle(color: AppTheme.textMain)),
+            onTap: () {
+              Navigator.pop(ctx);
+              _showRenameFolderDialog(context, folder, l10n);
+            },
+          ),
+          ListTile(
+            leading: const Icon(LucideIcons.trash2, color: Colors.redAccent),
+            title: Text(l10n.delete, style: const TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold)),
+            onTap: () {
+              Navigator.pop(ctx);
+              _showDeleteConfirmation(context, folder, l10n);
+            },
+          ),
+          const SizedBox(height: 16),
+        ],
+      ),
+    );
+  }
+
+  void _showRenameFolderDialog(BuildContext context, FolderModel folder, AppLocalizations l10n) {
+    final controller = TextEditingController(text: folder.title);
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: AppTheme.surfaceNavy,
+        title: Text(l10n.rename, style: const TextStyle(color: AppTheme.electricGold)),
+        content: TextField(
+          controller: controller,
+          autofocus: true,
+          decoration: InputDecoration(hintText: l10n.enterFolderName),
+        ),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(ctx), child: Text(l10n.cancel, style: const TextStyle(color: AppTheme.textDim))),
+          ElevatedButton(
+            onPressed: () {
+              if (controller.text.trim().isNotEmpty) {
+                context.read<VocabSetProvider>().renameFolder(folder.id, controller.text.trim());
+                Navigator.pop(ctx);
+              }
+            },
+            child: Text(l10n.save),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showDeleteConfirmation(BuildContext context, FolderModel folder, AppLocalizations l10n) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: AppTheme.surfaceNavy,
+        title: Text(l10n.dangerZone, style: const TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold)),
+        content: Text(
+          l10n.deleteFolderConfirm,
+          style: const TextStyle(color: AppTheme.textMain),
+        ),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(ctx), child: Text(l10n.cancel, style: const TextStyle(color: AppTheme.textDim))),
+          ElevatedButton(
+            onPressed: () {
+              context.read<VocabSetProvider>().deleteFolder(folder.id);
+              Navigator.pop(ctx);
+            },
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.redAccent),
+            child: Text(l10n.delete),
+          ),
+        ],
       ),
     );
   }

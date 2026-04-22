@@ -520,6 +520,47 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String shareError(Object error) {
-    return 'Error sharing: $error';
+    return '공유 오류: $error';
   }
+
+  @override
+  String get rename => '이름 바꾸기';
+
+  @override
+  String get onlineLibraryTitle => 'NAYZA 클라우드 라이브러리';
+
+  @override
+  String get allTopics => '모든 주제';
+
+  @override
+  String wordCountLabel_short(Object count) {
+    return '$count 단어';
+  }
+
+  @override
+  String get downloadAll => '모두 다운로드';
+
+  @override
+  String get installed => '설치됨';
+
+  @override
+  String get downloading => '다운로드 중...';
+
+  @override
+  String get deleteFolderConfirm => '이 폴더를 삭제하면 모든 세트와 단어도 삭제됩니다. 정말 삭제하시겠습니까?';
+
+  @override
+  String get connectionError => '연결 오류';
+
+  @override
+  String get noInternetMessage => '인터넷 연결을 확인하고 다시 시도하십시오.';
+
+  @override
+  String get noResultsFound => '결과를 찾을 수 없음';
+
+  @override
+  String get clearFilters => '필터 초기화';
+
+  @override
+  String get all => '모두';
 }

@@ -539,4 +539,47 @@ class AppLocalizationsUz extends AppLocalizations {
   String shareError(Object error) {
     return 'Ulashishda xatolik: $error';
   }
+
+  @override
+  String get rename => 'Nomini o\'zgartirish';
+
+  @override
+  String get onlineLibraryTitle => 'NAYZA CLOUD KUTUBXONASI';
+
+  @override
+  String get allTopics => 'BARCHA MAVZULAR';
+
+  @override
+  String wordCountLabel_short(Object count) {
+    return '$count so\'z';
+  }
+
+  @override
+  String get downloadAll => 'BARCHASINI YUKLASH';
+
+  @override
+  String get installed => 'O\'RNATILGAN';
+
+  @override
+  String get downloading => 'Yuklanmoqda...';
+
+  @override
+  String get deleteFolderConfirm =>
+      'Papkani o\'chirsangiz, uning ichidagi BARCHA to\'plamlar va so\'zlar ham o\'chib ketadi. Rostdan ham o\'chirmoqchimisiz?';
+
+  @override
+  String get connectionError => 'ULANISHDA XATOLIK';
+
+  @override
+  String get noInternetMessage =>
+      'Internet ulanishini tekshiring va qaytadan urinib ko\'ring.';
+
+  @override
+  String get noResultsFound => 'HECH NIMA TOPILMADI';
+
+  @override
+  String get clearFilters => 'FILTRNI TOZALASH';
+
+  @override
+  String get all => 'BARCHASI';
 }

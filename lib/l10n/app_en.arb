@@ -238,5 +238,23 @@
   "noFolder": "Outside Folder (Main)",
   "uncategorized": "UNCATEGORIZED",
   "dangerZone": "DANGER ZONE",
-  "shareError": "Error sharing: {error}"
+  "shareError": "Error sharing: {error}",
+  "rename": "Rename",
+  "onlineLibraryTitle": "NAYZA CLOUD LIBRARY",
+  "allTopics": "ALL TOPICS",
+  "wordCountLabel_short": "{count} words",
+  "@wordCountLabel_short": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "downloadAll": "DOWNLOAD ALL",
+  "installed": "INSTALLED",
+  "downloading": "Downloading...",
+  "deleteFolderConfirm": "Deleting this folder will also delete all its sets and words. Are you sure?",
+  "connectionError": "CONNECTION ERROR",
+  "noInternetMessage": "Please check your internet connection and try again.",
+  "noResultsFound": "NO RESULTS FOUND",
+  "clearFilters": "CLEAR FILTERS",
+  "all": "ALL"
 }

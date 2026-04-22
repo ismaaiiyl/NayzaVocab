@@ -182,7 +182,7 @@
       }
     }
   },
-  "masteryExplanation": "تعتبر الكلمة متقنة بعد إجابة صحيحة واحدة",
+  "masteryExplanation": "تعتبر الكلمة متقنة after إجابة صحيحة واحدة",
   "progressLabel": "التقدم",
   "selectSetsTitle": "اختر المجموعات",
   "selectAtLeastOneSet": "يرجى اختيار مجموعة واحدة على الأقل.",
@@ -238,5 +238,23 @@
   "noFolder": "خارج المجلد (الرئيسي)",
   "uncategorized": "غير مصنف",
   "dangerZone": "منطقة الخطر",
-  "shareError": "Error sharing: {error}"
+  "shareError": "خطأ في المشاركة: {error}",
+  "rename": "إعادة تسمية",
+  "onlineLibraryTitle": "مكتبة نايزا السحابية",
+  "allTopics": "جميع المواضيع",
+  "wordCountLabel_short": "{count} كلمات",
+  "@wordCountLabel_short": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "downloadAll": "تحميل الكل",
+  "installed": "تم التثبيت",
+  "downloading": "جاري التحميل...",
+  "deleteFolderConfirm": "حذف هذا المجلد سيؤدي أيضاً إلى حذف جميع مجموعاته وكلماته. هل أنت متأكد؟",
+  "connectionError": "خطأ في الاتصال",
+  "noInternetMessage": "يرجى التحقق من اتصالك بالإنترنت والمحاولة مرة أخرى.",
+  "noResultsFound": "لم يتم العثور على نتائج",
+  "clearFilters": "مسح التصفية",
+  "all": "الكل"
 }

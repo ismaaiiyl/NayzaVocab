@@ -393,7 +393,7 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String get masteryExplanation => 'تعتبر الكلمة متقنة بعد إجابة صحيحة واحدة';
+  String get masteryExplanation => 'تعتبر الكلمة متقنة after إجابة صحيحة واحدة';
 
   @override
   String get progressLabel => 'التقدم';
@@ -535,6 +535,49 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String shareError(Object error) {
-    return 'Error sharing: $error';
+    return 'خطأ في المشاركة: $error';
   }
+
+  @override
+  String get rename => 'إعادة تسمية';
+
+  @override
+  String get onlineLibraryTitle => 'مكتبة نايزا السحابية';
+
+  @override
+  String get allTopics => 'جميع المواضيع';
+
+  @override
+  String wordCountLabel_short(Object count) {
+    return '$count كلمات';
+  }
+
+  @override
+  String get downloadAll => 'تحميل الكل';
+
+  @override
+  String get installed => 'تم التثبيت';
+
+  @override
+  String get downloading => 'جاري التحميل...';
+
+  @override
+  String get deleteFolderConfirm =>
+      'حذف هذا المجلد سيؤدي أيضاً إلى حذف جميع مجموعاته وكلماته. هل أنت متأكد؟';
+
+  @override
+  String get connectionError => 'خطأ في الاتصال';
+
+  @override
+  String get noInternetMessage =>
+      'يرجى التحقق من اتصالك بالإنترنت والمحاولة مرة أخرى.';
+
+  @override
+  String get noResultsFound => 'لم يتم العثور على نتائج';
+
+  @override
+  String get clearFilters => 'مسح التصفية';
+
+  @override
+  String get all => 'الكل';
 }
