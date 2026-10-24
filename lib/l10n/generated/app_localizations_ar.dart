@@ -347,7 +347,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get russianLang => 'الروسية';
 
   @override
-  String get uzbekLang => 'الأوزبكية (تحويل النص إلى كلام معطل)';
+  String get uzbekLang => 'الأوزبكية';
 
   @override
   String get germanLang => 'الألمانية';
@@ -580,4 +580,82 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get all => 'الكل';
+
+  @override
+  String get allDataCleared => 'تم مسح جميع البيانات بنجاح!';
+
+  @override
+  String get share => 'مشاركة';
+
+  @override
+  String get home => 'الرئيسية';
+
+  @override
+  String get profile => 'الملف الشخصي';
+
+  @override
+  String get editProfile => 'تعديل الملف الشخصي';
+
+  @override
+  String get userName => 'اسم المستخدم';
+
+  @override
+  String get userAge => 'العمر';
+
+  @override
+  String get targetLanguage => 'اللغة المستهدفة';
+
+  @override
+  String get folderBreakdown => 'تحليل المجلدات واللغات';
+
+  @override
+  String get subjectBreakdown => 'تفاصيل المجموعات';
+
+  @override
+  String yearsOld(int age) {
+    return '$age سنة';
+  }
+
+  @override
+  String get masteredWords => 'متقن';
+
+  @override
+  String get smartPasteTitle => 'لصق ذكي';
+
+  @override
+  String get smartPasteHint => 'كلمة - ترجمة\nكلمة أخرى = ترجمة أخرى';
+
+  @override
+  String get userNameHint => 'اسمك';
+
+  @override
+  String get invalidAgeError => 'يرجى إدخال عمر صحيح (1-120)';
+
+  @override
+  String get folders => 'مجلدات';
+
+  @override
+  String masteredPercentage(int percentage) {
+    return '$percentage% متقن';
+  }
+
+  @override
+  String get showLess => 'عرض أقل';
+
+  @override
+  String showAllWithCount(int count) {
+    return 'الكل ($count)';
+  }
+
+  @override
+  String get rankNovice => '🛡️ محارب مبتدئ';
+
+  @override
+  String get rankAdvanced => '⚔️ مقاتل متقدم';
+
+  @override
+  String get rankCommander => '🔱 قائد نايزا';
+
+  @override
+  String get rankWordMaster => '👑 سيد الكلمات';
 }

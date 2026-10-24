@@ -256,5 +256,37 @@
   "noInternetMessage": "Bitte überprüfen Sie Ihre Internetverbindung und versuchen Sie es erneut.",
   "noResultsFound": "KEINE ERGEBNISSE GEFUNDEN",
   "clearFilters": "FILTER LÖSCHEN",
-  "all": "ALLE"
+  "all": "ALLE",
+  "allDataCleared": "Alle Daten wurden erfolgreich gelöscht!",
+  "share": "Teilen",
+  "home": "Start",
+  "profile": "Profil",
+  "editProfile": "Profil bearbeiten",
+  "userName": "Benutzername",
+  "userAge": "Alter",
+  "targetLanguage": "Zielsprache",
+  "folderBreakdown": "ORDNER- & SPRACHENANALYSE",
+  "subjectBreakdown": "SAMMLUNGSÜBERSICHT",
+  "yearsOld": "{age} Jahre alt",
+  "@yearsOld": {
+    "placeholders": {
+      "age": {
+        "type": "int"
+      }
+    }
+  },
+  "masteredWords": "Gemeistert",
+  "smartPasteTitle": "Intelligentes Einfügen",
+  "smartPasteHint": "Wort - Übersetzung\nanderes Wort = andere Übersetzung",
+  "userNameHint": "Ihr Name",
+  "invalidAgeError": "Bitte gültiges Alter eingeben (1-120)",
+  "folders": "Ordner",
+  "masteredPercentage": "{percentage}% gemeistert",
+  "showLess": "Weniger anzeigen",
+  "showAllWithCount": "Alle ({count})",
+  "rankNovice": "🛡️ Anfängerkrieger",
+  "rankAdvanced": "⚔️ Fortgeschrittener Kämpfer",
+  "rankCommander": "🔱 Nayza Kommandant",
+  "rankWordMaster": "👑 Meister der Wörter",
+  "uzbekLang": "Usbekisch"
 }

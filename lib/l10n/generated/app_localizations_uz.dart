@@ -347,7 +347,7 @@ class AppLocalizationsUz extends AppLocalizations {
   String get russianLang => 'Rus tili';
 
   @override
-  String get uzbekLang => 'O\'zbek (Ovozli o\'qish yo\'q)';
+  String get uzbekLang => 'O\'zbekcha';
 
   @override
   String get germanLang => 'Nemis';
@@ -582,4 +582,82 @@ class AppLocalizationsUz extends AppLocalizations {
 
   @override
   String get all => 'BARCHASI';
+
+  @override
+  String get allDataCleared => 'Barcha ma\'lumotlar muvaffaqiyatli tozalandi!';
+
+  @override
+  String get share => 'Ulashish';
+
+  @override
+  String get home => 'Asosiy';
+
+  @override
+  String get profile => 'Profil';
+
+  @override
+  String get editProfile => 'Profilni tahrirlash';
+
+  @override
+  String get userName => 'Foydalanuvchi ismi';
+
+  @override
+  String get userAge => 'Yoshi';
+
+  @override
+  String get targetLanguage => 'O\'rganilayotgan til';
+
+  @override
+  String get folderBreakdown => 'PAPKALAR VA TILLAR TAHLILI';
+
+  @override
+  String get subjectBreakdown => 'FANLAR VA TO\'PLAMLAR';
+
+  @override
+  String yearsOld(int age) {
+    return '$age yosh';
+  }
+
+  @override
+  String get masteredWords => 'O\'zlashtirilgan';
+
+  @override
+  String get smartPasteTitle => 'Tezkor joylash';
+
+  @override
+  String get smartPasteHint => 'so\'z - tarjima\nboshqa so\'z = boshqa tarjima';
+
+  @override
+  String get userNameHint => 'Ismingiz';
+
+  @override
+  String get invalidAgeError => 'To\'g\'ri yosh kiriting (1-120)';
+
+  @override
+  String get folders => 'Papkalar';
+
+  @override
+  String masteredPercentage(int percentage) {
+    return '$percentage% o\'zlashtirildi';
+  }
+
+  @override
+  String get showLess => 'Qisqartirish';
+
+  @override
+  String showAllWithCount(int count) {
+    return 'Barchasi ($count)';
+  }
+
+  @override
+  String get rankNovice => '🛡️ Boshlang\'ich Jangchi';
+
+  @override
+  String get rankAdvanced => '⚔️ Ilg\'or Jangchi';
+
+  @override
+  String get rankCommander => '🔱 Nayza Sardori';
+
+  @override
+  String get rankWordMaster => '👑 So\'z Ustasi';
 }

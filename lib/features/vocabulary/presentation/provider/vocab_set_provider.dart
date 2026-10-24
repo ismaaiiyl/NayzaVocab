@@ -1,25 +1,20 @@
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
+import 'package:nayza_vocab/features/vocabulary/data/models/folder_model.dart';
 import 'package:nayza_vocab/features/vocabulary/data/models/vocab_set_model.dart';
 import 'package:nayza_vocab/features/vocabulary/data/models/word_model.dart';
+import 'package:nayza_vocab/features/vocabulary/domain/services/word_mastery_calculator.dart';
 import 'package:uuid/uuid.dart';
 
-import 'package:nayza_vocab/features/vocabulary/data/models/folder_model.dart';
-
-/// Senior-level VocabSetProvider (Data Repository).
-///
-/// Handles persistent storage operations and provides a clean interface
-/// for managing vocab sets, folders and words.
 class VocabSetProvider with ChangeNotifier {
   final Box<VocabSetModel> _vocabSetBox;
   final Box<FolderModel> _folderBox;
-  
+
   List<VocabSetModel> _vocabSets = [];
   List<FolderModel> _folders = [];
-  
+
   final Uuid _uuid = const Uuid();
 
-  // Senior: Cache for performance to avoid O(N) calculations in build methods
   List<WordModel>? _cachedDifficultWords;
   List<VocabSetModel>? _cachedDifficultVirtualSets;
 
@@ -27,18 +22,16 @@ class VocabSetProvider with ChangeNotifier {
     _loadData();
   }
 
-  // ─── Getters ───────────────────────────────────────────────────────────────
-
   List<VocabSetModel> get vocabSets => _vocabSets;
   List<FolderModel> get folders => _folders;
 
   void _loadData() {
     _vocabSets = _vocabSetBox.values.toList();
     _vocabSets.sort((a, b) => b.createdAt.compareTo(a.createdAt));
-    
+
     _folders = _folderBox.values.toList();
     _folders.sort((a, b) => b.createdAt.compareTo(a.createdAt));
-    
+
     _clearCache();
     notifyListeners();
   }
@@ -47,8 +40,6 @@ class VocabSetProvider with ChangeNotifier {
     _cachedDifficultWords = null;
     _cachedDifficultVirtualSets = null;
   }
-
-  // ─── CRUD Operations ───────────────────────────────────────────────────────
 
   VocabSetModel? getSetById(String id) {
     try {
@@ -59,24 +50,20 @@ class VocabSetProvider with ChangeNotifier {
   }
 
   List<VocabSetModel> getSetsByFolder(String? folderId) {
-    if (folderId == 'difficult') {
-      return getDifficultVirtualSets();
-    }
-    if (folderId == 'uncategorized') {
-      return _vocabSets.where((set) => set.folderId == null).toList();
-    }
-    return _vocabSets.where((set) => set.folderId == folderId).toList();
+    if (folderId == 'difficult') return getDifficultVirtualSets();
+    if (folderId == 'uncategorized') return _vocabSets.where((s) => s.folderId == null).toList();
+    return _vocabSets.where((s) => s.folderId == folderId).toList();
   }
 
   FolderModel? getFolderById(String id) {
-    try {
-      return _folders.firstWhere((f) => f.id == id);
-    } catch (_) {
-      return null;
-    }
+    return _folders.where((f) => f.id == id).firstOrNull;
   }
 
-  Future<void> createVocabSet(String title, List<WordModel> words, {String? folderId}) async {
+  Future<void> createVocabSet(
+    String title,
+    List<WordModel> words, {
+    String? folderId,
+  }) async {
     final newSetId = _uuid.v4();
     final stamped = words.map((w) => w.copyWith(setId: newSetId)).toList();
     final newSet = VocabSetModel(
@@ -102,17 +89,14 @@ class VocabSetProvider with ChangeNotifier {
 
   Future<void> renameFolder(String id, String newTitle) async {
     final folder = getFolderById(id);
-    if (folder != null) {
-      folder.title = newTitle;
-      await folder.save();
-      _loadData();
-    }
+    if (folder == null) return;
+    folder.title = newTitle;
+    await folder.save();
+    _loadData();
   }
 
   Future<void> deleteFolder(String id) async {
-    // Senior: User specifically wants to delete EVERYTHING inside the folder
-    final setsInFolder = getSetsByFolder(id);
-    for (var set in setsInFolder) {
+    for (var set in getSetsByFolder(id)) {
       await _vocabSetBox.delete(set.id);
     }
     await _folderBox.delete(id);
@@ -121,9 +105,7 @@ class VocabSetProvider with ChangeNotifier {
 
   Future<void> addSet(VocabSetModel set) async {
     final stamped = set.words.map((w) => w.copyWith(setId: set.id)).toList();
-    final stampedSet = set.copyWith(words: stamped);
-    await _vocabSetBox.put(stampedSet.id, stampedSet);
-    await _vocabSetBox.put(stampedSet.id, stampedSet);
+    await _vocabSetBox.put(set.id, set.copyWith(words: stamped));
     _loadData();
   }
 
@@ -134,65 +116,40 @@ class VocabSetProvider with ChangeNotifier {
 
   Future<void> updateVocabSet(VocabSetModel updatedSet) async {
     await _vocabSetBox.put(updatedSet.id, updatedSet);
-    _loadData();
-  }
-
-  // ─── Optimized Word Updates ────────────────────────────────────────────────
-
-  Future<void> updateWordStats(WordModel word, {bool isCorrect = true}) async {
-    final setId = word.setId;
-    if (setId.isEmpty) return;
-
-    final set = getSetById(setId);
-    if (set == null) return;
-
-    final index = set.words.indexWhere((w) => w.id == word.id);
-    if (index == -1) return;
-
-    final oldWord = set.words[index];
-    bool willBeDifficult = oldWord.isDifficult;
-    
-    if (isCorrect) {
-      // Automatic Exit Logic: mastered after 5 total correct answers
-      final newCorrectCount = oldWord.correctAnswersCount + 1;
-      if (newCorrectCount >= 5) {
-        willBeDifficult = false;
-      }
-    } else {
-      // Entry Logic: becomes difficult after at least 2 mistakes
-      final newWrongCount = oldWord.wrongAttempts + 1;
-      if (newWrongCount >= 2) {
-        willBeDifficult = true;
-      }
-    }
-
-    final updatedWord = oldWord.copyWith(
-      correctAnswersCount: isCorrect ? oldWord.correctAnswersCount + 1 : oldWord.correctAnswersCount,
-      wrongAttempts: isCorrect ? oldWord.wrongAttempts : oldWord.wrongAttempts + 1,
-      isDifficult: willBeDifficult,
-      lastTestedAt: DateTime.now(),
-    );
-
-    final updatedWords = List<WordModel>.from(set.words);
-    updatedWords[index] = updatedWord;
-    
-    final updatedSet = set.copyWith(words: updatedWords);
-    await _vocabSetBox.put(updatedSet.id, updatedSet);
-    
-    // O(1) in-memory update instead of _loadVocabSets() full rebuild
     final setIndex = _vocabSets.indexWhere((s) => s.id == updatedSet.id);
-    if (setIndex != -1) {
-      _vocabSets[setIndex] = updatedSet;
-    }
+    if (setIndex != -1) _vocabSets[setIndex] = updatedSet;
     _clearCache();
     notifyListeners();
   }
 
-  Future<void> resetWordDifficultStatus(WordModel word) async {
-    await updateWordStats(word, isCorrect: true);
+  Future<void> updateWordStats(WordModel word, {bool isCorrect = true}) async {
+    final set = getSetById(word.setId);
+    if (set == null) return;
+    final index = set.words.indexWhere((w) => w.id == word.id);
+    if (index == -1) return;
+
+    final updatedWords = List<WordModel>.from(set.words);
+    updatedWords[index] = WordMasteryCalculator.calculateUpdatedStats(
+      set.words[index],
+      isCorrect: isCorrect,
+    );
+    await updateVocabSet(set.copyWith(words: updatedWords));
   }
 
-  // ─── Query Helpers ─────────────────────────────────────────────────────────
+  Future<void> resetWordDifficultStatus(WordModel word) async {
+    final set = getSetById(word.setId);
+    if (set == null) return;
+    final index = set.words.indexWhere((w) => w.id == word.id);
+    if (index == -1) return;
+
+    final updatedWords = List<WordModel>.from(set.words);
+    updatedWords[index] = set.words[index].copyWith(
+      isDifficult: false,
+      wrongAttempts: 0,
+      lastTestedAt: DateTime.now(),
+    );
+    await updateVocabSet(set.copyWith(words: updatedWords));
+  }
 
   List<String> getAllTranslations() {
     return _vocabSets
@@ -209,44 +166,22 @@ class VocabSetProvider with ChangeNotifier {
         .toList();
   }
 
-  /// Groups all difficult words into virtual sets of 15 words each.
   List<VocabSetModel> getDifficultVirtualSets() {
-    if (_cachedDifficultVirtualSets != null) return _cachedDifficultVirtualSets!;
-
-    final allDifficult = getDifficultWords();
-    if (allDifficult.isEmpty) return [];
-
-    final List<VocabSetModel> virtualSets = [];
-    const int groupSize = 15;
-
-    for (int i = 0; i < allDifficult.length; i += groupSize) {
-      final end = (i + groupSize < allDifficult.length) ? i + groupSize : allDifficult.length;
-      final group = allDifficult.sublist(i, end);
-      
-      virtualSets.add(VocabSetModel(
-        id: 'difficult-group-${i ~/ groupSize}',
-        title: '', 
-        words: group,
-        createdAt: DateTime.now(),
-      ));
+    if (_cachedDifficultVirtualSets != null) {
+      return _cachedDifficultVirtualSets!;
     }
-
-    return _cachedDifficultVirtualSets = virtualSets;
+    final allDifficult = getDifficultWords();
+    return _cachedDifficultVirtualSets =
+        WordMasteryCalculator.groupIntoVirtualSets(allDifficult);
   }
 
   Future<void> importData(List<VocabSetModel> sets, List<dynamic> foldersJson) async {
-    // 1. Save folders
-    for (var fJson in foldersJson) {
-      final Map<String, dynamic> fMap = Map<String, dynamic>.from(fJson as Map<dynamic, dynamic>);
-      final folder = FolderModel.fromMap(fMap);
-      await _folderBox.put(folder.id, folder);
+    for (var f in foldersJson) {
+      await _folderBox.put(f['id'], FolderModel.fromMap(Map<String, dynamic>.from(f as Map)));
     }
-
-    // 2. Save sets
-    for (var set in sets) {
-      await _vocabSetBox.put(set.id, set);
+    for (var s in sets) {
+      await _vocabSetBox.put(s.id, s);
     }
-
     _loadData();
   }
 

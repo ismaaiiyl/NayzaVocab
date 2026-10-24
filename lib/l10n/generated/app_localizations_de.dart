@@ -348,7 +348,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get russianLang => 'Russisch';
 
   @override
-  String get uzbekLang => 'Usbekisch (TTS aus)';
+  String get uzbekLang => 'Usbekisch';
 
   @override
   String get germanLang => 'Deutsch';
@@ -584,4 +584,83 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get all => 'ALLE';
+
+  @override
+  String get allDataCleared => 'Alle Daten wurden erfolgreich gelöscht!';
+
+  @override
+  String get share => 'Teilen';
+
+  @override
+  String get home => 'Start';
+
+  @override
+  String get profile => 'Profil';
+
+  @override
+  String get editProfile => 'Profil bearbeiten';
+
+  @override
+  String get userName => 'Benutzername';
+
+  @override
+  String get userAge => 'Alter';
+
+  @override
+  String get targetLanguage => 'Zielsprache';
+
+  @override
+  String get folderBreakdown => 'ORDNER- & SPRACHENANALYSE';
+
+  @override
+  String get subjectBreakdown => 'SAMMLUNGSÜBERSICHT';
+
+  @override
+  String yearsOld(int age) {
+    return '$age Jahre alt';
+  }
+
+  @override
+  String get masteredWords => 'Gemeistert';
+
+  @override
+  String get smartPasteTitle => 'Intelligentes Einfügen';
+
+  @override
+  String get smartPasteHint =>
+      'Wort - Übersetzung\nanderes Wort = andere Übersetzung';
+
+  @override
+  String get userNameHint => 'Ihr Name';
+
+  @override
+  String get invalidAgeError => 'Bitte gültiges Alter eingeben (1-120)';
+
+  @override
+  String get folders => 'Ordner';
+
+  @override
+  String masteredPercentage(int percentage) {
+    return '$percentage% gemeistert';
+  }
+
+  @override
+  String get showLess => 'Weniger anzeigen';
+
+  @override
+  String showAllWithCount(int count) {
+    return 'Alle ($count)';
+  }
+
+  @override
+  String get rankNovice => '🛡️ Anfängerkrieger';
+
+  @override
+  String get rankAdvanced => '⚔️ Fortgeschrittener Kämpfer';
+
+  @override
+  String get rankCommander => '🔱 Nayza Kommandant';
+
+  @override
+  String get rankWordMaster => '👑 Meister der Wörter';
 }

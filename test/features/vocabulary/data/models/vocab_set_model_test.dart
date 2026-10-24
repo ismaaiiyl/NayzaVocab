@@ -22,18 +22,13 @@ void main() {
     );
 
     test('progressPercentage calculates correctly based on word mastery', () {
-      // 1 mastered (3 pts), 1 active with 1 pts, 1 difficult with 0 pt.
-      // Total possible points: 3 words * 3 = 9.
-      // Current points: 3 + 1 + 0 = 4.
-      // Expected progress: (4 / 9) * 100 = 44.444... => 44.4% roughly.
-      // VocabSetModel.progressPercentage => double
-      
+      // 2 learned words out of 3 = (2 / 3) * 100 = 66.67%
       final progress = setModel.progressPercentage;
-      expect(progress, closeTo(44.4, 0.1));
+      expect(progress, closeTo(66.7, 0.1));
     });
 
     test('learnedWordsCount returns correct count', () {
-      expect(setModel.learnedWordsCount, 1);
+      expect(setModel.learnedWordsCount, 2);
     });
 
     test('copyWith updates fields while preserving others', () {

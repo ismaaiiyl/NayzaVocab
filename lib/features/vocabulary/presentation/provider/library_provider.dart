@@ -130,8 +130,8 @@ class LibraryProvider with ChangeNotifier {
 
       final words = wordsList.map((w) => WordModel(
         id: const Uuid().v4(),
-        original: w['original'],
-        translation: w['translation'],
+        original: (w['original'] as String?) ?? '',
+        translation: (w['translation'] as String?) ?? '',
         setId: newSetId,
         isDifficult: false,
         wrongAttempts: 0,
@@ -140,11 +140,12 @@ class LibraryProvider with ChangeNotifier {
 
       return VocabSetModel(
         id: newSetId,
-        title: unitData['title'],
+        title: (unitData['title'] as String?) ?? '',
         words: words,
         createdAt: DateTime.now(),
       );
     } catch (e) {
+      debugPrint('Error downloading unit: $e');
       return null;
     } finally {
       _setUnitDownloading(unitId, false);

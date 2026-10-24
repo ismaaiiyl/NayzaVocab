@@ -354,7 +354,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get russianLang => 'Русский';
 
   @override
-  String get uzbekLang => 'Узбекский (Без озвучки)';
+  String get uzbekLang => 'Узбекский';
 
   @override
   String get germanLang => 'Немецкий';
@@ -589,4 +589,82 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get all => 'ВСЕ';
+
+  @override
+  String get allDataCleared => 'Все данные успешно удалены!';
+
+  @override
+  String get share => 'Поделиться';
+
+  @override
+  String get home => 'Главная';
+
+  @override
+  String get profile => 'Профиль';
+
+  @override
+  String get editProfile => 'Редактировать профиль';
+
+  @override
+  String get userName => 'Имя пользователя';
+
+  @override
+  String get userAge => 'Возраст';
+
+  @override
+  String get targetLanguage => 'Изучаемый язык';
+
+  @override
+  String get folderBreakdown => 'АНАЛИЗ ПАПОК И ЯЗЫКОВ';
+
+  @override
+  String get subjectBreakdown => 'ОБЗОР КОЛЛЕКЦИЙ';
+
+  @override
+  String yearsOld(int age) {
+    return '$age лет';
+  }
+
+  @override
+  String get masteredWords => 'Освоено';
+
+  @override
+  String get smartPasteTitle => 'Умная вставка';
+
+  @override
+  String get smartPasteHint => 'слово - перевод\nдругое слово = другой перевод';
+
+  @override
+  String get userNameHint => 'Ваше имя';
+
+  @override
+  String get invalidAgeError => 'Введите корректный возраст (1-120)';
+
+  @override
+  String get folders => 'Папки';
+
+  @override
+  String masteredPercentage(int percentage) {
+    return '$percentage% освоено';
+  }
+
+  @override
+  String get showLess => 'Свернуть';
+
+  @override
+  String showAllWithCount(int count) {
+    return 'Все ($count)';
+  }
+
+  @override
+  String get rankNovice => '🛡️ Начинающий Воин';
+
+  @override
+  String get rankAdvanced => '⚔️ Опытный Боец';
+
+  @override
+  String get rankCommander => '🔱 Командир Найза';
+
+  @override
+  String get rankWordMaster => '👑 Мастер Слов';
 }

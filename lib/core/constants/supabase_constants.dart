@@ -1,7 +1,13 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 class SupabaseConstants {
-  /// TODO: O'zingizning Supabase URL-ingizni bu yerga qo'ying
-  static const String supabaseUrl = 'https://dszarzhzjnhbwfdhnnso.supabase.co';
-  
-  /// TODO: O'zingizning Supabase Anon Key-ingizni bu yerga qo'ying
-  static const String supabaseAnonKey = 'sb_publishable_tXaChP2FeZZWajjDs4xu_w_F5LU200A';
+  /// Supabase loyiha URL manzili (.env faylidan olinadi)
+  static String get supabaseUrl =>
+      dotenv.env['SUPABASE_URL'] ??
+      const String.fromEnvironment('SUPABASE_URL', defaultValue: '');
+
+  /// Supabase Anon/Publishable kaliti (.env faylidan olinadi)
+  static String get supabaseAnonKey =>
+      dotenv.env['SUPABASE_ANON_KEY'] ??
+      const String.fromEnvironment('SUPABASE_ANON_KEY', defaultValue: '');
 }

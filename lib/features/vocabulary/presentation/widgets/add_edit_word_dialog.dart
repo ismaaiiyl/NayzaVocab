@@ -38,20 +38,25 @@ class _AddEditWordDialogState extends State<AddEditWordDialog> {
   }
 
   void _save() {
-    if (_formKey.currentState!.validate()) {
-      final newWord = WordModel(
-        id: widget.word?.id ?? const Uuid().v4(),
-        original: _originalController.text,
-        translation: _translationController.text,
-        langCode: _selectedLangCode,
-        isDifficult: widget.word?.isDifficult ?? false,
-        wrongAttempts: widget.word?.wrongAttempts ?? 0,
-        correctAnswersCount: widget.word?.correctAnswersCount ?? 0,
-        lastTestedAt: widget.word?.lastTestedAt,
-        setId: widget.word?.setId ?? widget.setId ?? '',
-      );
-      Navigator.of(context).pop(newWord);
-    }
+    if (!_formKey.currentState!.validate()) return;
+
+    final existingSetId = widget.word?.setId;
+    final resolvedSetId = (existingSetId != null && existingSetId.isNotEmpty)
+        ? existingSetId
+        : (widget.setId ?? '');
+
+    final newWord = WordModel(
+      id: widget.word?.id ?? const Uuid().v4(),
+      original: _originalController.text,
+      translation: _translationController.text,
+      langCode: _selectedLangCode,
+      isDifficult: widget.word?.isDifficult ?? false,
+      wrongAttempts: widget.word?.wrongAttempts ?? 0,
+      correctAnswersCount: widget.word?.correctAnswersCount ?? 0,
+      lastTestedAt: widget.word?.lastTestedAt,
+      setId: resolvedSetId,
+    );
+    Navigator.of(context).pop(newWord);
   }
   @override
   Widget build(BuildContext context) {

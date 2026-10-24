@@ -347,7 +347,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get russianLang => 'Russian';
 
   @override
-  String get uzbekLang => 'Uzbek (TTS off)';
+  String get uzbekLang => 'Uzbek';
 
   @override
   String get germanLang => 'German';
@@ -581,4 +581,83 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get all => 'ALL';
+
+  @override
+  String get allDataCleared => 'All data cleared successfully!';
+
+  @override
+  String get share => 'Share';
+
+  @override
+  String get home => 'Home';
+
+  @override
+  String get profile => 'Profile';
+
+  @override
+  String get editProfile => 'Edit Profile';
+
+  @override
+  String get userName => 'User Name';
+
+  @override
+  String get userAge => 'Age';
+
+  @override
+  String get targetLanguage => 'Target Language';
+
+  @override
+  String get folderBreakdown => 'FOLDERS & LANGUAGES ANALYSIS';
+
+  @override
+  String get subjectBreakdown => 'COLLECTIONS BREAKDOWN';
+
+  @override
+  String yearsOld(int age) {
+    return '$age years old';
+  }
+
+  @override
+  String get masteredWords => 'Mastered';
+
+  @override
+  String get smartPasteTitle => 'Smart Paste';
+
+  @override
+  String get smartPasteHint =>
+      'word - translation\nanother word = another translation';
+
+  @override
+  String get userNameHint => 'Your name';
+
+  @override
+  String get invalidAgeError => 'Please enter a valid age (1-120)';
+
+  @override
+  String get folders => 'Folders';
+
+  @override
+  String masteredPercentage(int percentage) {
+    return '$percentage% mastered';
+  }
+
+  @override
+  String get showLess => 'Show Less';
+
+  @override
+  String showAllWithCount(int count) {
+    return 'View All ($count)';
+  }
+
+  @override
+  String get rankNovice => '🛡️ Novice Warrior';
+
+  @override
+  String get rankAdvanced => '⚔️ Advanced Fighter';
+
+  @override
+  String get rankCommander => '🔱 Nayza Commander';
+
+  @override
+  String get rankWordMaster => '👑 Vocabulary Master';
 }

@@ -6,6 +6,7 @@ class NayzaButton extends StatefulWidget {
   final VoidCallback onPressed;
   final IconData? icon;
   final Color? color;
+  final bool isFullWidth;
 
   const NayzaButton({
     super.key,
@@ -13,6 +14,7 @@ class NayzaButton extends StatefulWidget {
     required this.onPressed,
     this.icon,
     this.color,
+    this.isFullWidth = true,
   });
 
   @override
@@ -51,7 +53,8 @@ class _NayzaButtonState extends State<NayzaButton> with SingleTickerProviderStat
       child: ScaleTransition(
         scale: _scaleAnimation,
         child: Container(
-          width: double.infinity,
+          width: widget.isFullWidth ? double.infinity : null,
+          padding: widget.isFullWidth ? EdgeInsets.zero : const EdgeInsets.symmetric(horizontal: 24),
           height: 60,
           decoration: BoxDecoration(
             gradient: LinearGradient(

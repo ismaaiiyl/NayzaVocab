@@ -15,12 +15,20 @@ import 'package:nayza_vocab/features/vocabulary/presentation/provider/library_pr
 import 'package:nayza_vocab/core/router/app_router.dart';
 import 'package:nayza_vocab/l10n/generated/app_localizations.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:nayza_vocab/core/constants/supabase_constants.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   usePathUrlStrategy();
+
+  // Load environment variables (.env)
+  try {
+    await dotenv.load(fileName: '.env');
+  } catch (e, stack) {
+    debugPrint('Dotenv yuklashda ogohlantirish: $e\n$stack');
+  }
 
   // Initialize Supabase
   await Supabase.initialize(

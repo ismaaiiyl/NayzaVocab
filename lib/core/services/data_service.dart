@@ -50,7 +50,7 @@ class DataService {
       final String jsonString = jsonEncode(exportData);
       
       final safeTitle = set.title.replaceAll(RegExp(r'[^a-zA-Z0-9_\-]'), '_');
-      final fileName = 'nayza_${safeTitle}.json';
+      final fileName = 'nayza_$safeTitle.json';
 
       final helper = getExportHelper();
       await helper.shareFile(jsonString, fileName, subject, message);

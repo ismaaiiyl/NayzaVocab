@@ -256,5 +256,37 @@
   "noInternetMessage": "인터넷 연결을 확인하고 다시 시도하십시오.",
   "noResultsFound": "결과를 찾을 수 없음",
   "clearFilters": "필터 초기화",
-  "all": "모두"
+  "all": "모두",
+  "allDataCleared": "모든 데이터가 성공적으로 삭제되었습니다!",
+  "share": "공유",
+  "home": "홈",
+  "profile": "프로필",
+  "editProfile": "프로필 수정",
+  "userName": "사용자 이름",
+  "userAge": "나이",
+  "targetLanguage": "학습 언어",
+  "folderBreakdown": "폴더 및 언어 분석",
+  "subjectBreakdown": "컬렉션 분석",
+  "yearsOld": "{age}세",
+  "@yearsOld": {
+    "placeholders": {
+      "age": {
+        "type": "int"
+      }
+    }
+  },
+  "masteredWords": "완료됨",
+  "smartPasteTitle": "스마트 붙여넣기",
+  "smartPasteHint": "단어 - 번역\n다른 단어 = 다른 번역",
+  "userNameHint": "이름",
+  "invalidAgeError": "올바른 나이를 입력하세요 (1-120)",
+  "folders": "폴더",
+  "masteredPercentage": "{percentage}% 완료됨",
+  "showLess": "접기",
+  "showAllWithCount": "모두 보기 ({count})",
+  "rankNovice": "🛡️ 초보 전사",
+  "rankAdvanced": "⚔️ 숙련된 전사",
+  "rankCommander": "🔱 나이자 사령관",
+  "rankWordMaster": "👑 단어의 달인",
+  "uzbekLang": "우즈베크어"
 }

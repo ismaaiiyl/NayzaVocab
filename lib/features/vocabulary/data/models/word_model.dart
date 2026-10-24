@@ -46,8 +46,8 @@ class WordModel extends HiveObject {
     this.setId = '',
   });
 
-  /// A word is considered learned once correctly answered at least once.
-  bool get isLearned => correctAnswersCount >= 1;
+  /// A word is considered learned once correctly answered at least once AND not marked difficult.
+  bool get isLearned => correctAnswersCount >= 1 && !isDifficult;
 
   WordModel copyWith({
     String? id,

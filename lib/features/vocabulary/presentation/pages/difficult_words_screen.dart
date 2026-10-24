@@ -64,10 +64,10 @@ class DifficultWordsScreen extends StatelessWidget {
                           Container(
                             padding: const EdgeInsets.all(12),
                             decoration: BoxDecoration(
-                              color: Colors.redAccent.withValues(alpha: 0.1),
+                              color: AppTheme.error.withValues(alpha: 0.1),
                               shape: BoxShape.circle,
                             ),
-                            child: const Icon(LucideIcons.alertCircle, color: Colors.redAccent, size: 24),
+                            child: const Icon(LucideIcons.alertCircle, color: AppTheme.error, size: 24),
                           ),
                           const SizedBox(width: 16),
                           Expanded(

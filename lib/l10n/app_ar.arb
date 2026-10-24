@@ -256,5 +256,37 @@
   "noInternetMessage": "يرجى التحقق من اتصالك بالإنترنت والمحاولة مرة أخرى.",
   "noResultsFound": "لم يتم العثور على نتائج",
   "clearFilters": "مسح التصفية",
-  "all": "الكل"
+  "all": "الكل",
+  "allDataCleared": "تم مسح جميع البيانات بنجاح!",
+  "share": "مشاركة",
+  "home": "الرئيسية",
+  "profile": "الملف الشخصي",
+  "editProfile": "تعديل الملف الشخصي",
+  "userName": "اسم المستخدم",
+  "userAge": "العمر",
+  "targetLanguage": "اللغة المستهدفة",
+  "folderBreakdown": "تحليل المجلدات واللغات",
+  "subjectBreakdown": "تفاصيل المجموعات",
+  "yearsOld": "{age} سنة",
+  "@yearsOld": {
+    "placeholders": {
+      "age": {
+        "type": "int"
+      }
+    }
+  },
+  "masteredWords": "متقن",
+  "smartPasteTitle": "لصق ذكي",
+  "smartPasteHint": "كلمة - ترجمة\nكلمة أخرى = ترجمة أخرى",
+  "userNameHint": "اسمك",
+  "invalidAgeError": "يرجى إدخال عمر صحيح (1-120)",
+  "folders": "مجلدات",
+  "masteredPercentage": "{percentage}% متقن",
+  "showLess": "عرض أقل",
+  "showAllWithCount": "الكل ({count})",
+  "rankNovice": "🛡️ محارب مبتدئ",
+  "rankAdvanced": "⚔️ مقاتل متقدم",
+  "rankCommander": "🔱 قائد نايزا",
+  "rankWordMaster": "👑 سيد الكلمات",
+  "uzbekLang": "الأوزبكية"
 }

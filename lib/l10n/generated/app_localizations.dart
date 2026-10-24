@@ -703,7 +703,7 @@ abstract class AppLocalizations {
   /// No description provided for @uzbekLang.
   ///
   /// In en, this message translates to:
-  /// **'Uzbek (TTS off)'**
+  /// **'Uzbek'**
   String get uzbekLang;
 
   /// No description provided for @germanLang.
@@ -1119,6 +1119,150 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'ALL'**
   String get all;
+
+  /// No description provided for @allDataCleared.
+  ///
+  /// In en, this message translates to:
+  /// **'All data cleared successfully!'**
+  String get allDataCleared;
+
+  /// No description provided for @share.
+  ///
+  /// In en, this message translates to:
+  /// **'Share'**
+  String get share;
+
+  /// No description provided for @home.
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get home;
+
+  /// No description provided for @profile.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get profile;
+
+  /// No description provided for @editProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Profile'**
+  String get editProfile;
+
+  /// No description provided for @userName.
+  ///
+  /// In en, this message translates to:
+  /// **'User Name'**
+  String get userName;
+
+  /// No description provided for @userAge.
+  ///
+  /// In en, this message translates to:
+  /// **'Age'**
+  String get userAge;
+
+  /// No description provided for @targetLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'Target Language'**
+  String get targetLanguage;
+
+  /// No description provided for @folderBreakdown.
+  ///
+  /// In en, this message translates to:
+  /// **'FOLDERS & LANGUAGES ANALYSIS'**
+  String get folderBreakdown;
+
+  /// No description provided for @subjectBreakdown.
+  ///
+  /// In en, this message translates to:
+  /// **'COLLECTIONS BREAKDOWN'**
+  String get subjectBreakdown;
+
+  /// No description provided for @yearsOld.
+  ///
+  /// In en, this message translates to:
+  /// **'{age} years old'**
+  String yearsOld(int age);
+
+  /// No description provided for @masteredWords.
+  ///
+  /// In en, this message translates to:
+  /// **'Mastered'**
+  String get masteredWords;
+
+  /// No description provided for @smartPasteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Smart Paste'**
+  String get smartPasteTitle;
+
+  /// No description provided for @smartPasteHint.
+  ///
+  /// In en, this message translates to:
+  /// **'word - translation\nanother word = another translation'**
+  String get smartPasteHint;
+
+  /// No description provided for @userNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Your name'**
+  String get userNameHint;
+
+  /// No description provided for @invalidAgeError.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid age (1-120)'**
+  String get invalidAgeError;
+
+  /// No description provided for @folders.
+  ///
+  /// In en, this message translates to:
+  /// **'Folders'**
+  String get folders;
+
+  /// No description provided for @masteredPercentage.
+  ///
+  /// In en, this message translates to:
+  /// **'{percentage}% mastered'**
+  String masteredPercentage(int percentage);
+
+  /// No description provided for @showLess.
+  ///
+  /// In en, this message translates to:
+  /// **'Show Less'**
+  String get showLess;
+
+  /// No description provided for @showAllWithCount.
+  ///
+  /// In en, this message translates to:
+  /// **'View All ({count})'**
+  String showAllWithCount(int count);
+
+  /// No description provided for @rankNovice.
+  ///
+  /// In en, this message translates to:
+  /// **'🛡️ Novice Warrior'**
+  String get rankNovice;
+
+  /// No description provided for @rankAdvanced.
+  ///
+  /// In en, this message translates to:
+  /// **'⚔️ Advanced Fighter'**
+  String get rankAdvanced;
+
+  /// No description provided for @rankCommander.
+  ///
+  /// In en, this message translates to:
+  /// **'🔱 Nayza Commander'**
+  String get rankCommander;
+
+  /// No description provided for @rankWordMaster.
+  ///
+  /// In en, this message translates to:
+  /// **'👑 Vocabulary Master'**
+  String get rankWordMaster;
 }
 
 class _AppLocalizationsDelegate

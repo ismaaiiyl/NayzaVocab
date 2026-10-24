@@ -2,14 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
-  // Colors
+  // Core Colors
   static const Color darkNavy = Color(0xFF0A192F);
   static const Color electricGold = Color(0xFFFFD700);
   static const Color surfaceNavy = Color(0xFF112240);
   static const Color textMain = Colors.white;
-  static const Color textDim = Color(0xFF8892B0);
+  static const Color textDim = Color(0xFF94A3B8);
   static const Color cardDark = Color(0xFF1E2D4A);
   static const Color borderNavy = Color(0xFF233554);
+
+  // Semantic Colors
+  static const Color success = Color(0xFF00E676);
+  static const Color error = Color(0xFFFF5252);
+  static const Color info = Color(0xFF40C4FF);
+  static const Color warning = Color(0xFFFFAB40);
 
   static ThemeData get darkTheme {
     return ThemeData(
@@ -25,15 +31,15 @@ class AppTheme {
         primary: electricGold,
       ),
       textTheme: TextTheme(
-        displayLarge: GoogleFonts.bebasNeue(
+        displayLarge: GoogleFonts.inter(
           fontSize: 48,
-          fontWeight: FontWeight.bold,
+          fontWeight: FontWeight.w800,
           color: electricGold,
           letterSpacing: 2,
         ),
-        displayMedium: GoogleFonts.bebasNeue(
+        displayMedium: GoogleFonts.inter(
           fontSize: 32,
-          fontWeight: FontWeight.bold,
+          fontWeight: FontWeight.w800,
           color: electricGold,
         ),
         titleLarge: GoogleFonts.inter(
@@ -55,11 +61,11 @@ class AppTheme {
         foregroundColor: electricGold,
         elevation: 0,
         centerTitle: true,
-        titleTextStyle: GoogleFonts.bebasNeue(
-          fontSize: 24,
+        titleTextStyle: GoogleFonts.inter(
+          fontSize: 20,
           fontWeight: FontWeight.bold,
           color: electricGold,
-          letterSpacing: 1.5,
+          letterSpacing: 0.5,
         ),
       ),
       cardTheme: const CardThemeData(

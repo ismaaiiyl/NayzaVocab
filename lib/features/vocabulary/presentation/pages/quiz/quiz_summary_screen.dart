@@ -78,7 +78,7 @@ class QuizSummaryScreen extends StatelessWidget {
                 text: l10n.tryAgain,
                 icon: LucideIcons.refreshCcw,
                 onPressed: () {
-                   provider.restartFullSession();
+                   provider.retryFailedWords();
                    final targetRoute = mode == QuizMode.flashcard 
                      ? 'flashcard-quiz' 
                      : (mode == QuizMode.matching ? 'matching-game' : 'quiz');
@@ -112,7 +112,7 @@ class QuizSummaryScreen extends StatelessWidget {
       color = Colors.orangeAccent;
     } else if (accuracy == 100) {
       icon = LucideIcons.partyPopper;
-      color = Colors.greenAccent;
+      color = AppTheme.success;
     }
 
     return Stack(
@@ -136,8 +136,8 @@ class QuizSummaryScreen extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        _buildStatCard(l10n.correctCountLabel(provider.correctCount), provider.correctCount.toString(), Colors.greenAccent),
-        _buildStatCard(l10n.incorrectCountLabel(provider.incorrectCount), provider.incorrectCount.toString(), Colors.redAccent),
+        _buildStatCard(l10n.correctCountLabel(provider.correctCount), provider.correctCount.toString(), AppTheme.success),
+        _buildStatCard(l10n.incorrectCountLabel(provider.incorrectCount), provider.incorrectCount.toString(), AppTheme.error),
       ],
     );
   }

@@ -27,7 +27,7 @@
 
 1.  Ushbu repo'ni klonlang:
     ```bash
-    git clone https://github.com/tolibi_cyber/nayza-vocab.git
+    git clone https://github.com/ismaaiiyl/NayzaVocab.git
     ```
 2.  Bog'liqliklarni yuklab oling:
     ```bash
@@ -46,8 +46,8 @@ Loyihada **Signing Keystore** sozlamalari mavjud. O'zingizning shaxsiy APK fayli
 
 ## 🔱 Yaratyuchi (Author)
 
-**Tolibi Cyber** — *Flutter Enthusiast & Nayzador* 🔱🚀  
-GitHub: [@tolibi_cyber](https://github.com/tolibi_cyber)
+**ismaaiiyl** — *Flutter Enthusiast & Nayzador* 🔱🚀  
+GitHub: [@ismaaiiyl](https://github.com/ismaaiiyl)
 
 ## 📄 Litsenziya
 

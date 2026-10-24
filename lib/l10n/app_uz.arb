@@ -256,5 +256,37 @@
   "noInternetMessage": "Internet ulanishini tekshiring va qaytadan urinib ko'ring.",
   "noResultsFound": "HECH NIMA TOPILMADI",
   "clearFilters": "FILTRNI TOZALASH",
-  "all": "BARCHASI"
+  "all": "BARCHASI",
+  "allDataCleared": "Barcha ma'lumotlar muvaffaqiyatli tozalandi!",
+  "share": "Ulashish",
+  "home": "Asosiy",
+  "profile": "Profil",
+  "editProfile": "Profilni tahrirlash",
+  "userName": "Foydalanuvchi ismi",
+  "userAge": "Yoshi",
+  "targetLanguage": "O'rganilayotgan til",
+  "folderBreakdown": "PAPKALAR VA TILLAR TAHLILI",
+  "subjectBreakdown": "FANLAR VA TO'PLAMLAR",
+  "yearsOld": "{age} yosh",
+  "@yearsOld": {
+    "placeholders": {
+      "age": {
+        "type": "int"
+      }
+    }
+  },
+  "masteredWords": "O'zlashtirilgan",
+  "smartPasteTitle": "Tezkor joylash",
+  "smartPasteHint": "so'z - tarjima\nboshqa so'z = boshqa tarjima",
+  "userNameHint": "Ismingiz",
+  "invalidAgeError": "To'g'ri yosh kiriting (1-120)",
+  "folders": "Papkalar",
+  "masteredPercentage": "{percentage}% o'zlashtirildi",
+  "showLess": "Qisqartirish",
+  "showAllWithCount": "Barchasi ({count})",
+  "rankNovice": "🛡️ Boshlang'ich Jangchi",
+  "rankAdvanced": "⚔️ Ilg'or Jangchi",
+  "rankCommander": "🔱 Nayza Sardori",
+  "rankWordMaster": "👑 So'z Ustasi",
+  "uzbekLang": "O'zbekcha"
 }

@@ -256,5 +256,51 @@
   "noInternetMessage": "Please check your internet connection and try again.",
   "noResultsFound": "NO RESULTS FOUND",
   "clearFilters": "CLEAR FILTERS",
-  "all": "ALL"
+  "all": "ALL",
+  "allDataCleared": "All data cleared successfully!",
+  "share": "Share",
+  "home": "Home",
+  "profile": "Profile",
+  "editProfile": "Edit Profile",
+  "userName": "User Name",
+  "userAge": "Age",
+  "targetLanguage": "Target Language",
+  "folderBreakdown": "FOLDERS & LANGUAGES ANALYSIS",
+  "subjectBreakdown": "COLLECTIONS BREAKDOWN",
+  "yearsOld": "{age} years old",
+  "@yearsOld": {
+    "placeholders": {
+      "age": {
+        "type": "int"
+      }
+    }
+  },
+  "masteredWords": "Mastered",
+  "smartPasteTitle": "Smart Paste",
+  "smartPasteHint": "word - translation\nanother word = another translation",
+  "userNameHint": "Your name",
+  "invalidAgeError": "Please enter a valid age (1-120)",
+  "folders": "Folders",
+  "masteredPercentage": "{percentage}% mastered",
+  "@masteredPercentage": {
+    "placeholders": {
+      "percentage": {
+        "type": "int"
+      }
+    }
+  },
+  "showLess": "Show Less",
+  "showAllWithCount": "View All ({count})",
+  "@showAllWithCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "rankNovice": "🛡️ Novice Warrior",
+  "rankAdvanced": "⚔️ Advanced Fighter",
+  "rankCommander": "🔱 Nayza Commander",
+  "rankWordMaster": "👑 Vocabulary Master",
+  "uzbekLang": "Uzbek"
 }

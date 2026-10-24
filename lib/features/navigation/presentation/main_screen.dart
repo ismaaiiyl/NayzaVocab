@@ -31,9 +31,9 @@ class _MainScreenState extends State<MainScreen> {
   void _checkNotificationPayload() {
     final payload = NotificationService.lastPayload;
     if (payload != null) {
-      NotificationService.lastPayload = null; // Clear it
-      if (payload == 'difficult-words') {
-        widget.navigationShell.goBranch(2);
+      NotificationService.lastPayload = null;
+      if (payload == 'difficult-words' && mounted) {
+        context.pushNamed('difficult-words');
       }
     }
   }

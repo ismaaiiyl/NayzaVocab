@@ -9,6 +9,11 @@ class SettingsProvider with ChangeNotifier {
   String _languageCode = 'uz';
   bool _hasSeenOnboarding = false;
 
+  // User Profile Data
+  String _userName = 'Jangchi';
+  int _userAge = 20;
+  String _targetLanguage = 'English';
+
   SettingsProvider(this._prefs) {
     _loadSettings();
   }
@@ -17,11 +22,32 @@ class SettingsProvider with ChangeNotifier {
   bool get isMuted => _isMuted;
   String get languageCode => _languageCode;
   bool get hasSeenOnboarding => _hasSeenOnboarding;
+  String get userName => _userName;
+  int get userAge => _userAge;
+  String get targetLanguage => _targetLanguage;
 
   void _loadSettings() {
     _isMuted = _prefs.getBool('is_muted') ?? false;
     _languageCode = _prefs.getString('language_code') ?? 'uz';
     _hasSeenOnboarding = _prefs.getBool('has_seen_onboarding') ?? false;
+    _userName = _prefs.getString('user_name') ?? 'Jangchi';
+    _userAge = _prefs.getInt('user_age') ?? 20;
+    _targetLanguage = _prefs.getString('target_language') ?? 'English';
+    notifyListeners();
+  }
+
+  Future<void> updateProfile({
+    required String name,
+    required int age,
+    required String targetLanguage,
+  }) async {
+    _userName = name.trim().isEmpty ? 'Jangchi' : name.trim();
+    _userAge = age <= 0 ? 20 : age;
+    _targetLanguage = targetLanguage.trim().isEmpty ? 'English' : targetLanguage.trim();
+
+    await _prefs.setString('user_name', _userName);
+    await _prefs.setInt('user_age', _userAge);
+    await _prefs.setString('target_language', _targetLanguage);
     notifyListeners();
   }
 
@@ -44,10 +70,10 @@ class SettingsProvider with ChangeNotifier {
   }
 
   Future<void> saveReminderTime(int hour, int minute) async {
-    // NotificationService.scheduleDailyReminder() prefs ni o'zi saqlaydi
     await NotificationService().scheduleDailyReminder(hour: hour, minute: minute);
     notifyListeners();
   }
+
   String? getReminderTimeStr() {
     final hour = _prefs.getInt('reminder_hour');
     final minute = _prefs.getInt('reminder_minute');
@@ -56,7 +82,6 @@ class SettingsProvider with ChangeNotifier {
   }
 
   Future<void> cancelReminder() async {
-    // NotificationService.cancelAll() prefs ni ham tozalaydi
     await NotificationService().cancelAll();
     notifyListeners();
   }

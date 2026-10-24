@@ -334,7 +334,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get russianLang => '러시아어';
 
   @override
-  String get uzbekLang => '우즈베크어 (TTS 꺼짐)';
+  String get uzbekLang => '우즈베크어';
 
   @override
   String get germanLang => '독일어';
@@ -563,4 +563,82 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get all => '모두';
+
+  @override
+  String get allDataCleared => '모든 데이터가 성공적으로 삭제되었습니다!';
+
+  @override
+  String get share => '공유';
+
+  @override
+  String get home => '홈';
+
+  @override
+  String get profile => '프로필';
+
+  @override
+  String get editProfile => '프로필 수정';
+
+  @override
+  String get userName => '사용자 이름';
+
+  @override
+  String get userAge => '나이';
+
+  @override
+  String get targetLanguage => '학습 언어';
+
+  @override
+  String get folderBreakdown => '폴더 및 언어 분석';
+
+  @override
+  String get subjectBreakdown => '컬렉션 분석';
+
+  @override
+  String yearsOld(int age) {
+    return '$age세';
+  }
+
+  @override
+  String get masteredWords => '완료됨';
+
+  @override
+  String get smartPasteTitle => '스마트 붙여넣기';
+
+  @override
+  String get smartPasteHint => '단어 - 번역\n다른 단어 = 다른 번역';
+
+  @override
+  String get userNameHint => '이름';
+
+  @override
+  String get invalidAgeError => '올바른 나이를 입력하세요 (1-120)';
+
+  @override
+  String get folders => '폴더';
+
+  @override
+  String masteredPercentage(int percentage) {
+    return '$percentage% 완료됨';
+  }
+
+  @override
+  String get showLess => '접기';
+
+  @override
+  String showAllWithCount(int count) {
+    return '모두 보기 ($count)';
+  }
+
+  @override
+  String get rankNovice => '🛡️ 초보 전사';
+
+  @override
+  String get rankAdvanced => '⚔️ 숙련된 전사';
+
+  @override
+  String get rankCommander => '🔱 나이자 사령관';
+
+  @override
+  String get rankWordMaster => '👑 단어의 달인';
 }

@@ -2,28 +2,36 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:nayza_vocab/features/vocabulary/data/models/vocab_set_model.dart';
+import 'package:nayza_vocab/features/vocabulary/data/models/folder_model.dart';
 import 'package:nayza_vocab/features/vocabulary/presentation/provider/vocab_set_provider.dart';
 
 class MockBox extends Mock implements Box<VocabSetModel> {}
+class MockFolderBox extends Mock implements Box<FolderModel> {}
 class FakeVocabSetModel extends Fake implements VocabSetModel {}
+class FakeFolderModel extends Fake implements FolderModel {}
 
 void main() {
   setUpAll(() {
     registerFallbackValue(FakeVocabSetModel());
+    registerFallbackValue(FakeFolderModel());
   });
 
   group('VocabSetProvider Tests (Enterprise)', () {
     late MockBox mockBox;
+    late MockFolderBox mockFolderBox;
     late VocabSetProvider provider;
 
     setUp(() {
       mockBox = MockBox();
+      mockFolderBox = MockFolderBox();
 
       // Mock Box behavior 
       when(() => mockBox.values).thenReturn(<VocabSetModel>[]);
       when(() => mockBox.put(any<dynamic>(), any<VocabSetModel>())).thenAnswer((_) async => {});
+      when(() => mockFolderBox.values).thenReturn(<FolderModel>[]);
+      when(() => mockFolderBox.put(any<dynamic>(), any<FolderModel>())).thenAnswer((_) async => {});
 
-      provider = VocabSetProvider(mockBox);
+      provider = VocabSetProvider(mockBox, mockFolderBox);
     });
 
     test('Initializes with empty sets', () {

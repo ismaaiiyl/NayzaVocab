@@ -23,11 +23,14 @@ void main() {
     });
 
     test('isLearned correctly identifies mastered words', () {
-      final unmastered = word.copyWith(correctAnswersCount: 2);
+      final unmastered = word.copyWith(correctAnswersCount: 0);
       expect(unmastered.isLearned, false);
 
-      final mastered = word.copyWith(correctAnswersCount: 3);
+      final mastered = word.copyWith(correctAnswersCount: 1);
       expect(mastered.isLearned, true);
+
+      final difficult = word.copyWith(correctAnswersCount: 2, isDifficult: true);
+      expect(difficult.isLearned, false);
     });
 
     test('copyWith works correctly', () {

@@ -256,5 +256,37 @@
   "noInternetMessage": "Please check your internet connection and try again.",
   "noResultsFound": "NO RESULTS FOUND",
   "clearFilters": "CLEAR FILTERS",
-  "all": "ВСЕ"
+  "all": "ВСЕ",
+  "allDataCleared": "Все данные успешно удалены!",
+  "share": "Поделиться",
+  "home": "Главная",
+  "profile": "Профиль",
+  "editProfile": "Редактировать профиль",
+  "userName": "Имя пользователя",
+  "userAge": "Возраст",
+  "targetLanguage": "Изучаемый язык",
+  "folderBreakdown": "АНАЛИЗ ПАПОК И ЯЗЫКОВ",
+  "subjectBreakdown": "ОБЗОР КОЛЛЕКЦИЙ",
+  "yearsOld": "{age} лет",
+  "@yearsOld": {
+    "placeholders": {
+      "age": {
+        "type": "int"
+      }
+    }
+  },
+  "masteredWords": "Освоено",
+  "smartPasteTitle": "Умная вставка",
+  "smartPasteHint": "слово - перевод\nдругое слово = другой перевод",
+  "userNameHint": "Ваше имя",
+  "invalidAgeError": "Введите корректный возраст (1-120)",
+  "folders": "Папки",
+  "masteredPercentage": "{percentage}% освоено",
+  "showLess": "Свернуть",
+  "showAllWithCount": "Все ({count})",
+  "rankNovice": "🛡️ Начинающий Воин",
+  "rankAdvanced": "⚔️ Опытный Боец",
+  "rankCommander": "🔱 Командир Найза",
+  "rankWordMaster": "👑 Мастер Слов",
+  "uzbekLang": "Узбекский"
 }
