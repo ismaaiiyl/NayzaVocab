@@ -69,15 +69,14 @@ class SettingsCard extends StatelessWidget {
                 ],
               ),
             ),
-            const Icon(
-              LucideIcons.chevronRight,
-              color: AppTheme.textDim,
-              size: 20,
-            ),
-            if (trailing != null) ...[
-              const SizedBox(width: 8),
-              trailing!,
-            ],
+            if (trailing != null)
+              trailing!
+            else
+              const Icon(
+                LucideIcons.chevronRight,
+                color: AppTheme.textDim,
+                size: 20,
+              ),
           ],
         ),
       ),
