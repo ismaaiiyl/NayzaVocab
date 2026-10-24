@@ -288,5 +288,12 @@
   "rankAdvanced": "⚔️ مقاتل متقدم",
   "rankCommander": "🔱 قائد نايزا",
   "rankWordMaster": "👑 سيد الكلمات",
-  "uzbekLang": "الأوزبكية"
+  "uzbekLang": "الأوزبكية",
+  "checkForUpdates": "التحقق من وجود تحديثات",
+  "latestVersionInstalled": "لديك أحدث إصدار مثبت",
+  "updateAvailable": "يتوفر تحديث جديد",
+  "updateNow": "تحديث الآن",
+  "downloadingUpdate": "جارٍ تنزيل التحديث...",
+  "updateCheckFailed": "فشل التحقق من وجود تحديثات",
+  "whatsNew": "ما الجديد"
 }

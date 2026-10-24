@@ -288,5 +288,12 @@
   "rankAdvanced": "⚔️ Ilg'or Jangchi",
   "rankCommander": "🔱 Nayza Sardori",
   "rankWordMaster": "👑 So'z Ustasi",
-  "uzbekLang": "O'zbekcha"
+  "uzbekLang": "O'zbekcha",
+  "checkForUpdates": "Yangilanishlarni tekshirish",
+  "latestVersionInstalled": "Sizda eng so'nggi versiya o'rnatilgan",
+  "updateAvailable": "Yangi versiya mavjud",
+  "updateNow": "Hozir yangilash",
+  "downloadingUpdate": "Yangilanish yuklanmoqda...",
+  "updateCheckFailed": "Yangilanishni tekshirib bo'lmadi",
+  "whatsNew": "Yangiliklar va o'zgarishlar"
 }

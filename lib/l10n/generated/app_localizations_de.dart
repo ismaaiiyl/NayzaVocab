@@ -500,7 +500,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get telegramSubtitle => 'Tritt bei für Tipps und Updates';
 
   @override
-  String get checkForUpdates => 'Auf Updates prüfen';
+  String get checkForUpdates => 'Nach Updates suchen';
 
   @override
   String get checkForUpdatesSubtitle =>
@@ -663,4 +663,22 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get rankWordMaster => '👑 Meister der Wörter';
+
+  @override
+  String get latestVersionInstalled => 'Die neueste Version ist installiert';
+
+  @override
+  String get updateAvailable => 'Update verfügbar';
+
+  @override
+  String get updateNow => 'Jetzt aktualisieren';
+
+  @override
+  String get downloadingUpdate => 'Update wird heruntergeladen...';
+
+  @override
+  String get updateCheckFailed => 'Update-Prüfung fehlgeschlagen';
+
+  @override
+  String get whatsNew => 'Was ist neu';
 }

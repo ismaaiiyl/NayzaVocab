@@ -967,7 +967,7 @@ abstract class AppLocalizations {
   /// No description provided for @checkForUpdates.
   ///
   /// In en, this message translates to:
-  /// **'Check for Updates'**
+  /// **'Check for updates'**
   String get checkForUpdates;
 
   /// No description provided for @checkForUpdatesSubtitle.
@@ -1263,6 +1263,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'👑 Vocabulary Master'**
   String get rankWordMaster;
+
+  /// No description provided for @latestVersionInstalled.
+  ///
+  /// In en, this message translates to:
+  /// **'You have the latest version installed'**
+  String get latestVersionInstalled;
+
+  /// No description provided for @updateAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Update available'**
+  String get updateAvailable;
+
+  /// No description provided for @updateNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Update now'**
+  String get updateNow;
+
+  /// No description provided for @downloadingUpdate.
+  ///
+  /// In en, this message translates to:
+  /// **'Downloading update...'**
+  String get downloadingUpdate;
+
+  /// No description provided for @updateCheckFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to check for updates'**
+  String get updateCheckFailed;
+
+  /// No description provided for @whatsNew.
+  ///
+  /// In en, this message translates to:
+  /// **'What\'s new'**
+  String get whatsNew;
 }
 
 class _AppLocalizationsDelegate

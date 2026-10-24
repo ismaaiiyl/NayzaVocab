@@ -498,7 +498,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get telegramSubtitle => 'Join for tips, updates and resources';
 
   @override
-  String get checkForUpdates => 'Check for Updates';
+  String get checkForUpdates => 'Check for updates';
 
   @override
   String get checkForUpdatesSubtitle => 'Get the latest version of Nayza Vocab';
@@ -660,4 +660,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get rankWordMaster => '👑 Vocabulary Master';
+
+  @override
+  String get latestVersionInstalled => 'You have the latest version installed';
+
+  @override
+  String get updateAvailable => 'Update available';
+
+  @override
+  String get updateNow => 'Update now';
+
+  @override
+  String get downloadingUpdate => 'Downloading update...';
+
+  @override
+  String get updateCheckFailed => 'Failed to check for updates';
+
+  @override
+  String get whatsNew => 'What\'s new';
 }

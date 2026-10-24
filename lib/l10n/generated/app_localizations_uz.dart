@@ -660,4 +660,23 @@ class AppLocalizationsUz extends AppLocalizations {
 
   @override
   String get rankWordMaster => '👑 So\'z Ustasi';
+
+  @override
+  String get latestVersionInstalled =>
+      'Sizda eng so\'nggi versiya o\'rnatilgan';
+
+  @override
+  String get updateAvailable => 'Yangi versiya mavjud';
+
+  @override
+  String get updateNow => 'Hozir yangilash';
+
+  @override
+  String get downloadingUpdate => 'Yangilanish yuklanmoqda...';
+
+  @override
+  String get updateCheckFailed => 'Yangilanishni tekshirib bo\'lmadi';
+
+  @override
+  String get whatsNew => 'Yangiliklar va o\'zgarishlar';
 }

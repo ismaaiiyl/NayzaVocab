@@ -641,4 +641,22 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get rankWordMaster => '👑 단어의 달인';
+
+  @override
+  String get latestVersionInstalled => '최신 버전이 설치되어 있습니다';
+
+  @override
+  String get updateAvailable => '새 업데이트 가능';
+
+  @override
+  String get updateNow => '지금 업데이트';
+
+  @override
+  String get downloadingUpdate => '업데이트 다운로드 중...';
+
+  @override
+  String get updateCheckFailed => '업데이트 확인 실패';
+
+  @override
+  String get whatsNew => '새로운 기능';
 }

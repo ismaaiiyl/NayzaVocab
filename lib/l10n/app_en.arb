@@ -302,5 +302,12 @@
   "rankAdvanced": "⚔️ Advanced Fighter",
   "rankCommander": "🔱 Nayza Commander",
   "rankWordMaster": "👑 Vocabulary Master",
-  "uzbekLang": "Uzbek"
+  "uzbekLang": "Uzbek",
+  "checkForUpdates": "Check for updates",
+  "latestVersionInstalled": "You have the latest version installed",
+  "updateAvailable": "Update available",
+  "updateNow": "Update now",
+  "downloadingUpdate": "Downloading update...",
+  "updateCheckFailed": "Failed to check for updates",
+  "whatsNew": "What's new"
 }

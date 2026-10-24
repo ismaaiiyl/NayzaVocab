@@ -8,6 +8,7 @@ import 'package:nayza_vocab/features/settings/presentation/dialogs/reset_confirm
 import 'package:nayza_vocab/features/settings/presentation/provider/settings_provider.dart';
 import 'package:nayza_vocab/features/settings/presentation/widgets/settings_card.dart';
 import 'package:nayza_vocab/features/settings/presentation/widgets/settings_header.dart';
+import 'package:nayza_vocab/features/settings/presentation/widgets/app_info_section.dart';
 import 'package:nayza_vocab/features/vocabulary/data/models/vocab_set_model.dart';
 import 'package:nayza_vocab/features/vocabulary/presentation/provider/vocab_set_provider.dart';
 import 'package:nayza_vocab/l10n/generated/app_localizations.dart';
@@ -109,18 +110,7 @@ class SettingsPage extends StatelessWidget {
             onTap: () => _handleResetAllData(context),
           ),
           const SizedBox(height: 48),
-          SettingsHeader(title: l10n.appInfo),
-          const SizedBox(height: 12),
-          Center(
-            child: Text(
-              l10n.appVersion,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: AppTheme.textDim,
-                fontSize: 14,
-              ),
-            ),
-          ),
+          const AppInfoSection(),
         ],
       ),
     );

@@ -288,5 +288,12 @@
   "rankAdvanced": "⚔️ Fortgeschrittener Kämpfer",
   "rankCommander": "🔱 Nayza Kommandant",
   "rankWordMaster": "👑 Meister der Wörter",
-  "uzbekLang": "Usbekisch"
+  "uzbekLang": "Usbekisch",
+  "checkForUpdates": "Nach Updates suchen",
+  "latestVersionInstalled": "Die neueste Version ist installiert",
+  "updateAvailable": "Update verfügbar",
+  "updateNow": "Jetzt aktualisieren",
+  "downloadingUpdate": "Update wird heruntergeladen...",
+  "updateCheckFailed": "Update-Prüfung fehlgeschlagen",
+  "whatsNew": "Was ist neu"
 }

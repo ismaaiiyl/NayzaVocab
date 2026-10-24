@@ -288,5 +288,12 @@
   "rankAdvanced": "⚔️ 숙련된 전사",
   "rankCommander": "🔱 나이자 사령관",
   "rankWordMaster": "👑 단어의 달인",
-  "uzbekLang": "우즈베크어"
+  "uzbekLang": "우즈베크어",
+  "checkForUpdates": "업데이트 확인",
+  "latestVersionInstalled": "최신 버전이 설치되어 있습니다",
+  "updateAvailable": "새 업데이트 가능",
+  "updateNow": "지금 업데이트",
+  "downloadingUpdate": "업데이트 다운로드 중...",
+  "updateCheckFailed": "업데이트 확인 실패",
+  "whatsNew": "새로운 기능"
 }

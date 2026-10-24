@@ -288,5 +288,12 @@
   "rankAdvanced": "⚔️ Опытный Боец",
   "rankCommander": "🔱 Командир Найза",
   "rankWordMaster": "👑 Мастер Слов",
-  "uzbekLang": "Узбекский"
+  "uzbekLang": "Узбекский",
+  "checkForUpdates": "Проверить обновления",
+  "latestVersionInstalled": "У вас установлена последняя версия",
+  "updateAvailable": "Доступно обновление",
+  "updateNow": "Обновить сейчас",
+  "downloadingUpdate": "Загрузка обновления...",
+  "updateCheckFailed": "Не удалось проверить обновления",
+  "whatsNew": "Что нового"
 }

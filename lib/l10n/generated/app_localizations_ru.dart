@@ -667,4 +667,22 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get rankWordMaster => '👑 Мастер Слов';
+
+  @override
+  String get latestVersionInstalled => 'У вас установлена последняя версия';
+
+  @override
+  String get updateAvailable => 'Доступно обновление';
+
+  @override
+  String get updateNow => 'Обновить сейчас';
+
+  @override
+  String get downloadingUpdate => 'Загрузка обновления...';
+
+  @override
+  String get updateCheckFailed => 'Не удалось проверить обновления';
+
+  @override
+  String get whatsNew => 'Что нового';
 }

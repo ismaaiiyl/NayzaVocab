@@ -497,7 +497,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get telegramSubtitle => 'انضم للحصول على نصائح وتحديثات وموارد';
 
   @override
-  String get checkForUpdates => 'التحقق من التحديثات';
+  String get checkForUpdates => 'التحقق من وجود تحديثات';
 
   @override
   String get checkForUpdatesSubtitle => 'احصل على أحدث إصدار من Nayza Vocab';
@@ -658,4 +658,22 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get rankWordMaster => '👑 سيد الكلمات';
+
+  @override
+  String get latestVersionInstalled => 'لديك أحدث إصدار مثبت';
+
+  @override
+  String get updateAvailable => 'يتوفر تحديث جديد';
+
+  @override
+  String get updateNow => 'تحديث الآن';
+
+  @override
+  String get downloadingUpdate => 'جارٍ تنزيل التحديث...';
+
+  @override
+  String get updateCheckFailed => 'فشل التحقق من وجود تحديثات';
+
+  @override
+  String get whatsNew => 'ما الجديد';
 }
