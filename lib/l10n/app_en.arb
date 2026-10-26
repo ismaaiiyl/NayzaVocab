@@ -309,5 +309,10 @@
   "updateNow": "Update now",
   "downloadingUpdate": "Downloading update...",
   "updateCheckFailed": "Failed to check for updates",
-  "whatsNew": "What's new"
+  "whatsNew": "What's new",
+  "openInBrowser": "Download in browser",
+  "audioSpeed": "Audio Speed",
+  "speedSlow": "Slow (0.75x)",
+  "speedNormal": "Normal (1.0x)",
+  "speedFast": "Fast (1.25x)"
 }

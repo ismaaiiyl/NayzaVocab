@@ -679,4 +679,19 @@ class AppLocalizationsUz extends AppLocalizations {
 
   @override
   String get whatsNew => 'Yangiliklar va o\'zgarishlar';
+
+  @override
+  String get openInBrowser => 'Brauzerda yuklab olish';
+
+  @override
+  String get audioSpeed => 'Talaffuz tezligi';
+
+  @override
+  String get speedSlow => 'Sekin (0.75x)';
+
+  @override
+  String get speedNormal => 'Standart (1.0x)';
+
+  @override
+  String get speedFast => 'Tez (1.25x)';
 }

@@ -681,4 +681,19 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get whatsNew => 'Was ist neu';
+
+  @override
+  String get openInBrowser => 'Im Browser herunterladen';
+
+  @override
+  String get audioSpeed => 'Audiogeschwindigkeit';
+
+  @override
+  String get speedSlow => 'Langsam (0.75x)';
+
+  @override
+  String get speedNormal => 'Normal (1.0x)';
+
+  @override
+  String get speedFast => 'Schnell (1.25x)';
 }

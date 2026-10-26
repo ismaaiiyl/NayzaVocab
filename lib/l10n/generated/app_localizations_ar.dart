@@ -676,4 +676,19 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get whatsNew => 'ما الجديد';
+
+  @override
+  String get openInBrowser => 'تنزيل من المتصفح';
+
+  @override
+  String get audioSpeed => 'سرعة النطق';
+
+  @override
+  String get speedSlow => 'بطيء (0.75x)';
+
+  @override
+  String get speedNormal => 'عادي (1.0x)';
+
+  @override
+  String get speedFast => 'سريع (1.25x)';
 }

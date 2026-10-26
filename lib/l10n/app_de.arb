@@ -295,5 +295,10 @@
   "updateNow": "Jetzt aktualisieren",
   "downloadingUpdate": "Update wird heruntergeladen...",
   "updateCheckFailed": "Update-Prüfung fehlgeschlagen",
-  "whatsNew": "Was ist neu"
+  "whatsNew": "Was ist neu",
+  "openInBrowser": "Im Browser herunterladen",
+  "audioSpeed": "Audiogeschwindigkeit",
+  "speedSlow": "Langsam (0.75x)",
+  "speedNormal": "Normal (1.0x)",
+  "speedFast": "Schnell (1.25x)"
 }

@@ -295,5 +295,10 @@
   "updateNow": "Hozir yangilash",
   "downloadingUpdate": "Yangilanish yuklanmoqda...",
   "updateCheckFailed": "Yangilanishni tekshirib bo'lmadi",
-  "whatsNew": "Yangiliklar va o'zgarishlar"
+  "whatsNew": "Yangiliklar va o'zgarishlar",
+  "openInBrowser": "Brauzerda yuklab olish",
+  "audioSpeed": "Talaffuz tezligi",
+  "speedSlow": "Sekin (0.75x)",
+  "speedNormal": "Standart (1.0x)",
+  "speedFast": "Tez (1.25x)"
 }

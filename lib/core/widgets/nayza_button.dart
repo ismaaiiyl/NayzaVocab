@@ -7,6 +7,10 @@ class NayzaButton extends StatefulWidget {
   final IconData? icon;
   final Color? color;
   final bool isFullWidth;
+  final double? height;
+  final double? fontSize;
+  final double? iconSize;
+  final EdgeInsetsGeometry? padding;
 
   const NayzaButton({
     super.key,
@@ -15,6 +19,10 @@ class NayzaButton extends StatefulWidget {
     this.icon,
     this.color,
     this.isFullWidth = true,
+    this.height,
+    this.fontSize,
+    this.iconSize,
+    this.padding,
   });
 
   @override
@@ -45,6 +53,10 @@ class _NayzaButtonState extends State<NayzaButton> with SingleTickerProviderStat
 
   @override
   Widget build(BuildContext context) {
+    final double buttonHeight = widget.height ?? 54.0;
+    final double iconSz = widget.iconSize ?? 18.0;
+    final double fontSz = widget.fontSize ?? 14.0;
+
     return GestureDetector(
       onTapDown: (_) => _controller.forward(),
       onTapUp: (_) => _controller.reverse(),
@@ -54,13 +66,13 @@ class _NayzaButtonState extends State<NayzaButton> with SingleTickerProviderStat
         scale: _scaleAnimation,
         child: Container(
           width: widget.isFullWidth ? double.infinity : null,
-          padding: widget.isFullWidth ? EdgeInsets.zero : const EdgeInsets.symmetric(horizontal: 24),
-          height: 60,
+          height: buttonHeight,
+          padding: widget.padding ?? const EdgeInsets.symmetric(horizontal: 12),
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
                 widget.color ?? AppTheme.electricGold,
-                (widget.color ?? AppTheme.electricGold).withValues(alpha: 0.8),
+                (widget.color ?? AppTheme.electricGold).withValues(alpha: 0.85),
               ],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
@@ -69,25 +81,38 @@ class _NayzaButtonState extends State<NayzaButton> with SingleTickerProviderStat
             boxShadow: [
               BoxShadow(
                 color: (widget.color ?? AppTheme.electricGold).withValues(alpha: 0.3),
-                blurRadius: 15,
-                offset: const Offset(0, 8),
+                blurRadius: 12,
+                offset: const Offset(0, 6),
               ),
             ],
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: widget.isFullWidth ? MainAxisSize.max : MainAxisSize.min,
             children: [
               if (widget.icon != null) ...[
-                Icon(widget.icon, color: AppTheme.surfaceNavy, size: 24),
-                const SizedBox(width: 12),
-              ],
-              Text(
-                widget.text.toUpperCase(),
-                style: const TextStyle(
+                Icon(
+                  widget.icon,
                   color: AppTheme.surfaceNavy,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                  letterSpacing: 1.2,
+                  size: iconSz,
+                ),
+                const SizedBox(width: 8),
+              ],
+              Flexible(
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  alignment: Alignment.center,
+                  child: Text(
+                    widget.text.toUpperCase(),
+                    maxLines: 1,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: AppTheme.surfaceNavy,
+                      fontWeight: FontWeight.bold,
+                      fontSize: fontSz,
+                      letterSpacing: 0.8,
+                    ),
+                  ),
                 ),
               ),
             ],

@@ -34,6 +34,7 @@ class _AppUpdateDialogState extends State<AppUpdateDialog> {
   late final AppUpdateService _service;
   bool _isDownloading = false;
   double _progress = 0.0;
+  String _progressText = '';
   String? _errorMessage;
 
   @override
@@ -46,14 +47,20 @@ class _AppUpdateDialogState extends State<AppUpdateDialog> {
     setState(() {
       _isDownloading = true;
       _progress = 0.0;
+      _progressText = '0%';
       _errorMessage = null;
     });
 
     final success = await _service.downloadAndInstallApk(
       downloadUrl: widget.updateInfo.downloadUrl,
       fileName: widget.updateInfo.fileName,
-      onProgress: (p) {
-        if (mounted) setState(() => _progress = p);
+      onProgress: (p, text) {
+        if (mounted) {
+          setState(() {
+            _progress = p;
+            _progressText = text;
+          });
+        }
       },
     );
 
@@ -106,11 +113,21 @@ class _AppUpdateDialogState extends State<AppUpdateDialog> {
               ),
               const SizedBox(height: 8),
               Text(
-                '${(_progress * 100).toInt()}% • ${l10n.downloadingUpdate}',
+                _progressText.isNotEmpty ? _progressText : l10n.downloadingUpdate,
                 textAlign: TextAlign.center,
                 style: const TextStyle(color: AppTheme.textDim, fontSize: 13),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 12),
+              Center(
+                child: TextButton(
+                  onPressed: () => _service.openInBrowser(widget.updateInfo.downloadUrl),
+                  child: Text(
+                    l10n.openInBrowser,
+                    style: const TextStyle(color: AppTheme.electricGold, fontSize: 13),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 8),
             ],
             if (_errorMessage != null) ...[
               Text(
@@ -118,9 +135,20 @@ class _AppUpdateDialogState extends State<AppUpdateDialog> {
                 textAlign: TextAlign.center,
                 style: const TextStyle(color: AppTheme.error, fontSize: 13),
               ),
+              const SizedBox(height: 8),
+              Center(
+                child: TextButton.icon(
+                  onPressed: () => _service.openInBrowser(widget.updateInfo.downloadUrl),
+                  icon: const Icon(Icons.open_in_browser, color: AppTheme.electricGold, size: 18),
+                  label: Text(
+                    l10n.openInBrowser,
+                    style: const TextStyle(color: AppTheme.electricGold),
+                  ),
+                ),
+              ),
               const SizedBox(height: 12),
             ],
-            _buildActions(l10n),
+            if (!_isDownloading) _buildActions(l10n),
           ],
         ),
       ),
@@ -128,8 +156,6 @@ class _AppUpdateDialogState extends State<AppUpdateDialog> {
   }
 
   Widget _buildActions(AppLocalizations l10n) {
-    if (_isDownloading) return const SizedBox.shrink();
-
     return Row(
       children: [
         Expanded(

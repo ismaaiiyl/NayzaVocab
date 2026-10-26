@@ -295,5 +295,10 @@
   "updateNow": "Обновить сейчас",
   "downloadingUpdate": "Загрузка обновления...",
   "updateCheckFailed": "Не удалось проверить обновления",
-  "whatsNew": "Что нового"
+  "whatsNew": "Что нового",
+  "openInBrowser": "Скачать в браузере",
+  "audioSpeed": "Скорость озвучки",
+  "speedSlow": "Медленно (0.75x)",
+  "speedNormal": "Обычная (1.0x)",
+  "speedFast": "Быстро (1.25x)"
 }

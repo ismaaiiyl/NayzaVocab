@@ -17,7 +17,7 @@ class LibraryBookCard extends StatelessWidget {
     return Card(
       margin: const EdgeInsets.only(bottom: 16),
       child: InkWell(
-        onTap: () => context.goNamed(
+        onTap: () => context.pushNamed(
           'book-details',
           pathParameters: {'id': book['id'].toString()},
         ),
@@ -49,25 +49,49 @@ class LibraryBookCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                      decoration: BoxDecoration(
-                        color: AppTheme.electricGold.withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                      child: Text(
-                        book['target_lang'].toString().toUpperCase(),
-                        style: const TextStyle(
-                          color: AppTheme.electricGold,
-                          fontSize: 10,
-                          fontWeight: FontWeight.bold,
+                    Wrap(
+                      spacing: 6,
+                      runSpacing: 4,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: AppTheme.electricGold.withValues(alpha: 0.1),
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                          child: Text(
+                            (book['target_lang'] as String? ?? '').toUpperCase(),
+                            style: const TextStyle(
+                              color: AppTheme.electricGold,
+                              fontSize: 10,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                         ),
-                      ),
+                        if (book['category'] != null && (book['category'] as String).isNotEmpty)
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                            decoration: BoxDecoration(
+                              color: AppTheme.borderNavy,
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                            child: Text(
+                              (book['category'] as String).toUpperCase(),
+                              style: const TextStyle(
+                                color: AppTheme.textDim,
+                                fontSize: 10,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                      ],
                     ),
                     const SizedBox(height: 8),
                     Text(
                       (book['title'] as String?) ?? '',
-                      style: theme.textTheme.titleLarge?.copyWith(
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: theme.textTheme.titleMedium?.copyWith(
                         color: AppTheme.textMain,
                         fontWeight: FontWeight.bold,
                       ),
@@ -75,6 +99,7 @@ class LibraryBookCard extends StatelessWidget {
                     const SizedBox(height: 4),
                     Text(
                       l10n.setsCountLabel((book['unitsCount'] as int?) ?? 0),
+                      maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(color: AppTheme.textDim, fontSize: 13),
                     ),

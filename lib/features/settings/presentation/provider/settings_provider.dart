@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:nayza_vocab/core/services/notification_service.dart';
+import 'package:nayza_vocab/core/utils/audio_helper.dart';
 
 class SettingsProvider with ChangeNotifier {
   final SharedPreferences _prefs;
@@ -8,6 +9,7 @@ class SettingsProvider with ChangeNotifier {
   bool _isMuted = false;
   String _languageCode = 'uz';
   bool _hasSeenOnboarding = false;
+  double _speechRate = 0.5;
 
   // User Profile Data
   String _userName = 'Jangchi';
@@ -22,6 +24,7 @@ class SettingsProvider with ChangeNotifier {
   bool get isMuted => _isMuted;
   String get languageCode => _languageCode;
   bool get hasSeenOnboarding => _hasSeenOnboarding;
+  double get speechRate => _speechRate;
   String get userName => _userName;
   int get userAge => _userAge;
   String get targetLanguage => _targetLanguage;
@@ -30,9 +33,18 @@ class SettingsProvider with ChangeNotifier {
     _isMuted = _prefs.getBool('is_muted') ?? false;
     _languageCode = _prefs.getString('language_code') ?? 'uz';
     _hasSeenOnboarding = _prefs.getBool('has_seen_onboarding') ?? false;
+    _speechRate = _prefs.getDouble('tts_speech_rate') ?? 0.5;
+    AudioHelper().setSpeechRate(_speechRate);
     _userName = _prefs.getString('user_name') ?? 'Jangchi';
     _userAge = _prefs.getInt('user_age') ?? 20;
     _targetLanguage = _prefs.getString('target_language') ?? 'English';
+    notifyListeners();
+  }
+
+  Future<void> setSpeechRate(double rate) async {
+    _speechRate = rate;
+    await _prefs.setDouble('tts_speech_rate', rate);
+    AudioHelper().setSpeechRate(rate);
     notifyListeners();
   }
 

@@ -659,4 +659,19 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get whatsNew => '새로운 기능';
+
+  @override
+  String get openInBrowser => '브라우저에서 다운로드';
+
+  @override
+  String get audioSpeed => '발음 속도';
+
+  @override
+  String get speedSlow => '느리게 (0.75x)';
+
+  @override
+  String get speedNormal => '보통 (1.0x)';
+
+  @override
+  String get speedFast => '빠르게 (1.25x)';
 }

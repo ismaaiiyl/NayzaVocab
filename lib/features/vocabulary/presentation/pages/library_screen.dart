@@ -30,24 +30,41 @@ class _LibraryScreenState extends State<LibraryScreen> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.onlineLibraryTitle.toUpperCase()),
-        centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(LucideIcons.chevronLeft),
-          onPressed: () {
-            if (context.canPop()) {
-              context.pop();
-            } else {
-              context.go('/');
-            }
-          },
+    return PopScope(
+      canPop: context.canPop(),
+      onPopInvokedWithResult: (didPop, _) {
+        if (!didPop) {
+          if (context.canPop()) {
+            context.pop();
+          } else {
+            context.go('/');
+          }
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text(
+              l10n.onlineLibraryTitle.toUpperCase(),
+              style: const TextStyle(letterSpacing: 1.2),
+            ),
+          ),
+          centerTitle: true,
+          leading: IconButton(
+            icon: const Icon(LucideIcons.chevronLeft),
+            onPressed: () {
+              if (context.canPop()) {
+                context.pop();
+              } else {
+                context.go('/');
+              }
+            },
+          ),
         ),
-      ),
-      body: Column(
-        children: [
-          const LibraryFilterBar(),
+        body: Column(
+          children: [
+            const LibraryFilterBar(),
           Expanded(
             child: Consumer<LibraryProvider>(
               builder: (context, provider, child) {
@@ -94,6 +111,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
           ),
         ],
       ),
-    );
-  }
+    ),
+  );
+}
 }

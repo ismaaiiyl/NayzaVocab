@@ -73,36 +73,53 @@ class BookDetailsHeader extends StatelessWidget {
               children: [
                 Text(
                   (book['title'] as String?) ?? '',
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
                     color: AppTheme.textMain,
-                    fontSize: 22,
+                    fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 const SizedBox(height: 8),
-                Row(
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 4,
                   children: [
                     _buildInfoBadge(
-                      book['target_lang'].toString().toUpperCase(),
+                      (book['target_lang'] as String? ?? '').toUpperCase(),
                       AppTheme.electricGold,
                     ),
-                    const SizedBox(width: 8),
-                    _buildInfoBadge('$unitsCount UNITS', AppTheme.textDim),
+                    _buildInfoBadge(
+                      l10n.setsCountLabel(unitsCount).toUpperCase(),
+                      AppTheme.textDim,
+                    ),
                   ],
                 ),
                 const SizedBox(height: 12),
                 Text(
                   (book['description'] as String?) ?? '',
-                  style: const TextStyle(color: AppTheme.textDim, fontSize: 14, height: 1.4),
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(color: AppTheme.textDim, fontSize: 13, height: 1.4),
                 ),
                 const SizedBox(height: 16),
                 if (unitsCount > 0)
                   SizedBox(
                     width: double.infinity,
+                    height: 48,
                     child: ElevatedButton.icon(
                       onPressed: onDownloadAll,
                       icon: const Icon(LucideIcons.downloadCloud, size: 18),
-                      label: Text(l10n.downloadAll),
+                      label: Flexible(
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Text(
+                            l10n.downloadAll,
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppTheme.electricGold.withValues(alpha: 0.1),
                         foregroundColor: AppTheme.electricGold,

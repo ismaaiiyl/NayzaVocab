@@ -23,7 +23,8 @@ class AudioHelper {
   }
 
   bool _isMuted = false;
-  
+  double _speechRate = 0.5;
+
   set isMuted(bool value) {
     if (_isMuted == value) return;
     _isMuted = value;
@@ -38,6 +39,13 @@ class AudioHelper {
   }
 
   bool get isMuted => _isMuted;
+  double get speechRate => _speechRate;
+
+  void setSpeechRate(double rate) {
+    _speechRate = rate.clamp(0.2, 1.0);
+    _tts.setSpeechRate(_speechRate);
+    debugPrint('🔊 [AudioHelper] Speech rate set to: $_speechRate');
+  }
 
   Future<void> _initHelper() async {
     if (_isTtsInitialized) return;
@@ -87,21 +95,15 @@ class AudioHelper {
     _debounceTimer = Timer(const Duration(milliseconds: 300), () async {
       try {
         if (!_isTtsInitialized) await _initHelper();
-        
-        // Advanced Locale Detection: If langCode is wrong, try to guess from text
         String locale = _normalizeLocale(langCode, text);
-        
         final dynamic avail = await _tts.isLanguageAvailable(locale);
-        final bool isAvailable = avail is bool ? avail : false;
-        if (!isAvailable) {
-          locale = 'en-US';
-        }
+        if (avail is! bool || !avail) locale = 'en-US';
 
-        await _tts.stop(); 
+        await _tts.stop();
         await _tts.setLanguage(locale);
-        await _tts.setVolume(1.0); // Boost volume
+        await _tts.setVolume(1.0);
         await _tts.setPitch(1.0);
-        await _tts.setSpeechRate(0.5);
+        await _tts.setSpeechRate(_speechRate);
         await _tts.speak(text);
         debugPrint('🔊 [AudioHelper] Speaking: $text in $locale');
       } catch (e) {
@@ -111,19 +113,13 @@ class AudioHelper {
   }
 
   String _normalizeLocale(String? code, String text) {
-    // If code is provided, trust it but check for common mismatches
     if (code != null) {
       final c = code.toLowerCase();
       if (c.contains('uz')) return 'uz-UZ';
       if (c.contains('ru')) return 'ru-RU';
       if (c.contains('en')) return 'en-US';
     }
-
-    // Heuristic: Check characters if code is missing or generic
-    final ruRegex = RegExp(r'[а-яА-ЯёЁ]');
-    if (ruRegex.hasMatch(text)) return 'ru-RU';
-    
-    return 'en-US';
+    return RegExp(r'[а-яА-ЯёЁ]').hasMatch(text) ? 'ru-RU' : 'en-US';
   }
 
   Future<void> playSuccess() async {
@@ -151,7 +147,6 @@ class AudioHelper {
       _vibrate(duration: 80);
       return;
     }
-    
     try {
       _vibrate(duration: 40);
       await _guardedPlay('audio/sound.mp3');
@@ -165,7 +160,6 @@ class AudioHelper {
       _player = AudioPlayer();
       _isPlayerInitialized = true;
     }
-
     try {
       try { await _player.stop(); } catch (_) {}
       await _player.play(AssetSource(assetPath));
@@ -181,9 +175,7 @@ class AudioHelper {
       } else {
         await Vibration.vibrate(duration: duration);
       }
-    } catch (e) {
-      // Ignore vibration error
-    }
+    } catch (_) {}
   }
 
   void dispose() {
@@ -194,4 +186,3 @@ class AudioHelper {
     }
   }
 }
-

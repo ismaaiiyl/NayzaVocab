@@ -685,4 +685,19 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get whatsNew => 'Что нового';
+
+  @override
+  String get openInBrowser => 'Скачать в браузере';
+
+  @override
+  String get audioSpeed => 'Скорость озвучки';
+
+  @override
+  String get speedSlow => 'Медленно (0.75x)';
+
+  @override
+  String get speedNormal => 'Обычная (1.0x)';
+
+  @override
+  String get speedFast => 'Быстро (1.25x)';
 }

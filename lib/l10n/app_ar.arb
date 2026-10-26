@@ -295,5 +295,10 @@
   "updateNow": "تحديث الآن",
   "downloadingUpdate": "جارٍ تنزيل التحديث...",
   "updateCheckFailed": "فشل التحقق من وجود تحديثات",
-  "whatsNew": "ما الجديد"
+  "whatsNew": "ما الجديد",
+  "openInBrowser": "تنزيل من المتصفح",
+  "audioSpeed": "سرعة النطق",
+  "speedSlow": "بطيء (0.75x)",
+  "speedNormal": "عادي (1.0x)",
+  "speedFast": "سريع (1.25x)"
 }

@@ -1299,6 +1299,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'What\'s new'**
   String get whatsNew;
+
+  /// No description provided for @openInBrowser.
+  ///
+  /// In en, this message translates to:
+  /// **'Download in browser'**
+  String get openInBrowser;
+
+  /// No description provided for @audioSpeed.
+  ///
+  /// In en, this message translates to:
+  /// **'Audio Speed'**
+  String get audioSpeed;
+
+  /// No description provided for @speedSlow.
+  ///
+  /// In en, this message translates to:
+  /// **'Slow (0.75x)'**
+  String get speedSlow;
+
+  /// No description provided for @speedNormal.
+  ///
+  /// In en, this message translates to:
+  /// **'Normal (1.0x)'**
+  String get speedNormal;
+
+  /// No description provided for @speedFast.
+  ///
+  /// In en, this message translates to:
+  /// **'Fast (1.25x)'**
+  String get speedFast;
 }
 
 class _AppLocalizationsDelegate

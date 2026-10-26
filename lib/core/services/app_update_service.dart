@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:open_filex/open_filex.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:nayza_vocab/core/models/app_update_info.dart';
 
 class AppUpdateService {
@@ -22,14 +23,19 @@ class AppUpdateService {
     try {
       final packageInfo = await PackageInfo.fromPlatform();
       final currentVersion = packageInfo.version;
+      debugPrint('[OTA-UPDATE] Tekshirish boshlandi: joriy versiya=$currentVersion, API=$latestReleaseApi');
 
       final response = await _client.get(
         Uri.parse(latestReleaseApi),
-        headers: {'Accept': 'application/vnd.github.v3+json'},
+        headers: {
+          'Accept': 'application/vnd.github.v3+json',
+          'User-Agent': 'NayzaVocab-App',
+        },
       );
 
+      debugPrint('[OTA-UPDATE] GitHub API javob kodi: ${response.statusCode}');
       if (response.statusCode != 200) {
-        debugPrint('GitHub Release mavjud emas yoki xatolik: ${response.statusCode}');
+        debugPrint('[OTA-UPDATE] GitHub Release xatoligi: ${response.statusCode}');
         return null;
       }
 
@@ -50,12 +56,12 @@ class AppUpdateService {
         }
       }
 
-      // Agar .apk biriktirilmagan bo'lsa, reliz sahifasi havolasi fallback bo'ladi
       if (downloadUrl.isEmpty) {
         downloadUrl = data['html_url'] as String? ?? '';
       }
 
       final hasUpdate = AppUpdateInfo.isNewerVersion(tagName, currentVersion);
+      debugPrint('[OTA-UPDATE] Reliz: tag=$tagName, hasUpdate=$hasUpdate, apk=$apkName, url=$downloadUrl');
 
       return AppUpdateInfo(
         latestVersion: tagName,
@@ -66,8 +72,19 @@ class AppUpdateService {
         fileName: apkName,
       );
     } catch (e, stack) {
-      debugPrint('Yangilanish tekshirishda xatolik: $e\n$stack');
+      debugPrint('[OTA-UPDATE] Yangilanish tekshirishda xatolik: $e\n$stack');
       return null;
+    }
+  }
+
+  /// Brauzer orqali to'g'ridan-to'g'ri yuklab olish
+  Future<void> openInBrowser(String url) async {
+    try {
+      debugPrint('[OTA-UPDATE] Brauzerda ochilmoqda: $url');
+      final uri = Uri.parse(url);
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    } catch (e, stack) {
+      debugPrint('[OTA-UPDATE] Brauzerda ochishda xatolik: $e\n$stack');
     }
   }
 
@@ -75,51 +92,80 @@ class AppUpdateService {
   Future<bool> downloadAndInstallApk({
     required String downloadUrl,
     required String fileName,
-    required void Function(double progress) onProgress,
+    required void Function(double progress, String progressText) onProgress,
   }) async {
     try {
-      final tempDir = await getTemporaryDirectory();
-      final apkFile = File('${tempDir.path}/$fileName');
+      Directory? targetDir;
+      if (!kIsWeb && Platform.isAndroid) {
+        final extDirs = await getExternalCacheDirectories();
+        if (extDirs != null && extDirs.isNotEmpty) targetDir = extDirs.first;
+      }
+      targetDir ??= await getTemporaryDirectory();
+      final apkFile = File('${targetDir.path}/$fileName');
+      debugPrint('[OTA-UPDATE] Yuklab olish boshlanmoqda: $downloadUrl');
+      debugPrint('[OTA-UPDATE] Saqlash joyi: ${apkFile.path}');
 
       if (await apkFile.exists()) {
-        await apkFile.delete();
+        try { await apkFile.delete(); } catch (_) {}
       }
 
       final request = http.Request('GET', Uri.parse(downloadUrl));
+      request.headers['User-Agent'] = 'NayzaVocab-App';
       final response = await _client.send(request);
 
+      debugPrint('[OTA-UPDATE] Server javob kodi: ${response.statusCode}, hajmi: ${response.contentLength} bayt');
       if (response.statusCode != 200) {
-        debugPrint('APK yuklashda server xatoligi: ${response.statusCode}');
+        debugPrint('[OTA-UPDATE] Server xatoligi: ${response.statusCode}');
         return false;
       }
 
       final totalBytes = response.contentLength ?? 0;
       int downloadedBytes = 0;
+      int lastReportedPercent = -1;
       final fileSink = apkFile.openWrite();
 
       await for (final chunk in response.stream) {
         fileSink.add(chunk);
         downloadedBytes += chunk.length;
         if (totalBytes > 0) {
-          onProgress(downloadedBytes / totalBytes);
+          final percent = ((downloadedBytes / totalBytes) * 100).toInt();
+          if (percent > lastReportedPercent) {
+            lastReportedPercent = percent;
+            final dMb = (downloadedBytes / (1024 * 1024)).toStringAsFixed(1);
+            final tMb = (totalBytes / (1024 * 1024)).toStringAsFixed(1);
+            onProgress(downloadedBytes / totalBytes, '$dMb MB / $tMb MB ($percent%)');
+            if (percent % 20 == 0 || percent == 100) {
+              debugPrint('[OTA-UPDATE] Yuklanish: $percent% ($dMb MB / $tMb MB)');
+            }
+          }
+        } else {
+          final dMb = (downloadedBytes / (1024 * 1024)).toStringAsFixed(1);
+          onProgress(0.0, '$dMb MB');
         }
       }
 
       await fileSink.flush();
       await fileSink.close();
 
-      onProgress(1.0);
+      final actualSize = await apkFile.length();
+      debugPrint('[OTA-UPDATE] Fayl diskka to\'liq saqlandi: $actualSize bayt (${(actualSize / (1024 * 1024)).toStringAsFixed(1)} MB)');
+      onProgress(1.0, '100%');
 
-      // Faqat Android qurilmada APK o'rnatuvchini ochamiz
       if (!kIsWeb && Platform.isAndroid) {
-        final result = await OpenFilex.open(apkFile.path);
-        debugPrint('APK ochish natijasi: ${result.message}');
-        return result.type == ResultType.done;
+        debugPrint('[OTA-UPDATE] OpenFilex orqali o\'rnatish chaqirilmoqda...');
+        final result = await OpenFilex.open(
+          apkFile.path,
+          type: 'application/vnd.android.package-archive',
+        );
+        debugPrint('[OTA-UPDATE] OpenFilex natijasi: ${result.message} (${result.type})');
+        if (result.type != ResultType.done) {
+          debugPrint('[OTA-UPDATE] Tizim o\'rnatuvchisi ochilmadi, brauzerga o\'tkaziladi');
+          await openInBrowser(downloadUrl);
+        }
       }
-
       return true;
     } catch (e, stack) {
-      debugPrint('APK yuklab o\'rnatishda xatolik: $e\n$stack');
+      debugPrint('[OTA-UPDATE] Xatolik yuz berdi: $e\n$stack');
       return false;
     }
   }

@@ -2,7 +2,7 @@ name: nayza_vocab
 description: "NayzaVocab Premium — Advanced Spaced Repetition vocabulary trainer."
 publish_to: 'none'
 
-version: 1.0.2+3
+version: 1.0.3+4
 
 environment:
   sdk: ^3.9.0

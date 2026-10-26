@@ -55,6 +55,8 @@ class LibraryUnitItem extends StatelessWidget {
             ),
             title: Text(
               (unit['title'] as String?) ?? '',
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
               style: TextStyle(
                 color: isInstalled ? AppTheme.textDim : AppTheme.textMain,
                 fontWeight: isInstalled ? FontWeight.normal : FontWeight.w600,
@@ -62,6 +64,8 @@ class LibraryUnitItem extends StatelessWidget {
             ),
             subtitle: Text(
               l10n.wordCountLabel_short((unit['wordCount'] as Object?) ?? 0),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
               style: TextStyle(
                 color: isInstalled
                     ? AppTheme.textDim.withValues(alpha: 0.5)
@@ -71,21 +75,30 @@ class LibraryUnitItem extends StatelessWidget {
             ),
             trailing: isDownloading
                 ? const SizedBox(
-                    width: 20,
-                    height: 20,
+                    width: 24,
+                    height: 24,
                     child: CircularProgressIndicator(strokeWidth: 2, color: AppTheme.electricGold),
                   )
                 : isInstalled
-                    ? Text(
-                        l10n.installed,
-                        style: const TextStyle(
-                          color: AppTheme.success,
-                          fontSize: 10,
-                          fontWeight: FontWeight.bold,
+                    ? Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: AppTheme.success.withValues(alpha: 0.1),
+                          borderRadius: BorderRadius.circular(6),
+                          border: Border.all(color: AppTheme.success.withValues(alpha: 0.3)),
+                        ),
+                        child: Text(
+                          l10n.installed,
+                          style: const TextStyle(
+                            color: AppTheme.success,
+                            fontSize: 10,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       )
                     : IconButton(
                         icon: const Icon(LucideIcons.download, color: AppTheme.electricGold, size: 20),
+                        constraints: const BoxConstraints(minWidth: 44, minHeight: 44),
                         onPressed: onDownload,
                       ),
           ),

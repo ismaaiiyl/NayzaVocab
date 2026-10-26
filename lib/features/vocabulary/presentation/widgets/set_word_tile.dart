@@ -72,6 +72,8 @@ class SetWordTile extends StatelessWidget {
                     children: [
                       Text(
                         word.original,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
                           color: AppTheme.textMain,
                           fontWeight: FontWeight.bold,
@@ -81,6 +83,8 @@ class SetWordTile extends StatelessWidget {
                       const SizedBox(height: 2),
                       Text(
                         word.translation,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
                           color: AppTheme.textDim,
                           fontSize: 13,

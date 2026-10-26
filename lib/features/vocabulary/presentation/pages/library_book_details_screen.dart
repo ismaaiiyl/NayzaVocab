@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import 'package:nayza_vocab/core/theme/app_theme.dart';
 import 'package:nayza_vocab/features/vocabulary/data/models/folder_model.dart';
 import 'package:nayza_vocab/features/vocabulary/presentation/provider/library_provider.dart';
@@ -36,29 +38,17 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
   }
 
   Future<String> _getOrCreateFolder() async {
-    final vocabProvider = context.read<VocabSetProvider>();
-    final libraryProvider = context.read<LibraryProvider>();
-    final bookTitle =
-        (libraryProvider.books.firstWhere((b) => b['id'] == widget.bookId)['title'] as String?) ??
-            '';
-
-    final existingFolder = vocabProvider.folders.cast<FolderModel?>().firstWhere(
-          (f) => f?.title == bookTitle,
-          orElse: () => null,
-        );
-
-    if (existingFolder != null) {
-      return existingFolder.id;
-    }
-
-    await vocabProvider.createFolder(bookTitle);
-    final newFolder = vocabProvider.folders.firstWhere((f) => f.title == bookTitle);
-    return newFolder.id;
+    final vocab = context.read<VocabSetProvider>();
+    final lib = context.read<LibraryProvider>();
+    final bookTitle = (lib.books.firstWhere((b) => b['id'] == widget.bookId)['title'] as String?) ?? '';
+    final existing = vocab.folders.cast<FolderModel?>().firstWhere((f) => f?.title == bookTitle, orElse: () => null);
+    if (existing != null) return existing.id;
+    await vocab.createFolder(bookTitle);
+    return vocab.folders.firstWhere((f) => f.title == bookTitle).id;
   }
 
   bool _isUnitAlreadyInstalled(String title) {
-    final vocabProvider = context.read<VocabSetProvider>();
-    return vocabProvider.vocabSets.any((s) => s.title == title);
+    return context.read<VocabSetProvider>().vocabSets.any((s) => s.title == title);
   }
 
   Future<void> _downloadUnit(
@@ -68,37 +58,26 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
   }) async {
     final l10n = AppLocalizations.of(context)!;
     final scaffoldMessenger = ScaffoldMessenger.of(context);
-
     final unitTitle = unit['title'].toString();
+
     if (_isUnitAlreadyInstalled(unitTitle)) {
-      if (!silent) {
-        scaffoldMessenger.showSnackBar(SnackBar(content: Text('$unitTitle ${l10n.installed}')));
-      }
+      if (!silent) scaffoldMessenger.showSnackBar(SnackBar(content: Text('$unitTitle ${l10n.installed}')));
       return;
     }
 
-    if (!silent) {
-      scaffoldMessenger.showSnackBar(SnackBar(content: Text('$unitTitle ${l10n.downloading}')));
-    }
-
-    final libraryProvider = context.read<LibraryProvider>();
-    final vocabProvider = context.read<VocabSetProvider>();
-
+    if (!silent) scaffoldMessenger.showSnackBar(SnackBar(content: Text('$unitTitle ${l10n.downloading}')));
     final folderId = targetFolderId ?? await _getOrCreateFolder();
-    final set = await libraryProvider.downloadUnitAsSet(unit);
+    if (!mounted) return;
+    final set = await context.read<LibraryProvider>().downloadUnitAsSet(unit);
 
-    if (set != null) {
-      final setInFolder = set.copyWith(folderId: folderId);
-      await vocabProvider.addSet(setInFolder);
-
+    if (set != null && mounted) {
+      await context.read<VocabSetProvider>().addSet(set.copyWith(folderId: folderId));
       if (!silent) {
         scaffoldMessenger.clearSnackBars();
-        scaffoldMessenger.showSnackBar(
-          SnackBar(
-            content: Text(l10n.importSuccess(1)),
-            backgroundColor: AppTheme.success.withValues(alpha: 0.9),
-          ),
-        );
+        scaffoldMessenger.showSnackBar(SnackBar(
+          content: Text(l10n.importSuccess(1)),
+          backgroundColor: AppTheme.success.withValues(alpha: 0.9),
+        ));
       }
     } else if (!silent) {
       scaffoldMessenger.showSnackBar(SnackBar(content: Text(l10n.noInternetMessage)));
@@ -107,42 +86,27 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
 
   Future<void> _downloadAll() async {
     final l10n = AppLocalizations.of(context)!;
-    final scaffoldMessenger = ScaffoldMessenger.of(context);
+    final messenger = ScaffoldMessenger.of(context);
+    final uninstalled = _units.where((u) => !_isUnitAlreadyInstalled((u['title'] as String?) ?? '')).toList();
 
-    final uninstalledUnits = _units
-        .where((u) => !_isUnitAlreadyInstalled((u['title'] as String?) ?? ''))
-        .toList();
-
-    if (uninstalledUnits.isEmpty) {
-      scaffoldMessenger.showSnackBar(SnackBar(content: Text(l10n.installed)));
+    if (uninstalled.isEmpty) {
+      messenger.showSnackBar(SnackBar(content: Text(l10n.installed)));
       return;
     }
 
-    scaffoldMessenger.showSnackBar(
-      SnackBar(content: Text(l10n.downloading), duration: const Duration(seconds: 3)),
-    );
-
+    messenger.showSnackBar(SnackBar(content: Text(l10n.downloading), duration: const Duration(seconds: 3)));
     final folderId = await _getOrCreateFolder();
 
     try {
-      await Future.wait(
-        uninstalledUnits.map(
-          (unit) => _downloadUnit(unit, targetFolderId: folderId, silent: true),
-        ),
-      );
-
-      scaffoldMessenger.clearSnackBars();
-      scaffoldMessenger.showSnackBar(
-        SnackBar(
-          content: Text(l10n.importSuccess(uninstalledUnits.length)),
-          backgroundColor: AppTheme.success.withValues(alpha: 0.9),
-        ),
-      );
+      await Future.wait(uninstalled.map((u) => _downloadUnit(u, targetFolderId: folderId, silent: true)));
+      messenger.clearSnackBars();
+      messenger.showSnackBar(SnackBar(
+        content: Text(l10n.importSuccess(uninstalled.length)),
+        backgroundColor: AppTheme.success.withValues(alpha: 0.9),
+      ));
     } catch (e, stack) {
       debugPrint('Download all error: $e\n$stack');
-      scaffoldMessenger.showSnackBar(
-        SnackBar(content: Text(l10n.noInternetMessage)),
-      );
+      messenger.showSnackBar(SnackBar(content: Text(l10n.noInternetMessage)));
     }
   }
 
@@ -151,38 +115,64 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
     final provider = context.watch<LibraryProvider>();
     final book = provider.books.firstWhere((b) => b['id'] == widget.bookId);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(book['title'].toString().toUpperCase()),
-      ),
-      body: _isLoading
-          ? const Center(child: CircularProgressIndicator(color: AppTheme.electricGold))
-          : CustomScrollView(
-              slivers: [
-                SliverToBoxAdapter(
-                  child: BookDetailsHeader(
-                    book: book,
-                    unitsCount: _units.length,
-                    onDownloadAll: _downloadAll,
-                  ),
-                ),
-                SliverPadding(
-                  padding: const EdgeInsets.all(16),
-                  sliver: SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                      (context, index) {
-                        final unit = _units[index];
-                        return LibraryUnitItem(
-                          unit: unit,
-                          onDownload: () => _downloadUnit(unit),
-                        );
-                      },
-                      childCount: _units.length,
+    return PopScope(
+      canPop: context.canPop(),
+      onPopInvokedWithResult: (didPop, _) {
+        if (!didPop) {
+          if (context.canPop()) {
+            context.pop();
+          } else {
+            context.goNamed('online-library');
+          }
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            book['title'].toString().toUpperCase(),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+          leading: IconButton(
+            icon: const Icon(LucideIcons.chevronLeft),
+            onPressed: () {
+              if (context.canPop()) {
+                context.pop();
+              } else {
+                context.goNamed('online-library');
+              }
+            },
+          ),
+        ),
+        body: _isLoading
+            ? const Center(child: CircularProgressIndicator(color: AppTheme.electricGold))
+            : CustomScrollView(
+                slivers: [
+                  SliverToBoxAdapter(
+                    child: BookDetailsHeader(
+                      book: book,
+                      unitsCount: _units.length,
+                      onDownloadAll: _downloadAll,
                     ),
                   ),
-                ),
-              ],
-            ),
+                  SliverPadding(
+                    padding: const EdgeInsets.all(16),
+                    sliver: SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        (context, index) {
+                          final unit = _units[index];
+                          return LibraryUnitItem(
+                            unit: unit,
+                            onDownload: () => _downloadUnit(unit),
+                          );
+                        },
+                        childCount: _units.length,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+      ),
     );
   }
 }

@@ -295,5 +295,10 @@
   "updateNow": "지금 업데이트",
   "downloadingUpdate": "업데이트 다운로드 중...",
   "updateCheckFailed": "업데이트 확인 실패",
-  "whatsNew": "새로운 기능"
+  "whatsNew": "새로운 기능",
+  "openInBrowser": "브라우저에서 다운로드",
+  "audioSpeed": "발음 속도",
+  "speedSlow": "느리게 (0.75x)",
+  "speedNormal": "보통 (1.0x)",
+  "speedFast": "빠르게 (1.25x)"
 }
