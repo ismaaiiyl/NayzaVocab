@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:open_filex/open_filex.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -152,13 +153,24 @@ class AppUpdateService {
       onProgress(1.0, '100%');
 
       if (!kIsWeb && Platform.isAndroid) {
-        debugPrint('[OTA-UPDATE] OpenFilex orqali o\'rnatish chaqirilmoqda...');
-        final result = await OpenFilex.open(
-          apkFile.path,
-          type: 'application/vnd.android.package-archive',
-        );
-        debugPrint('[OTA-UPDATE] OpenFilex natijasi: ${result.message} (${result.type})');
-        if (result.type != ResultType.done) {
+        bool installed = false;
+        try {
+          debugPrint('[OTA-UPDATE] Native installer chaqirilmoqda...');
+          const channel = MethodChannel('uz.nayza.vocab/installer');
+          final success = await channel.invokeMethod<bool>('installApk', {'filePath': apkFile.path});
+          installed = success ?? false;
+          debugPrint('[OTA-UPDATE] Native installer natijasi: $installed');
+        } catch (e) {
+          debugPrint('[OTA-UPDATE] Native installer xatosi: $e, OpenFilex sinab ko\'riladi');
+          try {
+            final result = await OpenFilex.open(apkFile.path, type: 'application/vnd.android.package-archive');
+            installed = result.type == ResultType.done;
+            debugPrint('[OTA-UPDATE] OpenFilex natijasi: ${result.message} (${result.type})');
+          } catch (e2) {
+            debugPrint('[OTA-UPDATE] OpenFilex xatosi: $e2');
+          }
+        }
+        if (!installed) {
           debugPrint('[OTA-UPDATE] Tizim o\'rnatuvchisi ochilmadi, brauzerga o\'tkaziladi');
           await openInBrowser(downloadUrl);
         }
