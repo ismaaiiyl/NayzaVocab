@@ -49,7 +49,14 @@
   "reminderDefault": "Har kuni qiyin so'zlarni eslatish",
   "reminderSetSuccess": "Kunlik eslatma soat {time} ga belgilandi",
   "appInfo": "ILOVA HAQIDA",
-  "appVersion": "Nayza Vocab v1.0.1\nCreated for Nayzadorlar 🔱",
+  "appVersion": "Versiya {version}",
+  "@appVersion": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
   "language": "Til",
   "uzbek": "O'zbek",
   "russian": "Ruscha",
@@ -154,7 +161,7 @@
   "englishLang": "Ingliz tili",
   "arabicLang": "Arab tili",
   "russianLang": "Rus tili",
-  "uzbekLang": "O'zbek (Ovozli o'qish yo'q)",
+  "uzbekLang": "O'zbekcha",
   "germanLang": "Nemis",
   "koreanLang": "Koreys",
   "wordPlaceholder": "So'z",
@@ -282,14 +289,26 @@
   "invalidAgeError": "To'g'ri yosh kiriting (1-120)",
   "folders": "Papkalar",
   "masteredPercentage": "{percentage}% o'zlashtirildi",
+  "@masteredPercentage": {
+    "placeholders": {
+      "percentage": {
+        "type": "int"
+      }
+    }
+  },
   "showLess": "Qisqartirish",
   "showAllWithCount": "Barchasi ({count})",
+  "@showAllWithCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "rankNovice": "🛡️ Boshlang'ich Jangchi",
   "rankAdvanced": "⚔️ Ilg'or Jangchi",
   "rankCommander": "🔱 Nayza Sardori",
   "rankWordMaster": "👑 So'z Ustasi",
-  "uzbekLang": "O'zbekcha",
-  "checkForUpdates": "Yangilanishlarni tekshirish",
   "latestVersionInstalled": "Sizda eng so'nggi versiya o'rnatilgan",
   "updateAvailable": "Yangi versiya mavjud",
   "updateNow": "Hozir yangilash",

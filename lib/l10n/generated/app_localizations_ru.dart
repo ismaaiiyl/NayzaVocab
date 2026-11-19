@@ -107,7 +107,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get appInfo => 'О ПРИЛОЖЕНИИ';
 
   @override
-  String get appVersion => 'Nayza Vocab v1.0.0\nCreated for Nayzadorlar 🔱';
+  String appVersion(String version) {
+    return 'Версия $version';
+  }
 
   @override
   String get language => 'Язык';

@@ -49,6 +49,9 @@ app.*.map.json
 # Android signing files (SENSITIVE - DO NOT REMOVE)
 android/key.properties
 android/app/key.jks
+android/app/upload-keystore.jks
+*.jks
+*.keystore
 
 # Environment variables (SENSITIVE - DO NOT COMMIT)
 .env

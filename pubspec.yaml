@@ -2,7 +2,7 @@ name: nayza_vocab
 description: "NayzaVocab Premium — Advanced Spaced Repetition vocabulary trainer."
 publish_to: 'none'
 
-version: 1.0.4+5
+version: 1.0.4+7
 
 environment:
   sdk: ^3.9.0
@@ -41,9 +41,11 @@ dependencies:
   flutter_dotenv: ^5.2.1
   http: ^1.2.2
   package_info_plus: ^8.1.2
-  open_filex: ^4.5.0
   flutter_localizations:
     sdk: flutter
+  firebase_core: ^5.1.0
+  firebase_crashlytics: ^6.0.1
+  firebase_analytics: ^13.0.1
 
 dev_dependencies:
   flutter_test:
@@ -57,7 +59,7 @@ dev_dependencies:
 
 flutter_launcher_icons:
   android: "launcher_icon"
-  ios: true
+  ios: false
   image_path: "assets/icon/icon.png"
   adaptive_icon_background: "#0A192F"
   adaptive_icon_foreground: "assets/icon/icon.png"

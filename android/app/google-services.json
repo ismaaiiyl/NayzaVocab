@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "129334859075",
+    "project_id": "nayzavocab",
+    "storage_bucket": "nayzavocab.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:129334859075:android:76eb2270048d2121b60bf6",
+        "android_client_info": {
+          "package_name": "uz.nayza.vocab"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZvd-mkmgfH2bHYkrYOTz-jY5f5xDbf3I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

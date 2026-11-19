@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nayza_vocab/core/widgets/nayza_bottom_bar.dart';
 import 'package:nayza_vocab/core/services/notification_service.dart';
-import 'package:nayza_vocab/core/services/app_update_service.dart';
-import 'package:nayza_vocab/features/settings/presentation/dialogs/app_update_dialog.dart';
 
 class MainScreen extends StatefulWidget {
   final StatefulNavigationShell navigationShell;
@@ -21,24 +19,11 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     super.initState();
-    // Senior: Request permissions as soon as UI is ready
-    NotificationService().requestPermissions();
-    
-    // Senior: Check if we opened the app from a notification
+    // Senior: Check notifications and request permissions after frame is rendered
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      NotificationService().requestPermissions();
       _checkNotificationPayload();
-      _checkForAppUpdate();
     });
-  }
-
-  Future<void> _checkForAppUpdate() async {
-    try {
-      final updateInfo = await AppUpdateService().checkForUpdate();
-      if (!mounted || updateInfo == null || !updateInfo.hasUpdate) return;
-      AppUpdateDialog.show(context, updateInfo);
-    } catch (e, stack) {
-      debugPrint('Avtomatik yangilanish tekshiruvida xatolik: $e\n$stack');
-    }
   }
 
   void _checkNotificationPayload() {

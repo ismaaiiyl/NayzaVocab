@@ -49,7 +49,14 @@
   "reminderDefault": "Remind difficult words daily",
   "reminderSetSuccess": "Daily reminder set for {time}",
   "appInfo": "APP INFO",
-  "appVersion": "Nayza Vocab v1.0.1\nCreated for Nayzadorlar 🔱",
+  "appVersion": "Version {version}",
+  "@appVersion": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
   "language": "Language",
   "uzbek": "Uzbek",
   "russian": "Russian",

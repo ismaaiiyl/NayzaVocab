@@ -40,7 +40,7 @@ class CreateSetActionBar extends StatelessWidget {
             child: IconButton(
               icon: const Icon(LucideIcons.clipboardPaste, color: AppTheme.electricGold),
               onPressed: onBulkPaste,
-              tooltip: 'Paste from clipboard',
+              tooltip: l10n.smartPasteTitle,
               padding: const EdgeInsets.all(14),
             ),
           ),

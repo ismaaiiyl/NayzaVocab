@@ -49,7 +49,14 @@
   "reminderDefault": "تذكير بالكلمات الصعبة يومياً",
   "reminderSetSuccess": "تم تعيين التذكير اليومي في {time}",
   "appInfo": "معلومات التطبيق",
-  "appVersion": "Nayza Vocab v1.0.1\nCreated for Nayzadorlar 🔱",
+  "appVersion": "الإصدار {version}",
+  "@appVersion": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
   "language": "اللغة",
   "uzbek": "الأوزبكية",
   "russian": "الروسية",
@@ -154,7 +161,7 @@
   "englishLang": "الإنجليزية",
   "arabicLang": "العربية",
   "russianLang": "الروسية",
-  "uzbekLang": "الأوزبكية (تحويل النص إلى كلام معطل)",
+  "uzbekLang": "الأوزبكية",
   "germanLang": "الألمانية",
   "koreanLang": "الكورية",
   "wordPlaceholder": "كلمة",
@@ -226,7 +233,7 @@
   "communityAndUpdates": "المجتمع والتحديثات",
   "telegramChannel": "قناة تيليجرام",
   "telegramSubtitle": "انضم للحصول على نصائح وتحديثات وموارد",
-  "checkForUpdates": "التحقق من التحديثات",
+  "checkForUpdates": "التحقق من وجود تحديثات",
   "checkForUpdatesSubtitle": "احصل على أحدث إصدار من Nayza Vocab",
   "onboardingPage4Title": "كيف يعمل؟",
   "onboardingPage4Subtitle": "أتقن الكلمات من خلال التكرار المنتظم. الكلمات الصعبة تعود بشكل متكرر حتى تحفظها عن ظهر قلب.",
@@ -282,14 +289,26 @@
   "invalidAgeError": "يرجى إدخال عمر صحيح (1-120)",
   "folders": "مجلدات",
   "masteredPercentage": "{percentage}% متقن",
+  "@masteredPercentage": {
+    "placeholders": {
+      "percentage": {
+        "type": "int"
+      }
+    }
+  },
   "showLess": "عرض أقل",
   "showAllWithCount": "الكل ({count})",
+  "@showAllWithCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "rankNovice": "🛡️ محارب مبتدئ",
   "rankAdvanced": "⚔️ مقاتل متقدم",
   "rankCommander": "🔱 قائد نايزا",
   "rankWordMaster": "👑 سيد الكلمات",
-  "uzbekLang": "الأوزبكية",
-  "checkForUpdates": "التحقق من وجود تحديثات",
   "latestVersionInstalled": "لديك أحدث إصدار مثبت",
   "updateAvailable": "يتوفر تحديث جديد",
   "updateNow": "تحديث الآن",

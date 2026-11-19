@@ -49,7 +49,14 @@
   "reminderDefault": "Täglich an schwierige Wörter erinnern",
   "reminderSetSuccess": "Tägliche Erinnerung for {time} eingestellt",
   "appInfo": "APP INFO",
-  "appVersion": "Nayza Vocab v1.0.0\nErstellt für Nayzadorlar 🔱",
+  "appVersion": "Version {version}",
+  "@appVersion": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
   "language": "Sprache",
   "uzbek": "Usbekisch",
   "russian": "Russisch",
@@ -154,7 +161,7 @@
   "englishLang": "Englisch",
   "arabicLang": "Arabisch",
   "russianLang": "Russisch",
-  "uzbekLang": "Usbekisch (TTS aus)",
+  "uzbekLang": "Usbekisch",
   "germanLang": "Deutsch",
   "koreanLang": "Koreanisch",
   "wordPlaceholder": "Wort",
@@ -226,7 +233,7 @@
   "communityAndUpdates": "COMMUNITY & UPDATES",
   "telegramChannel": "Telegram Kanal",
   "telegramSubtitle": "Tritt bei für Tipps und Updates",
-  "checkForUpdates": "Auf Updates prüfen",
+  "checkForUpdates": "Nach Updates suchen",
   "checkForUpdatesSubtitle": "Hol dir die neueste Version von Nayza Vocab",
   "onboardingPage4Title": "Wie funktioniert es?",
   "onboardingPage4Subtitle": "Meistere Wörter durch systematische Wiederholung. Schwierige Wörter kommen öfter vor, bis du sie auswendig kennst.",
@@ -282,14 +289,26 @@
   "invalidAgeError": "Bitte gültiges Alter eingeben (1-120)",
   "folders": "Ordner",
   "masteredPercentage": "{percentage}% gemeistert",
+  "@masteredPercentage": {
+    "placeholders": {
+      "percentage": {
+        "type": "int"
+      }
+    }
+  },
   "showLess": "Weniger anzeigen",
   "showAllWithCount": "Alle ({count})",
+  "@showAllWithCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "rankNovice": "🛡️ Anfängerkrieger",
   "rankAdvanced": "⚔️ Fortgeschrittener Kämpfer",
   "rankCommander": "🔱 Nayza Kommandant",
   "rankWordMaster": "👑 Meister der Wörter",
-  "uzbekLang": "Usbekisch",
-  "checkForUpdates": "Nach Updates suchen",
   "latestVersionInstalled": "Die neueste Version ist installiert",
   "updateAvailable": "Update verfügbar",
   "updateNow": "Jetzt aktualisieren",

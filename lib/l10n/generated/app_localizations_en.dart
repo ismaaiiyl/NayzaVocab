@@ -104,7 +104,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get appInfo => 'APP INFO';
 
   @override
-  String get appVersion => 'Nayza Vocab v1.0.1\nCreated for Nayzadorlar 🔱';
+  String appVersion(String version) {
+    return 'Version $version';
+  }
 
   @override
   String get language => 'Language';

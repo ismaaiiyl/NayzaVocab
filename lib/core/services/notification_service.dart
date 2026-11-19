@@ -14,6 +14,7 @@ class NotificationService {
 
   static String? lastPayload;
   bool _initialized = false;
+  bool _isRequestingPermission = false;
 
   Future<void> init() async {
     if (_initialized || kIsWeb) return;
@@ -48,12 +49,29 @@ class NotificationService {
   }
 
   Future<void> requestPermissions() async {
-    if (kIsWeb) return;
-    final android = _notificationsPlugin.resolvePlatformSpecificImplementation<
-        AndroidFlutterLocalNotificationsPlugin>();
-    if (android != null) {
-      await android.requestNotificationsPermission();
-      await android.requestExactAlarmsPermission();
+    if (kIsWeb || _isRequestingPermission) return;
+    _isRequestingPermission = true;
+
+    try {
+      final android = _notificationsPlugin.resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>();
+      if (android != null) {
+        try {
+          await android.requestNotificationsPermission();
+        } catch (e) {
+          debugPrint('🔔 [NotificationService] Notification permission error: $e');
+        }
+
+        try {
+          await android.requestExactAlarmsPermission();
+        } catch (e) {
+          debugPrint('🔔 [NotificationService] Exact alarm permission error: $e');
+        }
+      }
+    } catch (e) {
+      debugPrint('🔔 [NotificationService] requestPermissions general error: $e');
+    } finally {
+      _isRequestingPermission = false;
     }
   }
 

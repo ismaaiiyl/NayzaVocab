@@ -24,13 +24,14 @@ def sync_arb(source_file, target_file):
     with open(target_file, 'w', encoding='utf-8') as f:
         json.dump(new_data, f, ensure_ascii=False, indent=2)
 
-source = 'c:/Users/tolib/StudioProjects/NayzaVocab/lib/l10n/app_en.arb'
+script_dir = os.path.dirname(os.path.abspath(__file__))
+source = os.path.join(script_dir, 'app_en.arb')
 targets = [
-    'c:/Users/tolib/StudioProjects/NayzaVocab/lib/l10n/app_uz.arb',
-    'c:/Users/tolib/StudioProjects/NayzaVocab/lib/l10n/app_ru.arb',
-    'c:/Users/tolib/StudioProjects/NayzaVocab/lib/l10n/app_ar.arb',
-    'c:/Users/tolib/StudioProjects/NayzaVocab/lib/l10n/app_de.arb',
-    'c:/Users/tolib/StudioProjects/NayzaVocab/lib/l10n/app_ko.arb'
+    os.path.join(script_dir, 'app_uz.arb'),
+    os.path.join(script_dir, 'app_ru.arb'),
+    os.path.join(script_dir, 'app_ar.arb'),
+    os.path.join(script_dir, 'app_de.arb'),
+    os.path.join(script_dir, 'app_ko.arb'),
 ]
 
 for t in targets:

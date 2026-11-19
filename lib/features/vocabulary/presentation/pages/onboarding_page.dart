@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lucide_icons/lucide_icons.dart';
-import 'package:nayza_vocab/core/services/notification_service.dart';
 import 'package:nayza_vocab/core/theme/app_theme.dart';
 import 'package:nayza_vocab/core/widgets/nayza_widgets.dart';
 import 'package:nayza_vocab/features/settings/presentation/provider/settings_provider.dart';
@@ -28,7 +27,6 @@ class _OnboardingPageState extends State<OnboardingPage> {
 
   void _finishOnboarding() {
     context.read<SettingsProvider>().completeOnboarding();
-    NotificationService().requestPermissions();
     context.goNamed('home');
   }
 
