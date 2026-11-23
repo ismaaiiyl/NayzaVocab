@@ -1,99 +1,93 @@
-# Nayza Vocab 🔱
+<div align="center">
 
-[![Flutter](https://img.shields.io/badge/Flutter-v3.22+-02569B?style=for-the-badge&logo=flutter&logoColor=white)](https://flutter.dev)
-[![Dart](https://img.shields.io/badge/Dart-v3.0+-0175C2?style=for-the-badge&logo=dart&logoColor=white)](https://dart.dev)
-[![Supabase](https://img.shields.io/badge/Supabase-Backend-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)](https://supabase.com)
-[![License: MIT](https://img.shields.io/badge/License-MIT-FDD835?style=for-the-badge&logo=opensourceinitiative&logoColor=black)](https://opensource.org/licenses/MIT)
+  <img src="https://nayzavocab.ismaaiiyl.me/assets/logo.png" alt="Nayza Vocab Logo" width="110" height="110" style="border-radius: 22px;" />
 
-**Nayza Vocab** — Xorijiy tillarni (Ingliz, Arab, Rus va boshqa) o'rganuvchilar uchun yaratilgan, Spaced Repetition (interval takrorlash) va Cloud kutubxonasiga ega zamonaviy lug'at platformasi. Nayzadek o'tkir xotira va tezkor so'z yodlash! 🔱🚀
+  # Nayza Vocab 🔱
+  
+  **So'zlarni Nayzadek O'tkir Yodlang!**  
+  *Xorijiy tillarni Spaced Repetition (interval takrorlash) va Cloud kutubxonasi bilan samarali o'rganish platformasi.*
+
+  <br>
+
+  [![Google Play](https://img.shields.io/badge/Google_Play-O'rnatish-00875A?style=for-the-badge&logo=googleplay&logoColor=white)](https://play.google.com/store/apps/details?id=uz.nayza.vocab)
+  [![Vebsayt](https://img.shields.io/badge/Rasmiy_Sayt-nayzavocab.ismaaiiyl.me-FFC837?style=for-the-badge&logo=vercel&logoColor=black)](https://nayzavocab.ismaaiiyl.me/)
+  [![Telegram](https://img.shields.io/badge/Telegram-Kanal-26A5E4?style=for-the-badge&logo=telegram&logoColor=white)](https://t.me/nayza_vocab)
+  [![License: MIT](https://img.shields.io/badge/Litsenziya-MIT-02569B?style=for-the-badge&logo=opensourceinitiative&logoColor=white)](https://github.com/ismaaiiyl/NayzaVocab?tab=MIT-1-ov-file)
+
+</div>
+
+---
+
+## 📱 Yuklab Olish (Download)
+
+Nayza Vocab rasman **Google Play Store** do'konida mavjud:
+
+<div align="center">
+  <a href="https://play.google.com/store/apps/details?id=uz.nayza.vocab" target="_blank" rel="noopener">
+    <img src="https://play.google.com/intl/en_us/badges/static/images/badges/uz_badge_web_generic.png" alt="Google Play'dan yuklab oling" height="75">
+  </a>
+</div>
+
+> 🌐 **Rasmiy vebsayt va qo'llanmalar:** [nayzavocab.ismaaiiyl.me](https://nayzavocab.ismaaiiyl.me/)
+
+---
+
+## 🌟 Nayza Vocab Nima?
+
+**Nayza Vocab** — xorijiy tillarni (Ingliz, Arab, Rus, Nemis, Koreys va boshqa) o'rganuvchilar uchun yaratilgan, avtonom (offline-first) ishlovchi ta'limiy ilova. 
+
+Dasturning asosiy maqsadi — yangi o'rganilgan so'zlarni inson xotirasi unutish egri chizig'iga (*Ebbinghaus Forgetting Curve*) tushib qolmasdan, eng optimal vaqtda takrorlatish orqali uzoq muddatli xotiraga mustahkamlashdir. Hech qanday yashirin obunalar, keraksiz reklamalar yoki to'lovlar mavjud emas.
 
 ---
 
 ## ✨ Asosiy Imkoniyatlar (Key Features)
 
-- ☁️ **Nayza Cloud Kutubxonasi**: Supabase orqali tayyor kitoblar, mavzulashtirilgan to'plamlar va unitlarni to'g'ridan-to'g'ri qurilmaga yuklab olish.
-- 🚀 **Native In-App Updater (OTA)**: GitHub Releases bilan to'liq integratsiya qilingan avtomatik yangilanish tizimi. Ilovadan chiqmasdan yangi versiyalarni yuklab o'rnatish.
-- 🔊 **Moslashuvchan Talaffuz (TTS & Speed Control)**: So'zlarning to'g'ri talaffuzini tinglash va talaffuz tezligini sozlash (Sekin 0.35x, O'rtacha 0.5x, Tez 0.65x).
-- 🧠 **Smart Spaced Repetition & Virtual Units**: Katta hajmdagi lug'atlarni avtomatik 15 talik qulay darslarga (Virtual Sets) ajratish va qiyin so'zlarni aqlli takrorlash.
-- 🎓 **Interaktiv Testlar (Smart Quizzes)**: Unikal variantlar, chalg'ituvchi distraktorlar va natijalar statistikasi.
-- 🌍 **Ko'p tillilik (Internationalization - i18n)**: 6 ta tilda to'liq interfeys (O'zbek, English, Русский, Deutsch, العربية, 한국어).
-- 🛠️ **Offline-First**: Barcha ma'lumotlar Hive (NoSQL) bazasida mahalliy xavfsiz saqlanadi, internet bo'lmaganda ham 100% ishlaydi.
-- 💎 **Premium Dark Theme**: Ergonomik Navy & Gold ranglar palitrasi, micro-animatsiyalar va haptik aloqa (vibratsiya).
+- 🧠 **Smart Spaced Repetition (SRS):** So'zlarni o'zlashtirish darajangizga mos ravishda avtomatik hisoblanuvchi ilmiy interval takrorlash algoritmi.
+- ☁️ **Nayza Cloud Kutubxonasi:** Tayyor saralangan darsliklar va kitoblarni (masalan: *Mabdaul Qiroat*, *Essential Words*) bir marta bosish orqali bepul yuklab olish.
+- 📴 **100% Offline-First:** Barcha shaxsiy lug'atlaringiz, mashg'ulotlar tarixi va statistika faqat mobil qurilmangizda (Hive NoSQL) xavfsiz saqlanadi. Internet aloqasi shart emas.
+- 🔊 **Audio Talaffuz & Tezlik Nazorati:** Har bir so'zning to'g'ri talaffuzini tinglash va o'rganish sur'atingizga mos tezlikni tanlash (Sekin 0.35x, O'rtacha 0.5x, Tez 0.65x).
+- 🎯 **Interaktiv Testlar:** Unikal savol-javob mashqlari, 4 xil variantli viktorinalar va natijalar tahlili.
+- 🌍 **Ko'p tillilik (6 xil til):** Ilova interfeysi O'zbek, Ingliz, Rus, Nemis, Arab va Koreys tillarida to'liq mahalliylashtirilgan.
+- 🛡️ **Mutlaqo Reklamasiz va Xavfsiz:** Dasturda Google AdMob yoki tijoriy bannerlar yo'q, shaxsiy ma'lumotlar yig'ilmaydi.
 
 ---
 
 ## 🛠 Texnologiyalar (Tech Stack)
 
-| Yo'nalish | Texnologiya |
+Dastur ochiq kodli bo'lib, zamonaviy mobil texnologiyalar asosida barpo etilgan:
+
+| Komponent | Texnologiya |
 | :--- | :--- |
-| **Framework** | Flutter (Material 3, Clean Architecture) |
-| **Dasturlash tili** | Dart |
+| **Framework** | [Flutter](https://flutter.dev) (Material 3, Clean Architecture) |
+| **Dasturlash tili** | [Dart](https://dart.dev) |
+| **Lokal Baza** | [Hive](https://docs.hivedb.dev/) (NoSQL, Typed Binary Storage) |
+| **Cloud Kutubxona** | [Supabase](https://supabase.com) (Ommaviy darsliklar uchun) |
+| **Diagnostika** | Firebase Crashlytics & Analytics |
 | **State Management** | Provider |
-| **Lokal Baza** | Hive (NoSQL, Typed Adapters) |
-| **Cloud Backend** | Supabase (PostgreSQL & Storage) |
-| **Audio & TTS** | Audioplayers & Flutter TTS |
-| **Routing** | GoRouter (Deep-linking & Preserved Navigation Stack) |
-| **Lokalizatsiya** | Flutter Gen-l10n (ARB) |
+| **Routing** | GoRouter |
 
 ---
 
-## 🏛️ Arxitektura (Clean Architecture)
+## ⚖️ Maxfiylik va Yuridik Hujjatlar
 
-Loyiha qat'iy modulli arxitektura va kod tozaligi qoidalariga rioya qiladi:
-- Har bir `.dart` fayli maksimal 200 qatordan oshmaydi.
-- UI, Data va Domain qatlamlari to'liq ajratilgan:
-```text
-lib/
-├── core/                        # Umumiy xizmatlar (OTA, Theme, Audio, Localization)
-└── features/
-    ├── vocabulary/              # Lug'at, testlar va kitoblar
-    ├── settings/                # Sozlamalar va audio tezligi
-    └── navigation/              # Asosiy ekran va marshrutlash
-```
+- 🔒 [Maxfiylik Siyosati (Privacy Policy)](https://nayzavocab.ismaaiiyl.me/privacy)
+- 📄 [Foydalanish Shartlari (Terms of Service)](https://nayzavocab.ismaaiiyl.me/terms)
+- 📜 [MIT Litsenziyasi](https://github.com/ismaaiiyl/NayzaVocab?tab=MIT-1-ov-file)
 
 ---
 
-## 🚀 O'rnatish va Ishga Tushirish (Getting Started)
+## 👨‍💻 Muallif & Bog'lanish (Author)
 
-1. **Repozitoriyani klonlang:**
-   ```bash
-   git clone https://github.com/NayzaVocab/android.git
-   cd android
-   ```
+**Ismoil G'aynazarov** ([@ismaaiiyl](https://github.com/ismaaiiyl))  
+*Nayza Vocab Platformasi Muallifi* 🔱
 
-2. **Bog'liqliklarni yuklang:**
-   ```bash
-   flutter pub get
-   ```
-
-3. **Muhit sozlamalarini tayyorlang:**
-   `.env.example` dan `.env` fayl nusxasini yarating va Supabase ma'lumotlarini kiriting:
-   ```bash
-   cp .env.example .env
-   ```
-
-4. **Testlarni tekshirish:**
-   ```bash
-   flutter analyze
-   flutter test
-   ```
-
-5. **Ilovani ishga tushirish:**
-   ```bash
-   flutter run
-   ```
+- 💬 **Telegram:** [@nayza_vocab](https://t.me/nayza_vocab)
+- 🌐 **Rasmiy Sayt:** [nayzavocab.ismaaiiyl.me](https://nayzavocab.ismaaiiyl.me/)
+- ✉️ **Elektron Pochta:** [ismaaiiyl@gmail.com](mailto:ismaaiiyl@gmail.com)
+- 🐛 **Taklif va Muammolar:** [GitHub Issues](https://github.com/ismaaiiyl/NayzaVocab/issues)
 
 ---
 
-## 🔱 Muallif (Author)
-
-**Ismoil** ([@ismaaiiyl](https://github.com/ismaaiiyl))  
-*Flutter Developer & Creator of NayzaVocab* 🔱  
-- GitHub: [github.com/ismaaiiyl](https://github.com/ismaaiiyl)  
-- Aloqa / Email: [ismaaiiyl@gmail.com](mailto:ismaaiiyl@gmail.com)
-
----
-
-## 📄 Litsenziya (License)
-
-Ushbu loyiha [MIT License](LICENSE) ostida tarqatiladi. Shaxsiy va ochiq loyihalarda erkin foydalanishingiz mumkin.
+<div align="center">
+  <sub>Nayza Vocab — Ochiq kodli, notijorat ta'limiy loyiha. Barcha huquqlar himoyalangan.</sub>
+</div>
